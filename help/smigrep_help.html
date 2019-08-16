@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Help SmiGrep</title>
+   <meta charset="UTF-8">   
+</head>
+<body>
+    <hr> <!-- Riga di separazione -->
+	
+	<h1> Smigrep Help </h1>
+	
+	<h2> Search string </h2>	
+	<p>Se presenti string1 e string2 la ricerca, viene effettuata in modalità AND per tutto il file o l'oggetto DB.<br>
+       E' possibile indicare se si desidera effettuare la ricerca nel file system oppure nel data base (solo Oracle è supportato).<br> 
+	   Per la ricerca nel data base è possibile indicare una doppia scelta e tra gli oggetti scansionati verrà letto anche il contenuto della tabella UT_LOV.<br>
+       I filtri valgono solo per i files ricercati nel file system e se più di uno, devono venire elencati separati da una virgola come ad esempio: .rdf,.fmb,.sql<br>
+       Laddove non serve che venga percorsa una directory (o più), si può inserire elenco nel campo "Exclude directories"; il programma escludera la directory ovunque essa è presente 
+       nell'albero.<br>
+	   Per natura dei files system lo stesso nome di directory può essere presente in rami diversi; l'esclusione eliminerà la directory indicata da tutti i rami!<br>
+       Specificare file di output dove scrivere i risultati in formato csv. I risultati vengono anche riportati a video dove con doppio click è possibile aprire i file, oggetti del DB compresi.<br>
+	   <br>
+       Alcune note (ICOM-SMILE):<br>
+       La ricerca nei sorgenti di ICOM-UNIFACE va valutata in quanto in uniface, package presenti nel DB di SMILE potrebbero essere usati da ICOM-UNIFACE ma tramite alias. <br>
+       In questo caso non si otterebbe alcun risultato!
+	</p>   
+	
+	<h2> Search file </h2>
+	<p>Indicare il file o parte del file da ricercare.<br>
+       Indicare eventuali directory da escludere dalla ricerca e eventuali filtri da considerare sui suffissi dei file.<br>
+       La check "Clear cache files system" se impostata indica alla ricerca che andrà letto il file  system per caricare la lista dei files, altrimenti la ricerca sarà eseguita direttamente in cache.<br>
+       Con doppio click sull'oggetto posso aprirlo. <br>
+       Posso portare il file nella sezioni dei preferiti per poterlo riaprire in seguito o compilare.
+	</p>
+	
+	<h2> My favorites files </h2>
+	<p>Da questa sezione è possibile creare una lista di files preferiti; la lista può essere alimentata dai tab precedenti, oppure prendendo un file da file-system tramite drag&drop.<br>
+       Con doppio click si apre l'oggetto.
+       Esistono azioni riferite alla lista:
+	   <ul>
+			<li>Cancellazione riga (deve poi essere salvata)</li>
+			<li>Pulizia della lista</li>
+			<li>Salvataggio della lista </li>
+	   </ul>
+		Azioni riferite all'oggetto:
+	   <ul>
+			<li>Apertura della cartella in cui è presente l'oggetto</li>
+			<li>Backup dell'oggetto. L'oggetto viene copiato all'interno di un file zip "old.zip" presente nella stessa cartella (se non esiste lo crea) mettendo come suffisso la data di sistema. Se nel file Old.zip esistono già dei files non vengono persi, in quanto la procedura va in accodamento.</li>
+			<li>Messa in linea di un oggetto Oracle Forms o Oracle Report. In questo caso l'oggetto vienecopiato e compilato sui server di destinazione. Lo schema di riferimento è SMILE.</li>
+			<li>Compilazione oggetto Oracle Forms o Oracle Report. L'oggetto viene compilato nei server di sviluppo di SMILE.</li>
+	   </ul> 	    
+	</p>
+	
+	<h2> My favorites directories </h2>
+	<p>Da questa sezione è possibile compilare un elenco di directories preferite; la lista si alimenta tramite apposito pulsante in alto all'elenco.
+       Con doppio click si apre la cartella, mentre con i pulsanti in cima si gestisce la lista.
+	</p>
+	
+	<h2> Import-Export tools </h2>
+	<p>Questa sezione è nata per permettere di effettuare il salvataggio di tabelle, sopratutto per quelle tabelle che contengono campi BLOB.<br>
+  	   Questa sezione permette di prendere una tabella da un DB Oracle e copiarla dentro un DB SQLite che risiede sul PC. Essa può essere successivamente ripresa e riportata su DB Oracle (la tabella di destinazione non deve esistere). 
+       Eventuali campi BLOB non vengono salvati all'interno del DB SQLite (il cui limite sarebbe comunque di 1MB di spazio) ma direttamente in una cartella di filesystem. Da questa stessa tabella, la funzione di import dentro Oracle, attingerà gli allegati ricostruendo la struttura di partenza.
+	</p>
+	
+	<h2> Oracle Tools </h2>
+	<p>Oracle recompiler: è possibile visualizzare gli oggetti invalidi presenti sul database e ricompilarli.<br>
+       Oracle locks:
+	   <ul>
+			<li>check sessions lock: visualizza le sessioni in blocco</li>
+			<li>check table lock: avendo una tabella in input indica quali sessioni la stanno bloccando</li>
+	   </ul>	
+       Oracle sessions:<br>
+	   <ul>
+			<li>è possibile visualizzare tutte le sessioni aperte a DB e filtrare tramite ricerca utente.</li>
+	   </ul>
+	</p>
+	
+	<h2> Alcune note </h2>
+	<p>Tutti i dati inseriti vengono salvati per essere poi ripresi alla successiva apertura del programma.<br>
+       La cartella di lavoro del programma è C:\SmiGrep!<br>
+       Sugli elenchi dei file e delle directory preferite è possibile inserire file del filesystem tramite la funzione drag&drop.
+	</p>
+	
+</body>
+</html>
