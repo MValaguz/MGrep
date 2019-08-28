@@ -10,17 +10,12 @@
     <height>480</height>
    </rect>
   </property>
-  <property name="font">
-   <font>
-    <pointsize>9</pointsize>
-   </font>
-  </property>
   <property name="windowTitle">
    <string>Search string in sources of Oracle Forms/Reports and Oracle Apex</string>
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../../SmiGrep16/sorgenti/icons/search.ico</normaloff>../../SmiGrep16/sorgenti/icons/search.ico</iconset>
+    <normaloff>icons/MGrep.ico</normaloff>icons/MGrep.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">

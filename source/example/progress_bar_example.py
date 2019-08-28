@@ -7,11 +7,15 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import time
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(640, 480)
+        font = QtGui.QFont()
+        font.setPointSize(9)
+        MainWindow.setFont(font)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -135,12 +139,12 @@ class Ui_MainWindow(object):
         self.l_outputfile.setBuddy(self.e_outputfile)
 
         self.retranslateUi(MainWindow)
-        self.b_pathname.clicked.connect(MainWindow.b_pathname_slot)
-        self.b_excludepath.clicked.connect(MainWindow.b_excludepath_slot)
-        self.b_save_pref.clicked.connect(MainWindow.b_save_slot)
-        self.b_search.clicked.connect(MainWindow.b_search_slot)
-        self.b_add_line.clicked.connect(MainWindow.b_add_line_slot)
-        self.o_lst1.doubleClicked['QModelIndex'].connect(MainWindow.o_lst1_slot)
+        self.b_pathname.clicked.connect(self.b_pathname_slot)
+        self.b_excludepath.clicked.connect(self.b_excludepath_slot)
+        self.b_save_pref.clicked.connect(self.b_save_slot)
+        self.b_search.clicked.connect(self.b_search_slot)
+        self.b_add_line.clicked.connect(self.b_add_line_slot)
+        self.o_lst1.doubleClicked['QModelIndex'].connect(self.o_lst1_slot)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.e_stringa1, self.e_stringa2)
         MainWindow.setTabOrder(self.e_stringa2, self.c_flsearch)
@@ -159,7 +163,9 @@ class Ui_MainWindow(object):
         MainWindow.setTabOrder(self.b_save_pref, self.b_add_line)
         MainWindow.setTabOrder(self.b_add_line, self.b_search)
         MainWindow.setTabOrder(self.b_search, self.o_lst1)
-
+        
+        self.progressBar()
+        
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Search string in sources of Oracle Forms/Reports and Oracle Apex"))
@@ -179,6 +185,47 @@ class Ui_MainWindow(object):
         self.l_outputfile.setText(_translate("MainWindow", "Output file csv"))
         self.b_save_pref.setToolTip(_translate("MainWindow", "<html><head/><body><p>Save the search data in order to be retrieved at the next start of SmiGrep</p></body></html>"))
 
+    def b_pathname_slot(self):
+        pass
+    
+    def b_excludepath_slot(self):
+        pass
+    
+    def b_save_slot(self):
+        pass
+    
+    def b_search_slot(self):
+        pass
+    
+    def b_add_line_slot(self):
+        pass
+    
+    def o_lst1_slot(self):
+        pass
+    
+    def progressBar(self):
+        MainWindow = QtWidgets.QWidget()
+        progress = QtWidgets.QProgressDialog("Please Wait!", "Cancel", 0, 0, MainWindow)        
+        progress.setWindowModality(QtCore.Qt.WindowModal)
+        progress.setAutoReset(True)
+        progress.setAutoClose(True)
+        #progress.setMinimum(0)
+        #progress.setMaximum(0)
+        progress.resize(400,100)
+        progress.setWindowTitle("Loading....")
+        progress.show()
+        #progress.setValue(100)
+        
+        progress.setRange(0,0)
+        
+        for i in range(100):
+            print(i)
+            progress.setValue(i)
+            time.sleep(1)            
+            if progress.wasCanceled():
+                break
+            
+        progress.hide()        
 
 if __name__ == "__main__":
     import sys
