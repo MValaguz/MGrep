@@ -19,7 +19,55 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="7" column="5">
+    <item row="7" column="0">
+     <widget class="QLabel" name="l_outputfile">
+      <property name="text">
+       <string>Output file csv</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_outputfile</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLineEdit" name="e_outputfile"/>
+    </item>
+    <item row="7" column="3">
+     <widget class="QPushButton" name="b_save_pref">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the search data in order to be retrieved at the next start of SmiGrep&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/disk.gif</normaloff>icons/disk.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3" colspan="4">
+     <widget class="QLineEdit" name="e_dboracle1"/>
+    </item>
+    <item row="5" column="3" colspan="4">
+     <widget class="QLineEdit" name="e_dboracle2"/>
+    </item>
+    <item row="1" column="3" colspan="3">
+     <widget class="QLineEdit" name="e_pathname"/>
+    </item>
+    <item row="3" column="3" colspan="3">
+     <widget class="QLineEdit" name="e_excludepath"/>
+    </item>
+    <item row="0" column="3" colspan="4">
+     <widget class="QLineEdit" name="e_stringa2"/>
+    </item>
+    <item row="2" column="3" colspan="4">
+     <widget class="QLineEdit" name="e_filter"/>
+    </item>
+    <item row="6" column="3" colspan="4">
+     <widget class="QLineEdit" name="e_dbapex"/>
+    </item>
+    <item row="7" column="5" colspan="2">
      <widget class="QPushButton" name="b_search">
       <property name="toolTip">
        <string/>
@@ -57,27 +105,6 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="6">
-     <widget class="QPushButton" name="b_excludepath">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>icons/folder.gif</normaloff>icons/folder.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QLabel" name="l_filter">
-      <property name="text">
-       <string>File filter</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_filter</cstring>
-      </property>
-     </widget>
-    </item>
     <item row="7" column="4">
      <widget class="QPushButton" name="b_add_line">
       <property name="toolTip">
@@ -92,6 +119,16 @@
       </property>
      </widget>
     </item>
+    <item row="2" column="2">
+     <widget class="QLabel" name="l_filter">
+      <property name="text">
+       <string>File filter</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_filter</cstring>
+      </property>
+     </widget>
+    </item>
     <item row="4" column="2">
      <widget class="QLabel" name="l_dboracle1">
       <property name="text">
@@ -99,6 +136,17 @@
       </property>
       <property name="buddy">
        <cstring>e_dboracle1</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="6">
+     <widget class="QPushButton" name="b_excludepath">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/folder.gif</normaloff>icons/folder.gif</iconset>
       </property>
      </widget>
     </item>
@@ -112,19 +160,6 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="2">
-     <widget class="QLabel" name="l_dboracle2">
-      <property name="text">
-       <string>Oracle connection2</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_dboracle2</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QLineEdit" name="e_stringa1"/>
-    </item>
     <item row="0" column="0">
      <widget class="QLabel" name="l_stringa1">
       <property name="text">
@@ -132,6 +167,19 @@
       </property>
       <property name="buddy">
        <cstring>e_stringa1</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="e_stringa1"/>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLabel" name="l_dboracle2">
+      <property name="text">
+       <string>Oracle connection2</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_dboracle2</cstring>
       </property>
      </widget>
     </item>
@@ -179,56 +227,8 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="1">
-     <widget class="QLineEdit" name="e_outputfile"/>
-    </item>
     <item row="8" column="0" colspan="7">
      <widget class="QListView" name="o_lst1"/>
-    </item>
-    <item row="7" column="0">
-     <widget class="QLabel" name="l_outputfile">
-      <property name="text">
-       <string>Output file csv</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_outputfile</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="3">
-     <widget class="QPushButton" name="b_save_pref">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the search data in order to be retrieved at the next start of SmiGrep&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>icons/disk.gif</normaloff>icons/disk.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="3" colspan="3">
-     <widget class="QLineEdit" name="e_dbapex"/>
-    </item>
-    <item row="5" column="3" colspan="3">
-     <widget class="QLineEdit" name="e_dboracle2"/>
-    </item>
-    <item row="4" column="3" colspan="3">
-     <widget class="QLineEdit" name="e_dboracle1"/>
-    </item>
-    <item row="3" column="3" colspan="3">
-     <widget class="QLineEdit" name="e_excludepath"/>
-    </item>
-    <item row="2" column="3" colspan="3">
-     <widget class="QLineEdit" name="e_filter"/>
-    </item>
-    <item row="1" column="3" colspan="3">
-     <widget class="QLineEdit" name="e_pathname"/>
-    </item>
-    <item row="0" column="3" colspan="3">
-     <widget class="QLineEdit" name="e_stringa2"/>
     </item>
    </layout>
   </widget>
@@ -252,7 +252,6 @@
   <tabstop>b_save_pref</tabstop>
   <tabstop>b_add_line</tabstop>
   <tabstop>b_search</tabstop>
-  <tabstop>o_lst1</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -295,8 +294,8 @@
    <slot>b_save_slot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>442</x>
-     <y>210</y>
+     <x>490</x>
+     <y>222</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -311,8 +310,8 @@
    <slot>b_search_slot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>543</x>
-     <y>209</y>
+     <x>630</x>
+     <y>222</y>
     </hint>
     <hint type="destinationlabel">
      <x>621</x>
@@ -327,8 +326,8 @@
    <slot>b_add_line_slot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>480</x>
-     <y>209</y>
+     <x>537</x>
+     <y>222</y>
     </hint>
     <hint type="destinationlabel">
      <x>415</x>
@@ -343,12 +342,12 @@
    <slot>o_lst1_slot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>274</x>
-     <y>418</y>
+     <x>458</x>
+     <y>410</y>
     </hint>
     <hint type="destinationlabel">
-     <x>281</x>
-     <y>459</y>
+     <x>504</x>
+     <y>456</y>
     </hint>
    </hints>
   </connection>

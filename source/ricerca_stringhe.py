@@ -35,6 +35,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
         # carico le preferenze
         self.o_preferenze = preferenze()
         self.o_preferenze.carica()        
+
         # imposto i valori ricevuti come preferiti        
         self.ui.e_stringa1.setText( self.o_preferenze.stringa1 )
         self.ui.e_stringa2.setText( self.o_preferenze.stringa2 )
@@ -318,32 +319,32 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                     if v_file_is_open:
                         # estraggo dal nome file l'estensione e il nome (servono per scrivere il csv)
                         v_only_file_name, v_only_file_extension = os.path.splitext(v_file)
-                        # output a video del file in elaborazione                        
-                        (self.continua, keep) = self.wait_win.Pulse(v_file_name[0:50]+chr(13)+v_file_name[51:100])
+                        # output a video del file in elaborazione      
+                        self.ui.statusbar.showMessage(v_file_name[0:50]+chr(13)+v_file_name[51:100])
                         # Lettura di tutto il file  
                         try:
                             f_contenuto = f_input.read().upper()
                         except MemoryError:
-                            wx.MessageBox( message='File ' + v_file_name + ' is too big! It was skipped!', caption='Warning', style=wx.OK|wx.ICON_INFORMATION )
+                            message_error('File ' + v_file_name + ' is too big! It was skipped!')
                             
                         # utente ha richiesto di ricercare due stringhe in modalita AND
                         if len(v_string1) > 0 and len(v_string2) > 0:
                             if f_contenuto.find(bytes(v_string1.upper(), encoding='latin-1')) >= 0 and f_contenuto.find(
                                     bytes(v_string2.upper(), encoding='latin-1')) >= 0:
                                 # visualizzo output nell'area di testo e scrivo il risultato nel file csv
-                                self.o_lst1.Append(v_file_name)
+                                self.lista_risultati.appendRow(QtGui.QStandardItem(v_file_name))                                
                                 f_output.write(v_dir + ';' + v_only_file_name + ';' + v_only_file_extension + '\n')
                         # utente ha richiesto di ricercare solo una stringa, la prima
                         elif len(v_string1) > 0:
                             if f_contenuto.find(bytes(v_string1.upper(), encoding='latin-1')) >= 0:
                                 # visualizzo output nell'area di testo e scrivo il risultato nel file csv
-                                self.o_lst1.Append(v_file_name)
+                                self.lista_risultati.appendRow(QtGui.QStandardItem(v_file_name))                                
                                 f_output.write(v_dir + ';' + v_only_file_name + ';' + v_only_file_extension + '\n')
                         # utente ha richiesto di ricercare solo una stringa, la seconda
                         elif len(v_string2) > 0:
                             if f_contenuto.find(bytes(v_string2.upper(), encoding='latin-1')) >= 0:
                                 # visualizzo output nell'area di testo e scrivo il risultato nel file csv
-                                self.o_lst1.Append(v_file_name)
+                                self.lista_risultati.appendRow(QtGui.QStandardItem(v_file_name))                                
                                 f_output.write(v_dir + ';' + v_only_file_name + ';' + v_only_file_extension + '\n')
                         # chiudo il file
                         f_input.close()
@@ -763,54 +764,58 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
         if v_ok:
             # avanzamento progressbar
             self.continua = True
-            self.wait_win = wx.ProgressDialog(title='Searching', message='Please wait', maximum=1000, parent=None, style=wx.PD_AUTO_HIDE|wx.PD_CAN_ABORT|wx.PD_ELAPSED_TIME)
-            self.wait_win.Show()
+            self.ui.statusbar.showMessage('Please wait...')            
 
             # pulizia dell'item dei risultati
-            self.o_lst1.Clear()
+            self.lista_risultati = QtGui.QStandardItemModel()
+            self.lista_risultati.clear()
+            self.ui.o_lst1.setModel(self.lista_risultati)
 
             # se presente, pulisco il file di output, oppure lo creo. Perché tutte le fasi di ricerca vanno in accodamento
-            f_output = open(self.e_outputfile.GetValue(), 'w')
+            f_output = open(self.ui.e_outputfile.displayText(), 'w')
             f_output.close()
 
             # richiama la ricerca nel file system se presente file system
-            if self.c_flsearch.GetValue():
-                self.ricerca_stringa_in_file(self.e_pathname.GetValue(),
-                                             self.e_stringa1.GetValue(),
-                                             self.e_stringa2.GetValue(),
-                                             self.e_outputfile.GetValue(),
-                                             self.e_filter.GetValue(),
-                                             self.e_excludepath.GetValue())
+            if self.ui.c_flsearch.isChecked():
+                self.ricerca_stringa_in_file(self.ui.e_pathname.displayText(),
+                                             self.ui.e_stringa1.displayText(),
+                                             self.ui.e_stringa2.displayText(),
+                                             self.ui.e_outputfile.displayText(),
+                                             self.ui.e_filter.displayText(),
+                                             self.ui.e_excludepath.displayText())
 
             # se presente ricerco nei sorgenti DB della connessione1
-            if self.c_dbsearch.GetValue() and self.e_dboracle1.GetValue() != '' and self.continua:
-                self.ricerca_stringa_in_db(self.e_dboracle1.GetValue(),
-                                           self.e_stringa1.GetValue(),
-                                           self.e_stringa2.GetValue(),
-                                           self.e_outputfile.GetValue())
+            if self.ui.c_dbsearch.isChecked() and self.ui.e_dboracle1.displayText() != '' and self.continua:
+                self.ricerca_stringa_in_db(self.ui.e_dboracle1.displayText(),
+                                           self.ui.e_stringa1.displayText(),
+                                           self.ui.e_stringa2.displayText(),
+                                           self.ui.e_outputfile.displayText())
 
             # se presente ricerco nei sorgenti DB della connessione2
-            if self.c_dbsearch.GetValue() and self.e_dboracle2.GetValue() != '' and self.continua:
-                self.ricerca_stringa_in_db(self.e_dboracle2.GetValue(),
-                                           self.e_stringa1.GetValue(),
-                                           self.e_stringa2.GetValue(),
-                                           self.e_outputfile.GetValue())
+            if self.ui.c_dbsearch.isChecked() and self.ui.e_dboracle2.displayText() != '' and self.continua:
+                self.ricerca_stringa_in_db(self.ui.e_dboracle2.displayText(),
+                                           self.ui.e_stringa1.displayText(),
+                                           self.ui.e_stringa2.displayText(),
+                                           self.ui.e_outputfile.displayText())
 
             # eseguo la ricerca nei sorgenti di UNIFACE-ICOM (utente e password di collegamento sono fisse in procedura!)
-            if self.c_dbsearch.GetValue() and self.continua:
-                self.ricerca_stringa_in_icom(self.e_stringa1.GetValue(),
-                                             self.e_stringa2.GetValue(),
-                                             self.e_outputfile.GetValue())
+            if self.ui.c_dbsearch.isChecked() and self.continua:
+                self.ricerca_stringa_in_icom(self.ui.e_stringa1.displayText(),
+                                             self.ui.e_stringa2.displayText(),
+                                             self.ui.e_outputfile.displayText())
             
             # se presente ricerco nei sorgenti Apex
-            if self.c_apexsearch.GetValue() and self.e_dbapex.GetValue() != '' and self.continua:
-                self.ricerca_stringa_in_apex(self.e_dbapex.GetValue(),
-                                             self.e_stringa1.GetValue(),
-                                             self.e_stringa2.GetValue(),
-                                             self.e_outputfile.GetValue())
+            if self.ui.c_apexsearch.isChecked() and self.ui.e_dbapex.displayText() != '' and self.continua:
+                self.ricerca_stringa_in_apex(self.ui.e_dbapex.displayText(),
+                                             self.ui.e_stringa1.displayText(),
+                                             self.ui.e_stringa2.displayText(),
+                                             self.ui.e_outputfile.displayText())
+            
+            # visualizzo il risultato (carico il modello dentro la lista)
+            self.ui.o_lst1.setModel(self.lista_risultati)      
             
             # fermo la progressbar
-            self.wait_win.Destroy()
+            self.ui.statusbar.showMessage('I has finished...')
     
 
 # ----------------------------------------
