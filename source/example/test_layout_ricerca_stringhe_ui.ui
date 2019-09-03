@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>icons/MGrep.ico</normaloff>icons/MGrep.ico</iconset>
+    <normaloff>../icons/MGrep.ico</normaloff>../icons/MGrep.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="">
@@ -23,13 +23,19 @@
      <rect>
       <x>9</x>
       <y>9</y>
-      <width>541</width>
-      <height>297</height>
+      <width>621</width>
+      <height>451</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
      <item row="0" column="0">
       <layout class="QGridLayout" name="gridLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMaximumSize</enum>
+       </property>
        <item row="2" column="1">
         <widget class="QCheckBox" name="c_flsearch">
          <property name="text">
@@ -37,24 +43,17 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="1">
+       <item row="8" column="1">
         <widget class="QLineEdit" name="e_outputfile"/>
        </item>
-       <item row="4" column="1">
-        <widget class="QCheckBox" name="c_dbsearch">
-         <property name="text">
-          <string>Execute search in OracleDB</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="1">
+       <item row="7" column="1">
         <widget class="QCheckBox" name="c_apexsearch">
          <property name="text">
           <string>Execute search in Apex</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="0">
+       <item row="8" column="0">
         <widget class="QLabel" name="l_outputfile">
          <property name="text">
           <string>Output file csv</string>
@@ -89,6 +88,13 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="4" column="1">
+        <widget class="QCheckBox" name="c_dbsearch">
+         <property name="text">
+          <string>Execute search in OracleDB</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -127,7 +133,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>icons/folder.gif</normaloff>icons/folder.gif</iconset>
+           <normaloff>../icons/folder.gif</normaloff>../icons/folder.gif</iconset>
          </property>
         </widget>
        </item>
@@ -164,7 +170,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>icons/folder.gif</normaloff>icons/folder.gif</iconset>
+           <normaloff>../icons/folder.gif</normaloff>../icons/folder.gif</iconset>
          </property>
         </widget>
        </item>
@@ -217,7 +223,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>icons/disk.gif</normaloff>icons/disk.gif</iconset>
+           <normaloff>../icons/disk.gif</normaloff>../icons/disk.gif</iconset>
          </property>
         </widget>
        </item>
@@ -231,7 +237,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>icons/add.gif</normaloff>icons/add.gif</iconset>
+           <normaloff>../icons/add.gif</normaloff>../icons/add.gif</iconset>
          </property>
         </widget>
        </item>
@@ -251,7 +257,7 @@
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>icons/go.gif</normaloff>icons/go.gif</iconset>
+           <normaloff>../icons/go.gif</normaloff>../icons/go.gif</iconset>
          </property>
         </widget>
        </item>
@@ -273,7 +279,6 @@
   <tabstop>e_filter</tabstop>
   <tabstop>e_excludepath</tabstop>
   <tabstop>b_excludepath</tabstop>
-  <tabstop>c_dbsearch</tabstop>
   <tabstop>e_dboracle1</tabstop>
   <tabstop>e_dboracle2</tabstop>
   <tabstop>c_apexsearch</tabstop>

@@ -6,7 +6,7 @@
  Data..........: 09/08/2018 
 """
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtGui,QtWidgets
 
 def pathname_icons():    
     return 'icons\\'    
@@ -17,7 +17,9 @@ def message_error(p_message):
     """
     msg = QtWidgets.QMessageBox()
     msg.setIcon(QtWidgets.QMessageBox.Critical)
-    msg.setText("Error")
-    msg.setInformativeText(p_message)
+    msg.setText(p_message)    
     msg.setWindowTitle("Error")
+    icon = QtGui.QIcon()
+    icon.addPixmap(QtGui.QPixmap("icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)    
+    msg.setWindowIcon(icon)
     msg.exec_()

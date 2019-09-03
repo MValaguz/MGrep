@@ -93,7 +93,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                 v_connection = cx_Oracle.connect(p_db)
                 v_error = False
             except:
-                wx.MessageBox(text='Connection to oracle rejected. Please control login information.', caption = 'Error', style = wx.OK | wx.ICON_ERROR)
+                message_error('Connection to oracle rejected. Please control login information.')
                 v_error = True
 
             if not v_error:
@@ -171,7 +171,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                 v_connection = cx_Oracle.connect(self.e_dbapex.GetValue())
                 v_error = False
             except:
-                wx.MessageBox(text='Connection to oracle rejected. Please control login information.', caption = 'Error', style = wx.OK | wx.ICON_ERROR)
+                message_error('Connection to oracle rejected. Please control login information.')
                 v_error = True
 
             if not v_error:
@@ -225,7 +225,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             try:
                 os.startfile(v_seltext)
             except:
-                wx.MessageBox(text='File not found or problem during open application!', caption = 'Error', style = wx.OK | wx.ICON_ERROR)
+                message_error('File not found or problem during open application!')
 
     def aggiunge_riga_preferiti(self, event):
         """
@@ -320,7 +320,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                         # estraggo dal nome file l'estensione e il nome (servono per scrivere il csv)
                         v_only_file_name, v_only_file_extension = os.path.splitext(v_file)
                         # output a video del file in elaborazione      
-                        self.ui.statusbar.showMessage(v_file_name[0:50]+chr(13)+v_file_name[51:100])
+                        self.ui.statusbar.showMessage('ciao' + v_file_name[0:50]+chr(13)+v_file_name[51:100])                        
                         # Lettura di tutto il file  
                         try:
                             f_contenuto = f_input.read().upper()
@@ -362,7 +362,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             v_connection = cx_Oracle.connect(v_db)
             v_error = False
         except:
-            wx.MessageBox(message='Connection to oracle rejected. Search will skipped!', caption='Warning', style=wx.OK | wx.ICON_ERROR)            
+            message_error('Connection to oracle rejected. Search will skipped!')            
             v_error = True
 
         if not v_error:
@@ -386,7 +386,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                 v_c_type = result[1]
                 # output a video del file in elaborazione
                 v_msg = v_c_type + ' --> ' + v_c_name
-                (self.continua, keep) = self.wait_win.Pulse(v_msg[0:50]+chr(13)+v_msg[51:100])
+                self.ui.statusbar.showMessage(v_msg[0:50]+chr(13)+v_msg[51:100])
                 # lettura del sorgente (di fatto una lettura di dettaglio di quanto presente nel cursore di partenza                
                 # in data 20/12/2018 si è dovuta aggiungere la conversione in ASCII in quanto nel pkg CG_FATTURA_ELETTRONICA risultano annegati caratteri che python non riesce a leggere
                 v_cursor_det.prepare("SELECT Convert(TEXT,'US7ASCII') FROM USER_SOURCE WHERE NAME=:p_name ORDER BY LINE")
@@ -435,7 +435,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                 v_c_type = 'TABLE'
                 # output a video del file in elaborazione
                 v_msg = v_c_type + ' --> ' + v_c_name
-                (self.continua, keep) = self.wait_win.Pulse(v_msg[0:50]+chr(13)+v_msg[51:100])
+                self.ui.statusbar.showMessage(v_msg[0:50]+chr(13)+v_msg[51:100])
                 # preparazione select per la lettura delle colonne e relativi commenti di tabella. Gli spazi sono stati inseriti in quanto il sorgente estratto risultava come unica riga e la ricerca successiva non teneva conto di eventuali separatori
                 v_cursor_det.prepare(
                     "SELECT :p_name FROM DUAL UNION SELECT ' ' || A.COLUMN_NAME || ' ' || B.COMMENTS FROM ALL_TAB_COLUMNS A, ALL_COL_COMMENTS B WHERE A.OWNER=:p_owner AND A.TABLE_NAME = :p_name AND A.OWNER=B.OWNER AND A.TABLE_NAME=B.TABLE_NAME AND A.COLUMN_NAME=B.COLUMN_NAME")
@@ -483,7 +483,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                 v_c_type = 'VIEW'
                 # output a video del file in elaborazione
                 v_msg = v_c_type + ' --> ' + v_c_name
-                (self.continua, keep) = self.wait_win.Pulse(v_msg[0:50]+chr(13)+v_msg[51:100])
+                self.ui.statusbar.showMessage(v_msg[0:50]+chr(13)+v_msg[51:100])
                 # preparazione select per la lettura delle colonne e relativi commenti di tabella
                 v_cursor_det.prepare(
                     "SELECT :p_name FROM DUAL UNION SELECT ' ' || A.COLUMN_NAME || ' ' || B.COMMENTS FROM ALL_TAB_COLUMNS A, ALL_COL_COMMENTS B WHERE A.OWNER=:p_owner AND A.TABLE_NAME = :p_name AND A.OWNER=B.OWNER AND A.TABLE_NAME=B.TABLE_NAME AND A.COLUMN_NAME=B.COLUMN_NAME")
@@ -547,7 +547,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             if v_db.upper().find('SMILE') >= 0:
                 try:
                     # output a video del file in elaborazione
-                    (self.continua, keep) = self.wait_win.Pulse('UT_LOV')
+                    self.ui.statusbar.showMessage('UT_LOV')
                     if len(v_string1) > 0 and len(v_string2) > 0:
                         # lettura di UT_LOV
                         v_cursor_det.prepare("""SELECT NAME_CO
@@ -589,7 +589,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                 if v_db.upper().find('SMILE') >= 0:
                     try:
                         # output a video del file in elaborazione
-                        (self.continua, keep) = self.wait_win.Pulse('ALL_SCHEDULER_JOBS')
+                        self.ui.statusbar.showMessage('ALL_SCHEDULER_JOBS')
                         if len(v_string1) > 0 and len(v_string2) > 0:
                             # lettura di UT_LOV
                             v_cursor_det.prepare("""SELECT JOB_NAME
@@ -633,7 +633,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             v_connection = cx_Oracle.connect('icom_ng_source/icom_ng_source@uniface')
             v_error = False
         except:
-            wx.MessageBox(message='Connection rejected! Search in ICOM-UNIFACE will skipped!', caption='Warning', style = wx.OK | wx.ICON_INFORMATION)
+            message_error('Connection rejected! Search in ICOM-UNIFACE will skipped!')
             v_error = True
 
         if not v_error:
@@ -645,7 +645,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             v_cursor_det = v_connection.cursor()
 
             # emetto messaggio inizio ricerca icom
-            (self.continua, keep) = self.wait_win.Pulse('ICOM-UNIFACE')
+            self.ui.statusbar.showMessage('ICOM-UNIFACE')
 
             # eseguo la ricerca con apposita funzione
             v_cursor.execute('SELECT rep_search_function(:string1,:string2) FROM dual',{'string1' : v_string1 , 'string2' : v_string2})
@@ -677,7 +677,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             v_connection = cx_Oracle.connect(v_db)
             v_error = False
         except:
-            wx.MessageBox(message='Connection to oracle rejected. Search will skipped!', caption='Warning', style=wx.OK | wx.ICON_ERROR)            
+            message_error('Connection to oracle rejected. Search will skipped!')
             v_error = True
 
         if not v_error:
@@ -702,7 +702,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                 v_application_name = result[2]
                 # output a video del file in elaborazione
                 v_msg = v_c_type + ' --> (' + str(v_application_id) + ') ' + v_application_name
-                (self.continua, keep) = self.wait_win.Pulse(v_msg[0:50]+chr(13)+v_msg[51:100])                
+                self.ui.statusbar.showMessage(v_msg[0:50]+chr(13)+v_msg[51:100])                
                 # lettura del sorgente (ci sono stati problemi con il tipo di mappatura dei caratteri e per questo motivo nella funzione di SMILE è stata forzata la conversione da UTF8 a US7ASCII
                 v_cursor_det.prepare("SELECT EXPORT_APEX_APPLICATION(:application_id) FROM dual")
                 v_cursor_det.execute(None, {'application_id': v_application_id})
