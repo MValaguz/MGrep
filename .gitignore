@@ -1,3 +1,5 @@
 
 SmiGrep.wpr
 *.pyc
+*.wpr
+*.pyc

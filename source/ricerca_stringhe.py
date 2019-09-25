@@ -20,7 +20,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from ricerca_stringhe_ui import Ui_MainWindow
 #Librerie interne SmiGrep
 from preferenze import preferenze
-from utilita import message_error
+from utilita import message_error, message_info
        
 class ricerca_stringhe_class(QtWidgets.QMainWindow):
     """
@@ -72,10 +72,47 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                     self.ui.e_excludepath.setText(directory_scelta)        
         
     def b_save_slot(self):
-        print('salva ricerca')
+        """
+           Salva i parametri di ricerca
+	"""
+        self.o_preferenze.stringa1 = self.ui.e_stringa1.displayText()
+        self.o_preferenze.stringa2 = self.ui.e_stringa2.displayText()
+        self.o_preferenze.pathname = self.ui.e_pathname.displayText()
+        self.o_preferenze.excludepath = self.ui.e_excludepath.displayText()
+        self.o_preferenze.outputfile = self.ui.e_outputfile.displayText()
+        self.o_preferenze.filter = self.ui.e_filter.displayText()
+        if self.ui.c_flsearch.isChecked():
+            self.o_preferenze.flsearch = True
+        else:
+            self.o_preferenze.flsearch = False
+        self.o_preferenze.dboracle1 = self.ui.e_dboracle1.displayText()
+        self.o_preferenze.dboracle2 = self.ui.e_dboracle2.displayText()
+        if self.ui.c_dbsearch.isChecked():
+            self.o_preferenze.dbsearch = True
+        else:
+            self.o_preferenze.dbsearch = False
+        if self.ui.c_apexsearch.isChecked():
+            self.o_preferenze.flapexsearch = True
+        else:
+            self.o_preferenze.flapexsearch = False
+        self.o_preferenze.dbapexsearch = self.ui.e_dbapex.displayText()                
+        self.o_preferenze.salva()
+        
+        message_info('Search options saved!')
     
-    def b_add_line_slot(self):
-        print('aggiunge ai preferiti')
+    def b_add_line_slot(self, index):        
+        index = self.ui.o_lst1.selectedIndexes()       
+        print(index.row())
+        item = self.lista_risultati.item(1)
+        print(item.text())
+        
+        """
+            aggiunge la riga nei preferiti
+        """
+        #f_output = open(self.o_preferenze.favorites_file, 'a')
+        #f_output.write(self.ui.o_lst1.text + '\n')
+        #f_output.close()
+        
         
     def o_lst1_slot(self):
         print('doppio click sulla lista')  
@@ -352,31 +389,436 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                         # chiudo il file
                         f_input.close()
         f_output.close()
+        
+
+    def ricerca_stringa_in_db(self,
+                              v_db,
+                              v_string1,
+                              v_string2,
+                              v_output):
+        """
+            ricerca stringa in dbase
+        """
+        try:
+            v_connection = cx_Oracle.connect(v_db)
+            v_error = False
+        except:
+            message_error('Connection to oracle rejected. Search will skipped!')            
+            v_error = True
+
+        if not v_error:
+            v_progress_step = 0
+            
+            # apro il file di output che conterra' i risultati della ricerca
+            f_output = open(v_output, 'a')
+
+            # apro cursori
+            v_cursor = v_connection.cursor()
+            v_cursor_det = v_connection.cursor()
+
+            ##############################################################
+            # ricerca all'interno di procedure, funzioni, package e trigger
+            ##############################################################
+            v_cursor.execute(
+                "SELECT DISTINCT NAME,TYPE FROM USER_SOURCE WHERE TYPE IN ('PROCEDURE','PACKAGE','TRIGGER','FUNCTION') ORDER BY TYPE, NAME")
+            i = 0
+            for result in v_cursor:
+                if self.progress.wasCanceled():
+                    break
+                v_c_name = result[0]
+                v_c_type = result[1]
+                # output a video del file in elaborazione (notare incremento del value e impostazione della label)
+                v_progress_step += 1
+                self.progress.setValue(v_progress_step);                        
+                v_msg = v_c_type + ' --> ' + v_c_name
+                self.progress_label.setText(v_msg)
+                self.progress.setLabel(self.progress_label)                                               
+                # lettura del sorgente (di fatto una lettura di dettaglio di quanto presente nel cursore di partenza                
+                # in data 20/12/2018 si è dovuta aggiungere la conversione in ASCII in quanto nel pkg CG_FATTURA_ELETTRONICA risultano annegati caratteri che python non riesce a leggere
+                v_cursor_det.prepare("SELECT Convert(TEXT,'US7ASCII') FROM USER_SOURCE WHERE NAME=:p_name ORDER BY LINE")
+                v_cursor_det.execute(None, {'p_name': v_c_name})
+                # il sorgente finisce dentro la stringa v_sorgente
+                v_sorgente = ''
+                for result in v_cursor_det:
+                    v_sorgente = v_sorgente + v_sorgente.join(result)
+
+                v_sorgente = v_sorgente.upper()
+                # utente ha richiesto di ricercare due stringhe in modalita AND
+                if len(v_string1) > 0 and len(v_string2) > 0:
+                    if v_sorgente.find(v_string1.upper()) >= 0 and v_sorgente.find(v_string2.upper()) >= 0:
+                        # print('Stringhe trovate in %s' % v_file_name)
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+                # utente ha richiesto di ricercare solo una stringa, la prima
+                elif len(v_string1) > 0:
+                    if v_sorgente.find(v_string1.upper()) >= 0:
+                        # print('Stringa1 trovata in %s' % v_file_name)
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+                # utente ha richiesto di ricercare solo una stringa, la seconda
+                elif len(v_string2) > 0:
+                    if v_sorgente.find(v_string2.upper()) >= 0:
+                        # print('Stringa2 trovata in %s' % v_file_name)
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+                i += 1
+                # if i > 10:
+                #	break
+
+            ####################################################
+            # ricerca all'interno della definizione delle tabelle
+            ####################################################
+            v_owner = v_db[0:v_db.find('/')]
+            v_cursor.execute(
+                "SELECT TABLE_NAME FROM ALL_TABLES WHERE OWNER = " + "'" + v_owner + "'" + " ORDER BY TABLE_NAME")
+            i = 0
+            for result in v_cursor:
+                if self.progress.wasCanceled():
+                    break
+                # nome della tabella
+                v_c_name = result[0]
+                v_c_type = 'TABLE'
+                # output a video del file in elaborazione (notare incremento del value e impostazione della label)
+                v_progress_step += 1
+                self.progress.setValue(v_progress_step);                        
+                v_msg = v_c_type + ' --> ' + v_c_name
+                self.progress_label.setText(v_msg)
+                self.progress.setLabel(self.progress_label)                                                               
+                # preparazione select per la lettura delle colonne e relativi commenti di tabella. Gli spazi sono stati inseriti in quanto il sorgente estratto risultava come unica riga e la ricerca successiva non teneva conto di eventuali separatori
+                v_cursor_det.prepare(
+                    "SELECT :p_name FROM DUAL UNION SELECT ' ' || A.COLUMN_NAME || ' ' || B.COMMENTS FROM ALL_TAB_COLUMNS A, ALL_COL_COMMENTS B WHERE A.OWNER=:p_owner AND A.TABLE_NAME = :p_name AND A.OWNER=B.OWNER AND A.TABLE_NAME=B.TABLE_NAME AND A.COLUMN_NAME=B.COLUMN_NAME")
+                v_cursor_det.execute(None, {'p_owner': v_owner, 'p_name': v_c_name})
+                # il sorgente finisce dentro la stringa v_sorgente
+                v_sorgente = ''
+                for result in v_cursor_det:
+                    v_sorgente = v_sorgente + v_sorgente.join(result)
+
+                v_sorgente = v_sorgente.upper()
+
+                # utente ha richiesto di ricercare due stringhe in modalita AND
+                if len(v_string1) > 0 and len(v_string2) > 0:
+                    if v_sorgente.find(v_string1.upper()) >= 0 and v_sorgente.find(v_string2.upper()) >= 0:
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+                # utente ha richiesto di ricercare solo una stringa, la prima
+                elif len(v_string1) > 0:
+                    if v_sorgente.find(v_string1.upper()) >= 0:
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+                # utente ha richiesto di ricercare solo una stringa, la seconda
+                elif len(v_string2) > 0:
+                    if v_sorgente.find(v_string2.upper()) >= 0:
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+
+                i += 1
+                # if i >= 1:
+                #	break
+
+            ##################################################
+            # ricerca all'interno della definizione delle viste
+            ##################################################
+            v_owner = v_db[0:v_db.find('/')]
+            v_cursor.execute("SELECT VIEW_NAME FROM ALL_VIEWS WHERE OWNER = " + "'" + v_owner + "'" + " ORDER BY VIEW_NAME")
+            for result in v_cursor:
+                if self.progress.wasCanceled():
+                    break
+                # nome della tabella
+                v_c_name = result[0]
+                v_c_type = 'VIEW'
+                # output a video del file in elaborazione (notare incremento del value e impostazione della label)
+                v_progress_step += 1
+                self.progress.setValue(v_progress_step);                        
+                v_msg = v_c_type + ' --> ' + v_c_name
+                self.progress_label.setText(v_msg)
+                self.progress.setLabel(self.progress_label)                                                               
+                # preparazione select per la lettura delle colonne e relativi commenti di tabella
+                v_cursor_det.prepare(
+                    "SELECT :p_name FROM DUAL UNION SELECT ' ' || A.COLUMN_NAME || ' ' || B.COMMENTS FROM ALL_TAB_COLUMNS A, ALL_COL_COMMENTS B WHERE A.OWNER=:p_owner AND A.TABLE_NAME = :p_name AND A.OWNER=B.OWNER AND A.TABLE_NAME=B.TABLE_NAME AND A.COLUMN_NAME=B.COLUMN_NAME")
+                v_cursor_det.execute(None, {'p_owner': v_owner, 'p_name': v_c_name})
+                # il sorgente finisce dentro la stringa v_sorgente
+                v_sorgente = ''
+                for result in v_cursor_det:
+                    v_sorgente = v_sorgente + v_sorgente.join(result)
+
+                v_sorgente = v_sorgente.upper()
+                # utente ha richiesto di ricercare due stringhe in modalita AND
+                if len(v_string1) > 0 and len(v_string2) > 0:
+                    if v_sorgente.find(v_string1.upper()) >= 0 and v_sorgente.find(v_string2.upper()) >= 0:
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+                # utente ha richiesto di ricercare solo una stringa, la prima
+                elif len(v_string1) > 0:
+                    if v_sorgente.find(v_string1.upper()) >= 0:
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+                # utente ha richiesto di ricercare solo una stringa, la seconda
+                elif len(v_string2) > 0:
+                    if v_sorgente.find(v_string2.upper()) >= 0:
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+
+                # preparazione select per la lettura del sorgente della vista
+                v_cursor_det.prepare("SELECT TEXT FROM ALL_VIEWS WHERE VIEW_NAME=:p_name")
+                v_cursor_det.execute(None, {'p_name': v_c_name})
+                # il sorgente finisce dentro la stringa v_sorgente
+                v_sorgente = ''
+                for result in v_cursor_det:
+                    v_sorgente = v_sorgente + v_sorgente.join(result)
+
+                v_sorgente = v_sorgente.upper()
+                # utente ha richiesto di ricercare due stringhe in modalita AND
+                if len(v_string1) > 0 and len(v_string2) > 0:
+                    if v_sorgente.find(v_string1.upper()) >= 0 and v_sorgente.find(v_string2.upper()) >= 0:
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+                # utente ha richiesto di ricercare solo una stringa, la prima
+                elif len(v_string1) > 0:
+                    if v_sorgente.find(v_string1.upper()) >= 0:
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+                # utente ha richiesto di ricercare solo una stringa, la seconda
+                elif len(v_string2) > 0:
+                    if v_sorgente.find(v_string2.upper()) >= 0:
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_c_type + ' --> ' + v_c_name))
+                        f_output.write(v_c_type + ';' + v_c_name + ';' + v_db + '\n')
+
+            ###########################################################################################
+            # ricerca dentro la UT_LOV (tabella delle liste di valori)...ma solo se connessi al DB SMILE
+            ###########################################################################################
+            if v_db.upper().find('SMILE') >= 0:
+                try:                    
+                    # output a video del file in elaborazione (notare incremento del value e impostazione della label)
+                    v_progress_step += 1                    
+                    self.progress_label.setText('UT_LOV')
+                    self.progress.setLabel(self.progress_label)                                                                   
+                    if len(v_string1) > 0 and len(v_string2) > 0:
+                        # lettura di UT_LOV
+                        v_cursor_det.prepare("""SELECT NAME_CO
+                                                FROM   UT_LOV
+                                                WHERE  (SEL01_CO || SEL02_CO || SEL03_CO || SEL04_CO || SEL05_CO ||
+                                                        SEL06_CO || SEL07_CO || SEL08_CO || SEL09_CO || SEL10_CO ||
+                                                        FROM_CO  || WHERE_CO || ORDER_CO)
+                                                        LIKE '%' || UPPER(:p_string1) || '%' AND
+                                                       (SEL01_CO || SEL02_CO || SEL03_CO || SEL04_CO || SEL05_CO ||
+                                                        SEL06_CO || SEL07_CO || SEL08_CO || SEL09_CO || SEL10_CO ||
+                                                        FROM_CO  || WHERE_CO || ORDER_CO)
+                                                        LIKE '%' || UPPER(:p_string2) || '%'
+                                            """)
+                        v_cursor_det.execute(None, {'p_string1': v_string1, 'p_string2': v_string2})
+                        for result in v_cursor_det:
+                            v_c_lov_name = result[0]
+                            self.lista_risultati.appendRow(QtGui.QStandardItem(' UT_LOV --> ' + v_c_lov_name))
+                            f_output.write('UT_LOV;' + v_c_lov_name + '\n')
+                    elif len(v_string1) > 0:
+                        # lettura di UT_LOV
+                        v_cursor_det.prepare("""SELECT NAME_CO
+                                                FROM   UT_LOV
+                                                WHERE  (SEL01_CO || SEL02_CO || SEL03_CO || SEL04_CO || SEL05_CO ||
+                                                        SEL06_CO || SEL07_CO || SEL08_CO || SEL09_CO || SEL10_CO ||
+                                                        FROM_CO  || WHERE_CO || ORDER_CO)
+                                                        LIKE '%' || UPPER(:p_string1) || '%'
+                                            """)
+                        v_cursor_det.execute(None, {'p_string1': v_string1})
+                        for result in v_cursor_det:
+                            v_c_lov_name = result[0]
+                            self.lista_risultati.appendRow(QtGui.QStandardItem('UT_LOV --> ' + v_c_lov_name))
+                            f_output.write('UT_LOV;' + v_c_lov_name + '\n')
+                except:
+                    pass
+                
+                ###########################################################################################
+                # ricerca dentro la ALL_SCHEDULER_JOBS (tabella dei job schedulati)
+                ###########################################################################################
+                if v_db.upper().find('SMILE') >= 0:
+                    try:
+                        # output a video del file in elaborazione (notare incremento del value e impostazione della label)
+                        v_progress_step += 1
+                        self.progress.setValue(v_progress_step);                                                
+                        self.progress_label.setText('ALL_SCHEDULER_JOBS')
+                        self.progress.setLabel(self.progress_label)                                                                       
+                        if len(v_string1) > 0 and len(v_string2) > 0:
+                            # lettura di UT_LOV
+                            v_cursor_det.prepare("""SELECT JOB_NAME
+                                                    FROM   ALL_SCHEDULER_JOBS
+                                                    WHERE  UPPER(JOB_ACTION) LIKE '%' || UPPER(:p_string1) || '%' 
+                                                      AND  UPPER(JOB_ACTION) LIKE '%' || UPPER(:p_string2) || '%'
+                                                """)
+                            v_cursor_det.execute(None, {'p_string1': v_string1, 'p_string2': v_string2})
+                            for result in v_cursor_det:
+                                v_c_lov_name = result[0]
+                                self.lista_risultati.appendRow(QtGui.QStandardItem('ALL_SCHEDULER_JOBS --> ' + v_c_lov_name))
+                                f_output.write('ALL_SCHEDULER_JOBS;' + v_c_lov_name + '\n')
+                        elif len(v_string1) > 0:
+                            # lettura di UT_LOV                            
+                            v_cursor_det.prepare("""SELECT JOB_NAME
+                                                    FROM   ALL_SCHEDULER_JOBS
+                                                    WHERE  UPPER(JOB_ACTION) LIKE '%' || UPPER(:p_string1) || '%'
+                                                """)
+                            v_cursor_det.execute(None, {'p_string1': v_string1})
+                            for result in v_cursor_det:
+                                v_c_lov_name = result[0]
+                                self.lista_risultati.appendRow(QtGui.QStandardItem('ALL_SCHEDULER_JOBS --> ' + v_c_lov_name))
+                                f_output.write('ALL_SCHEDULER_JOBS;' + v_c_lov_name + '\n')
+                    except:
+                        pass                
+
+            # chiusura cursori e connessione DB
+            v_cursor_det.close()
+            v_cursor.close()
+            v_connection.close()
+            f_output.close()
+
+    def ricerca_stringa_in_icom(self,
+                                v_string1,
+                                v_string2,
+                                v_output):
+        """
+            ricerca stringa in sorgenti ICOM-UNIFACE
+        """
+        try:
+            v_connection = cx_Oracle.connect('icom_ng_source/icom_ng_source@uniface')
+            v_error = False
+        except:
+            message_error('Connection rejected! Search in ICOM-UNIFACE will skipped!')
+            v_error = True
+
+        v_progress_step = 0
+        if not v_error:
+            # apro il file di output che conterra' i risultati della ricerca
+            f_output = open(v_output, 'a')
+
+            # apro cursori
+            v_cursor = v_connection.cursor()
+            v_cursor_det = v_connection.cursor()
+            
+            # output a video del file in elaborazione (notare incremento del value e impostazione della label)
+            v_progress_step += 1
+            self.progress.setValue(v_progress_step);                                        
+            self.progress_label.setText('ICOM-UNIFACE')
+            self.progress.setLabel(self.progress_label)                                                                       
+
+            # eseguo la ricerca con apposita funzione
+            v_cursor.execute('SELECT rep_search_function(:string1,:string2) FROM dual',{'string1' : v_string1 , 'string2' : v_string2})
+            for result in v_cursor:
+                if result[0] is not None:
+                    v_lista  = result[0].split(',')
+                    for i in v_lista:
+                        # output a video delle ricorrenze trovate
+                        self.lista_risultati.appendRow(QtGui.QStandardItem('ICOM source --> ' + i))
+                        f_output.write('ICOM source' + ';' + i + ';\n')
+
+            # chiusura cursori e connessione DB
+            v_cursor.close()
+            v_connection.close()
+            f_output.close()
+            
+    def ricerca_stringa_in_apex(self,
+                                v_db,
+                                v_string1,
+                                v_string2,
+                                v_output):
+        """
+            ricerca stringa nei sorgenti di Apex. E' importante che sul server Oracle sia stata compilata la funzione EXPORT_APEX_APPLICATION.
+			Siccome ci sono stati problemi di conversione caratteri UTF8, si è deciso che quanto restituito dalla funzione EXPORT_APEX_APPLICATION 
+			sia tutto in formato ASCII
+        """        
+        v_connection = cx_Oracle.connect(v_db)
+        try:            
+            v_connection = cx_Oracle.connect(v_db)
+            v_error = False
+        except:
+            message_error('Connection to oracle rejected. Search will skipped!')            
+            v_error = True
+
+        v_progress_step = 0
+        if not v_error:
+            # apro il file di output che conterra' i risultati della ricerca
+            f_output = open(v_output, 'a')
+
+            # apro cursori
+            v_cursor = v_connection.cursor()
+            v_cursor_det = v_connection.cursor()
+
+            ##############################################################
+            # ricerca all'interno delle applicazioni Apex
+            ##############################################################
+            v_cursor.execute("SELECT WORKSPACE_ID, APPLICATION_ID, APPLICATION_NAME FROM APEX_APPLICATIONS WHERE WORKSPACE = 'SMILE' /*AND APPLICATION_ID=167*/ ORDER BY APPLICATION_NAME")
+            i = 0
+            for result in v_cursor:
+                if self.progress.wasCanceled():
+                    break
+                v_c_type = 'APEX'
+                v_workspace_id = result[0]
+                v_application_id = result[1]
+                v_application_name = result[2]                
+                # output a video del file in elaborazione (notare incremento del value e impostazione della label)
+                v_progress_step += 1
+                self.progress.setValue(v_progress_step);                        
+                v_msg = v_c_type + ' --> (' + str(v_application_id) + ') ' + v_application_name
+                self.progress_label.setText(v_msg)
+                self.progress.setLabel(self.progress_label)                                                               
+                # lettura del sorgente (ci sono stati problemi con il tipo di mappatura dei caratteri e per questo motivo nella funzione di SMILE è stata forzata la conversione da UTF8 a US7ASCII
+                v_cursor_det.prepare("SELECT EXPORT_APEX_APPLICATION(:application_id) FROM dual")
+                v_cursor_det.execute(None, {'application_id': v_application_id})
+                # leggo la prima colonna della lista che viene restituita dal cursore di oracle e che contiene il clob con l'export in formato testuale dell'applicazione Apex                
+                v_result = v_cursor_det.var(cx_Oracle.CLOB)   
+                v_result = v_cursor_det.fetchone()[0]                                
+                # trasformo il clob in una stringa e porto tutti i caratteri a maiuscolo e inoltre elimino tutti i "ritorni a capo" in quanto sembra che Apex vada a capo senza troppi criteri
+                v_sorgente = v_result.read()                   
+                v_sorgente = v_sorgente.upper()
+                v_sorgente = v_sorgente.replace(chr(10),'')
+                # utente ha richiesto di ricercare due stringhe in modalita AND
+                if len(v_string1) > 0 and len(v_string2) > 0:
+                    if v_sorgente.find(v_string1.upper()) >= 0 and v_sorgente.find(v_string2.upper()) >= 0:                        
+                        # visualizzo output nell'area di testo
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_msg))
+                        f_output.write(v_c_type + ';' + str(v_application_id) + ';' + v_application_name + ';' + v_db + '\n')
+                # utente ha richiesto di ricercare solo una stringa, la prima
+                elif len(v_string1) > 0:
+                    if v_sorgente.find(v_string1.upper()) >= 0:                        
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_msg))
+                        f_output.write(v_c_type + ';' + str(v_application_id) + ';' + v_application_name + ';' + v_db + '\n')
+                # utente ha richiesto di ricercare solo una stringa, la seconda
+                elif len(v_string2) > 0:
+                    if v_sorgente.find(v_string2.upper()) >= 0:                   
+                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_msg))
+                        f_output.write(v_c_type + ';' + str(v_application_id) + ';' + v_application_name + ';' + v_db + '\n')
+                        
+            # chiusura cursori e connessione DB
+            v_cursor_det.close()
+            v_cursor.close()
+            v_connection.close()
+            f_output.close()                    
 
     def b_search_slot(self):
         """
             esegue la ricerca delle stringhe
         """
-        # creo un job che si mette in attesa di una risposta così da lasciare libera l'applicazione da questo lavoro
-        # viene passato al thread l'oggetto chat
-        #-self.thread_wait_window = class_wait_window()
-        # collego il thread con la relativa funzione
-        #self.thread_in_attesa.signal.connect(self.ricevo_il_messaggio)
-        #-self.thread_wait_window.start()
-        
-        self.progress = QtWidgets.QProgressDialog(self)        
-        self.progress.setMinimumDuration(0)
-        self.progress.setWindowModality(QtCore.Qt.WindowModal)
-        self.progress.setWindowTitle("Please wait...")        
+        # creazione della wait window
+        #self.progress = QtWidgets.QProgressDialog(self)        
+        #self.progress.setMinimumDuration(0)
+        #self.progress.setWindowModality(QtCore.Qt.WindowModal)
+        #self.progress.setWindowTitle("Please wait...")        
         # imposto valore minimo e massimo a 0 in modo venga considerata una progress a tempo indefinito
         # Attenzione! dentro nel ciclo deve essere usata la funzione setvalue altrimenti non visualizza e non avanza nulla!
-        self.progress.setMinimum(0)
-        self.progress.setMaximum(0) 
+        #self.progress.setMinimum(0)
+        #self.progress.setMaximum(0) 
         # creo un campo label che viene impostato con 100 caratteri in modo venga data una dimensione di base standard
-        self.progress_label = QtWidgets.QLabel()            
-        self.progress_label.setText('.'*100)
+        #self.progress_label = QtWidgets.QLabel()            
+        #self.progress_label.setText('.'*100)
         # collego la label già presente nell'oggetto progress bar con la mia label 
-        self.progress.setLabel(self.progress_label)                                                
+        #self.progress.setLabel(self.progress_label)                                                
                 
         v_ok = True
         # controllo che ci siano i dati obbligatori
@@ -408,7 +850,12 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             # se presente, pulisco il file di output, oppure lo creo. Perché tutte le fasi di ricerca vanno in accodamento
             f_output = open(self.ui.e_outputfile.displayText(), 'w')
             f_output.close()
+            
+            self.lista_risultati.appendRow(QtGui.QStandardItem('ciao!'))
+            self.lista_risultati.appendRow(QtGui.QStandardItem('come'))
+            self.lista_risultati.appendRow(QtGui.QStandardItem('stai?'))
 
+            '''
             # richiama la ricerca nel file system se presente file system
             if self.ui.c_flsearch.isChecked():
                 self.ricerca_stringa_in_file(self.ui.e_pathname.displayText(),
@@ -418,10 +865,36 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                                              self.ui.e_filter.displayText(),
                                              self.ui.e_excludepath.displayText())
 
-            # visualizzo il risultato (carico il modello dentro la lista)
-            self.ui.o_lst1.setModel(self.lista_risultati)                  
+            # se presente ricerco nei sorgenti DB della connessione1
+            if self.ui.c_dbsearch.isChecked() and self.ui.e_dboracle1.displayText() != '':
+                self.ricerca_stringa_in_db(self.ui.e_dboracle1.displayText(),
+                                           self.ui.e_stringa1.displayText(),
+                                           self.ui.e_stringa2.displayText(),
+                                           self.ui.e_outputfile.displayText())
+
+            # se presente ricerco nei sorgenti DB della connessione2
+            if self.ui.c_dbsearch.isChecked() and self.ui.e_dboracle2.displayText() != '':
+                self.ricerca_stringa_in_db(self.ui.e_dboracle2.displayText(),
+                                           self.ui.e_stringa1.displayText(),
+                                           self.ui.e_stringa2.displayText(),
+                                           self.ui.e_outputfile.displayText())
+
+            # eseguo la ricerca nei sorgenti di UNIFACE-ICOM (utente e password di collegamento sono fisse in procedura!)
+            if self.ui.c_dbsearch.isChecked():
+                self.ricerca_stringa_in_icom(self.ui.e_stringa1.displayText(),
+                                             self.ui.e_stringa2.displayText(),
+                                             self.ui.e_outputfile.displayText())
+            
+            # se presente ricerco nei sorgenti Apex
+            if self.ui.c_apexsearch.isChecked() and self.ui.e_dbapex.displayText() != '':
+                self.ricerca_stringa_in_apex(self.ui.e_dbapex.displayText(),
+                                             self.ui.e_stringa1.displayText(),
+                                             self.ui.e_stringa2.displayText(),
+                                             self.ui.e_outputfile.displayText())
+
+            # chiudo la wait window
             self.progress.close()
-        
+            '''
 # ----------------------------------------
 # TEST APPLICAZIONE
 # ----------------------------------------
