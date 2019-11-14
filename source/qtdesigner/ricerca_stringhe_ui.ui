@@ -25,61 +25,8 @@
     </sizepolicy>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="10" column="2">
-     <widget class="QLineEdit" name="e_outputfile"/>
-    </item>
-    <item row="10" column="1">
-     <widget class="QLabel" name="l_outputfile">
-      <property name="text">
-       <string>Output file csv</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_outputfile</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="8" colspan="5">
-     <widget class="QLineEdit" name="e_stringa2"/>
-    </item>
-    <item row="4" column="12">
-     <widget class="QPushButton" name="b_excludepath">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>icons/folder.gif</normaloff>icons/folder.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="8" colspan="4">
-     <widget class="QLineEdit" name="e_excludepath"/>
-    </item>
-    <item row="1" column="12">
-     <widget class="QPushButton" name="b_pathname">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>icons/folder.gif</normaloff>icons/folder.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="8" colspan="4">
-     <widget class="QLineEdit" name="e_pathname"/>
-    </item>
-    <item row="2" column="8" rowspan="2" colspan="5">
-     <widget class="QLineEdit" name="e_filter"/>
-    </item>
-    <item row="6" column="8" colspan="5">
-     <widget class="QLineEdit" name="e_dboracle2"/>
-    </item>
-    <item row="5" column="8" colspan="5">
-     <widget class="QLineEdit" name="e_dboracle1"/>
-    </item>
-    <item row="7" column="8" colspan="5">
-     <widget class="QLineEdit" name="e_dbapex"/>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="e_stringa1"/>
     </item>
     <item row="0" column="0" colspan="2">
      <widget class="QLabel" name="l_stringa1">
@@ -91,26 +38,13 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
-     <widget class="QLineEdit" name="e_stringa1"/>
-    </item>
-    <item row="0" column="4" colspan="4">
+    <item row="0" column="4" colspan="3">
      <widget class="QLabel" name="l_stringa2">
       <property name="text">
        <string>and Search string2</string>
       </property>
       <property name="buddy">
        <cstring>e_stringa2</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="4" colspan="2">
-     <widget class="QLabel" name="l_pathname">
-      <property name="text">
-       <string>Folder name</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_pathname</cstring>
       </property>
      </widget>
     </item>
@@ -124,30 +58,10 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="4" colspan="4">
-     <widget class="QLabel" name="l_excludepath">
-      <property name="text">
-       <string>Exclude directories</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_excludepath</cstring>
-      </property>
-     </widget>
-    </item>
     <item row="5" column="2">
      <widget class="QCheckBox" name="c_dbsearch">
       <property name="text">
        <string>Execute search in OracleDB</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="4" colspan="2">
-     <widget class="QLabel" name="l_dboracle1">
-      <property name="text">
-       <string>Oracle connection1</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_dboracle1</cstring>
       </property>
      </widget>
     </item>
@@ -161,13 +75,6 @@
       </property>
      </widget>
     </item>
-    <item row="7" column="2">
-     <widget class="QCheckBox" name="c_apexsearch">
-      <property name="text">
-       <string>Execute search in Apex</string>
-      </property>
-     </widget>
-    </item>
     <item row="1" column="2">
      <widget class="QCheckBox" name="c_flsearch">
       <property name="text">
@@ -175,31 +82,13 @@
       </property>
      </widget>
     </item>
-    <item row="10" column="5">
-     <widget class="QPushButton" name="b_add_line">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add the selected line to 'My favorites files&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
+    <item row="5" column="4" colspan="2">
+     <widget class="QLabel" name="l_dboracle1">
       <property name="text">
-       <string/>
+       <string>Oracle connection1</string>
       </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>icons/add.gif</normaloff>icons/add.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="4">
-     <widget class="QPushButton" name="b_save_pref">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the search data in order to be retrieved at the next start of SmiGrep&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset>
-        <normaloff>icons/disk.gif</normaloff>icons/disk.gif</iconset>
+      <property name="buddy">
+       <cstring>e_dboracle1</cstring>
       </property>
      </widget>
     </item>
@@ -216,17 +105,21 @@
       </property>
      </spacer>
     </item>
-    <item row="7" column="4" colspan="4">
-     <widget class="QLabel" name="l_dbapex">
-      <property name="text">
-       <string>Apex oracle connection</string>
+    <item row="10" column="5">
+     <widget class="QPushButton" name="b_add_line">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add the selected line to 'My favorites files&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
       </property>
-      <property name="buddy">
-       <cstring>e_dbapex</cstring>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/add.gif</normaloff>icons/add.gif</iconset>
       </property>
      </widget>
     </item>
-    <item row="1" column="13">
+    <item row="1" column="10">
      <spacer name="horizontalSpacer_3">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -239,10 +132,21 @@
       </property>
      </spacer>
     </item>
-    <item row="11" column="0" colspan="14">
-     <widget class="QListView" name="o_lst1"/>
+    <item row="10" column="4">
+     <widget class="QPushButton" name="b_save_pref">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the search data in order to be retrieved at the next start of SmiGrep&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/disk.gif</normaloff>icons/disk.gif</iconset>
+      </property>
+     </widget>
     </item>
-    <item row="10" column="8" colspan="5">
+    <item row="10" column="7" colspan="3">
      <widget class="QPushButton" name="b_search">
       <property name="toolTip">
        <string/>
@@ -262,6 +166,86 @@
       </property>
      </widget>
     </item>
+    <item row="11" column="0" colspan="11">
+     <widget class="QListView" name="o_lst1">
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="4" colspan="3">
+     <widget class="QLabel" name="l_excludepath">
+      <property name="text">
+       <string>Exclude directories</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_excludepath</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4" colspan="2">
+     <widget class="QLabel" name="l_pathname">
+      <property name="text">
+       <string>Folder name</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_pathname</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="1">
+     <widget class="QLabel" name="l_outputfile">
+      <property name="text">
+       <string>Output file csv</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_outputfile</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="7" colspan="2">
+     <widget class="QLineEdit" name="e_excludepath"/>
+    </item>
+    <item row="0" column="7" colspan="3">
+     <widget class="QLineEdit" name="e_stringa2"/>
+    </item>
+    <item row="4" column="9">
+     <widget class="QPushButton" name="b_excludepath">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/folder.gif</normaloff>icons/folder.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="9">
+     <widget class="QPushButton" name="b_pathname">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>icons/folder.gif</normaloff>icons/folder.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="7" colspan="3">
+     <widget class="QLineEdit" name="e_dboracle2"/>
+    </item>
+    <item row="1" column="7" colspan="2">
+     <widget class="QLineEdit" name="e_pathname"/>
+    </item>
+    <item row="2" column="7" rowspan="2" colspan="3">
+     <widget class="QLineEdit" name="e_filter"/>
+    </item>
+    <item row="5" column="7" colspan="3">
+     <widget class="QLineEdit" name="e_dboracle1"/>
+    </item>
+    <item row="10" column="2">
+     <widget class="QLineEdit" name="e_outputfile"/>
+    </item>
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -278,8 +262,6 @@
   <tabstop>c_dbsearch</tabstop>
   <tabstop>e_dboracle1</tabstop>
   <tabstop>e_dboracle2</tabstop>
-  <tabstop>c_apexsearch</tabstop>
-  <tabstop>e_dbapex</tabstop>
   <tabstop>e_outputfile</tabstop>
   <tabstop>b_save_pref</tabstop>
   <tabstop>b_add_line</tabstop>

@@ -6,8 +6,7 @@
  Data..........: 25/08/2019
  Descrizione...: Programma per la ricerca delle stringhe all'interno dei sorgenti di Oracle forms ecc.
  
- Note..........: Per far funzionare la ricerca di Apex è necessario che sotto Oracle sia installata la funzione EXPORT_APEX_APPLICATION (che è presente nella directory di questo sorgente)
-                 Il layout è stato creato utilizzando qtdesigner e il file ricerca_stringhe_ui.py è ricavato partendo da ricerca_stringhe_ui.ui 
+ Note..........: Il layout è stato creato utilizzando qtdesigner e il file ricerca_stringhe_ui.py è ricavato partendo da ricerca_stringhe_ui.ui 
 """
 
 #Librerie sistema
@@ -17,7 +16,7 @@ import sys
 import cx_Oracle
 #Librerie grafiche
 from PyQt5 import QtCore, QtGui, QtWidgets
-from ricerca_stringhe_ui import Ui_MainWindow
+from qtdesigner.ricerca_stringhe_ui import Ui_MainWindow
 #Librerie interne SmiGrep
 from preferenze import preferenze
 from utilita import message_error, message_info
@@ -30,6 +29,10 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
         super(ricerca_stringhe_class, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        
+        # creo un oggetto modello che va ad agganciarsi all'oggetto grafico lista
+        self.lista_risultati = QtGui.QStandardItemModel()        
+        self.ui.o_lst1.setModel(self.lista_risultati)
         
         # carico le preferenze
         self.o_preferenze = preferenze()
@@ -46,8 +49,6 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
         self.ui.e_dboracle1.setText( self.o_preferenze.dboracle1 )
         self.ui.e_dboracle2.setText( self.o_preferenze.dboracle2 )
         self.ui.c_dbsearch.setChecked( self.o_preferenze.dbsearch )
-        self.ui.c_apexsearch.setChecked( self.o_preferenze.flapexsearch )
-        self.ui.e_dbapex.setText( self.o_preferenze.dbapexsearch )                               
     
     def b_pathname_slot(self):
         """
@@ -91,32 +92,22 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             self.o_preferenze.dbsearch = True
         else:
             self.o_preferenze.dbsearch = False
-        if self.ui.c_apexsearch.isChecked():
-            self.o_preferenze.flapexsearch = True
-        else:
-            self.o_preferenze.flapexsearch = False
-        self.o_preferenze.dbapexsearch = self.ui.e_dbapex.displayText()                
         self.o_preferenze.salva()
         
         message_info('Search options saved!')
     
-    def b_add_line_slot(self, index):        
-        index = self.ui.o_lst1.selectedIndexes()       
-        print(index.row())
-        item = self.lista_risultati.item(1)
-        print(item.text())
-        
+    def b_add_line_slot(self):                
         """
-            aggiunge la riga nei preferiti
-        """
-        #f_output = open(self.o_preferenze.favorites_file, 'a')
-        #f_output.write(self.ui.o_lst1.text + '\n')
-        #f_output.close()
-        
-        
-    def o_lst1_slot(self):
-        print('doppio click sulla lista')  
-        
+            aggiunge la riga nei preferiti (selezione corrente sulla lista)
+        """        
+        v_selindex = self.lista_risultati.itemFromIndex( self.ui.o_lst1.currentIndex() )
+        if v_selindex != None:
+            v_seltext = v_selindex.text()
+            if v_seltext != '':
+                f_output = open(self.o_preferenze.favorites_file, 'a')
+                f_output.write(v_seltext + '\n')
+                f_output.close()
+                       
     def apre_source_db(self,
                        p_obj_type,
                        p_obj_name):
@@ -187,58 +178,22 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                 return v_count_line
 
         # creo il file sorgente presupponendo sia stato trovato sul db indicato dalla connessione1
-        if self.e_dboracle1.GetValue() != '':
-            v_count_line = creazione_del_file_da_db(self.e_dboracle1.GetValue())
+        if self.ui.e_dboracle1.displayText() != '':
+            v_count_line = creazione_del_file_da_db(self.ui.e_dboracle1.displayText())
             # se il file creato è vuoto allora richiamo la stessa procedura ma con la connessione2
-            if v_count_line == 0 and self.e_dboracle2.GetValue() != '':
-                v_count_line = creazione_del_file_da_db(self.e_dboracle2.GetValue())
+            if v_count_line == 0 and self.ui.e_dboracle2.displayText() != '':
+                v_count_line = creazione_del_file_da_db(self.ui.e_dboracle2.displayText())
 
         # apre il file appena creato
         os.startfile(os.path.join(self.o_preferenze.work_dir, 'temp_source_db.sql'))
-
-    def apre_source_apex(self,                         
-                         p_obj_name):
-        """
-            apre source di Apex
-        """        
-        if self.e_dbapex.GetValue() != '':        
-            try:
-                # connessione a oracle apex
-                v_connection = cx_Oracle.connect(self.e_dbapex.GetValue())
-                v_error = False
-            except:
-                message_error('Connection to oracle rejected. Please control login information.')
-                v_error = True
-
-            if not v_error:
-                wait_win = PBI.PyBusyInfo(message="Please wait a moment...", parent=None, title="Recompiling")
-                # apro il file di output che conterra' i risultati della ricerca
-                f_output = open(os.path.join(self.o_preferenze.work_dir, 'temp_source_apex.sql'), 'w')
-                # apro cursore
-                v_cursor = v_connection.cursor()
-                v_cursor_det = v_connection.cursor()
-                # richiamo la procedura che esporta il sorgente di Apex
-                v_cursor_det.prepare("SELECT EXPORT_APEX_APPLICATION(:application_id) FROM dual")
-                v_cursor_det.execute(None, {'application_id': p_obj_name})
-                # leggo la prima colonna della lista che viene restituita dal cursore di oracle e che contiene il clob con l'export in formato testuale dell'applicazione Apex                
-                v_result = v_cursor_det.var(cx_Oracle.CLOB)   
-                v_result = v_cursor_det.fetchone()[0]                                
-                # scrivo il clob in un file 
-                f_output.write(v_result.read())                
-                # chiusura cursori e connessione DB e file di lavoro
-                v_cursor.close()
-                v_connection.close()
-                f_output.close()                
-                # apre il file appena creato
-                os.startfile(os.path.join(self.o_preferenze.work_dir, 'temp_source_apex.sql') )
-                # chiudo la window di attesa
-                del wait_win
     
-    def doppio_click(self,event):
+    def o_lst1_slot(self, p_index):
         """
             doppio click su listbox di ricerca stringa apre il file indicato
-        """
-        v_seltext = self.o_lst1.GetString(self.o_lst1.GetSelection())
+        """    
+        v_selindex = self.lista_risultati.itemFromIndex(p_index)
+        v_seltext = v_selindex.text()
+                
         # apro il source scelto a video in base alla tipologia di appartenenza
         if v_seltext[0:11] == 'PACKAGE -->':
             self.apre_source_db('PACKAGE', v_seltext[v_seltext.find('>') + 2:len(v_seltext)])
@@ -252,16 +207,12 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             self.apre_source_db('TABLE', v_seltext[v_seltext.find('>') + 2:len(v_seltext)])
         elif v_seltext[0:8] == 'VIEW -->':
             self.apre_source_db('VIEW', v_seltext[v_seltext.find('>') + 2:len(v_seltext)])
-        elif v_seltext[0:8] == 'APEX -->':
-            v_pos_inizio = v_seltext.find('(')
-            v_pos_fine   = v_seltext.find(')')            
-            self.apre_source_apex(v_seltext[v_pos_inizio + 1 : v_pos_fine])        
         # documento windows (es. form o report, doc, xls, ecc.)
         elif v_seltext != '':
             try:
                 os.startfile(v_seltext)
             except:
-                message_error('File not found or problem during open application!')
+                message_error('File not found or problem during open application!')             
 
     def aggiunge_riga_preferiti(self, event):
         """
@@ -270,21 +221,6 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
         f_output = open(self.o_preferenze.favorites_file, 'a')
         f_output.write(self.o_lst1.GetString(self.o_lst1.GetSelection()) + '\n')
         f_output.close()
-
-    def salva_preferenze(self, event):
-        self.o_preferenze.stringa1 = self.e_stringa1.GetValue()
-        self.o_preferenze.stringa2 = self.e_stringa2.GetValue()
-        self.o_preferenze.pathname = self.e_pathname.GetValue()
-        self.o_preferenze.excludepath = self.e_excludepath.GetValue()
-        self.o_preferenze.outputfile = self.e_outputfile.GetValue()
-        self.o_preferenze.filter = self.e_filter.GetValue()
-        self.o_preferenze.flsearch = self.c_flsearch.GetValue()
-        self.o_preferenze.dboracle1 = self.e_dboracle1.GetValue()
-        self.o_preferenze.dboracle2 = self.e_dboracle2.GetValue()
-        self.o_preferenze.dbsearch = self.c_dbsearch.GetValue()
-        self.o_preferenze.flapexsearch = self.c_apexsearch.GetValue()
-        self.o_preferenze.dbapexsearch = self.e_dbapex.GetValue()                
-        self.o_preferenze.salva()
 
     def ricerca_stringa_in_file(self,
                                 v_root_node,
@@ -723,110 +659,32 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             v_connection.close()
             f_output.close()
             
-    def ricerca_stringa_in_apex(self,
-                                v_db,
-                                v_string1,
-                                v_string2,
-                                v_output):
-        """
-            ricerca stringa nei sorgenti di Apex. E' importante che sul server Oracle sia stata compilata la funzione EXPORT_APEX_APPLICATION.
-			Siccome ci sono stati problemi di conversione caratteri UTF8, si è deciso che quanto restituito dalla funzione EXPORT_APEX_APPLICATION 
-			sia tutto in formato ASCII
-        """        
-        v_connection = cx_Oracle.connect(v_db)
-        try:            
-            v_connection = cx_Oracle.connect(v_db)
-            v_error = False
-        except:
-            message_error('Connection to oracle rejected. Search will skipped!')            
-            v_error = True
-
-        v_progress_step = 0
-        if not v_error:
-            # apro il file di output che conterra' i risultati della ricerca
-            f_output = open(v_output, 'a')
-
-            # apro cursori
-            v_cursor = v_connection.cursor()
-            v_cursor_det = v_connection.cursor()
-
-            ##############################################################
-            # ricerca all'interno delle applicazioni Apex
-            ##############################################################
-            v_cursor.execute("SELECT WORKSPACE_ID, APPLICATION_ID, APPLICATION_NAME FROM APEX_APPLICATIONS WHERE WORKSPACE = 'SMILE' /*AND APPLICATION_ID=167*/ ORDER BY APPLICATION_NAME")
-            i = 0
-            for result in v_cursor:
-                if self.progress.wasCanceled():
-                    break
-                v_c_type = 'APEX'
-                v_workspace_id = result[0]
-                v_application_id = result[1]
-                v_application_name = result[2]                
-                # output a video del file in elaborazione (notare incremento del value e impostazione della label)
-                v_progress_step += 1
-                self.progress.setValue(v_progress_step);                        
-                v_msg = v_c_type + ' --> (' + str(v_application_id) + ') ' + v_application_name
-                self.progress_label.setText(v_msg)
-                self.progress.setLabel(self.progress_label)                                                               
-                # lettura del sorgente (ci sono stati problemi con il tipo di mappatura dei caratteri e per questo motivo nella funzione di SMILE è stata forzata la conversione da UTF8 a US7ASCII
-                v_cursor_det.prepare("SELECT EXPORT_APEX_APPLICATION(:application_id) FROM dual")
-                v_cursor_det.execute(None, {'application_id': v_application_id})
-                # leggo la prima colonna della lista che viene restituita dal cursore di oracle e che contiene il clob con l'export in formato testuale dell'applicazione Apex                
-                v_result = v_cursor_det.var(cx_Oracle.CLOB)   
-                v_result = v_cursor_det.fetchone()[0]                                
-                # trasformo il clob in una stringa e porto tutti i caratteri a maiuscolo e inoltre elimino tutti i "ritorni a capo" in quanto sembra che Apex vada a capo senza troppi criteri
-                v_sorgente = v_result.read()                   
-                v_sorgente = v_sorgente.upper()
-                v_sorgente = v_sorgente.replace(chr(10),'')
-                # utente ha richiesto di ricercare due stringhe in modalita AND
-                if len(v_string1) > 0 and len(v_string2) > 0:
-                    if v_sorgente.find(v_string1.upper()) >= 0 and v_sorgente.find(v_string2.upper()) >= 0:                        
-                        # visualizzo output nell'area di testo
-                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_msg))
-                        f_output.write(v_c_type + ';' + str(v_application_id) + ';' + v_application_name + ';' + v_db + '\n')
-                # utente ha richiesto di ricercare solo una stringa, la prima
-                elif len(v_string1) > 0:
-                    if v_sorgente.find(v_string1.upper()) >= 0:                        
-                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_msg))
-                        f_output.write(v_c_type + ';' + str(v_application_id) + ';' + v_application_name + ';' + v_db + '\n')
-                # utente ha richiesto di ricercare solo una stringa, la seconda
-                elif len(v_string2) > 0:
-                    if v_sorgente.find(v_string2.upper()) >= 0:                   
-                        self.lista_risultati.appendRow(QtGui.QStandardItem(v_msg))
-                        f_output.write(v_c_type + ';' + str(v_application_id) + ';' + v_application_name + ';' + v_db + '\n')
-                        
-            # chiusura cursori e connessione DB
-            v_cursor_det.close()
-            v_cursor.close()
-            v_connection.close()
-            f_output.close()                    
-
     def b_search_slot(self):
         """
             esegue la ricerca delle stringhe
         """
         # creazione della wait window
-        #self.progress = QtWidgets.QProgressDialog(self)        
-        #self.progress.setMinimumDuration(0)
-        #self.progress.setWindowModality(QtCore.Qt.WindowModal)
-        #self.progress.setWindowTitle("Please wait...")        
+        self.progress = QtWidgets.QProgressDialog(self)        
+        self.progress.setMinimumDuration(0)
+        self.progress.setWindowModality(QtCore.Qt.WindowModal)
+        self.progress.setWindowTitle("Please wait...")        
         # imposto valore minimo e massimo a 0 in modo venga considerata una progress a tempo indefinito
         # Attenzione! dentro nel ciclo deve essere usata la funzione setvalue altrimenti non visualizza e non avanza nulla!
-        #self.progress.setMinimum(0)
-        #self.progress.setMaximum(0) 
+        self.progress.setMinimum(0)
+        self.progress.setMaximum(0) 
         # creo un campo label che viene impostato con 100 caratteri in modo venga data una dimensione di base standard
-        #self.progress_label = QtWidgets.QLabel()            
-        #self.progress_label.setText('.'*100)
+        self.progress_label = QtWidgets.QLabel()            
+        self.progress_label.setText('.'*100)
         # collego la label già presente nell'oggetto progress bar con la mia label 
-        #self.progress.setLabel(self.progress_label)                                                
+        self.progress.setLabel(self.progress_label)                                                
                 
         v_ok = True
         # controllo che ci siano i dati obbligatori
         if self.ui.e_stringa1.displayText() == '' and self.ui.e_stringa2.displayText() == '':
             message_error('Please enter string1 or string2 value')
             v_ok = False
-        if not self.ui.c_flsearch.isChecked() and not self.ui.c_dbsearch.isChecked() and not self.ui.c_apexsearch.isChecked():
-            message_error('Select execute search in Folder or DB or Apex')
+        if not self.ui.c_flsearch.isChecked() and not self.ui.c_dbsearch.isChecked():
+            message_error('Select execute search in Folder or DB')
             v_ok = False
         if self.ui.c_flsearch.isChecked() and self.ui.e_pathname.displayText() == '':
             message_error('Please enter a pathname')
@@ -834,29 +692,27 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
         if self.ui.c_dbsearch.isChecked() and self.ui.e_dboracle1.displayText() == '' and self.ui.e_dboracle2.displayText() == '':
             message_error('Please enter a DB name')
             v_ok = False
-        if self.ui.c_apexsearch.isChecked() and self.ui.e_dbapex.displayText() == '':
-            message_error('Please enter a Apex DB name')
-            v_ok = False            
         if self.ui.e_outputfile.displayText() == '':
             message_error('Please enter an output file')
             v_ok = False
         # i controlli sono stati superati --> avvio la ricerca
         if v_ok:
-            # pulizia dell'item dei risultati
-            self.lista_risultati = QtGui.QStandardItemModel()
-            self.lista_risultati.clear()
-            self.ui.o_lst1.setModel(self.lista_risultati)
+            # pulizia dell'item dei risultati            
+            self.lista_risultati.clear()            
 
             # se presente, pulisco il file di output, oppure lo creo. Perché tutte le fasi di ricerca vanno in accodamento
             f_output = open(self.ui.e_outputfile.displayText(), 'w')
             f_output.close()
             
+            '''
+            questo è stato usato per test        
             self.lista_risultati.appendRow(QtGui.QStandardItem('ciao!'))
             self.lista_risultati.appendRow(QtGui.QStandardItem('come'))
-            self.lista_risultati.appendRow(QtGui.QStandardItem('stai?'))
-
+            self.lista_risultati.appendRow(QtGui.QStandardItem('stai?'))            
+            self.lista_risultati.index
             '''
-            # richiama la ricerca nel file system se presente file system
+            
+            # richiama la ricerca nel file system se presente file system            
             if self.ui.c_flsearch.isChecked():
                 self.ricerca_stringa_in_file(self.ui.e_pathname.displayText(),
                                              self.ui.e_stringa1.displayText(),
@@ -885,16 +741,9 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                                              self.ui.e_stringa2.displayText(),
                                              self.ui.e_outputfile.displayText())
             
-            # se presente ricerco nei sorgenti Apex
-            if self.ui.c_apexsearch.isChecked() and self.ui.e_dbapex.displayText() != '':
-                self.ricerca_stringa_in_apex(self.ui.e_dbapex.displayText(),
-                                             self.ui.e_stringa1.displayText(),
-                                             self.ui.e_stringa2.displayText(),
-                                             self.ui.e_outputfile.displayText())
-
             # chiudo la wait window
-            self.progress.close()
-            '''
+            self.progress.close()                    
+            
 # ----------------------------------------
 # TEST APPLICAZIONE
 # ----------------------------------------

@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MGrep 2.0</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../icons/MGrep.ico</normaloff>../icons/MGrep.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>640</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionSave_the_windows_position"/>
+    <addaction name="actionReset_main_window_position"/>
+    <addaction name="actionFactory_reset"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuSearch">
+    <property name="title">
+     <string>Search</string>
+    </property>
+    <addaction name="actionSearch_string"/>
+    <addaction name="actionFiles_in_system"/>
+    <addaction name="separator"/>
+    <addaction name="actionImage_link_in_web_page"/>
+   </widget>
+   <widget class="QMenu" name="menuBooks">
+    <property name="title">
+     <string>Books</string>
+    </property>
+    <addaction name="actionPhone_book"/>
+    <addaction name="actionEmail_book"/>
+   </widget>
+   <widget class="QMenu" name="menuOracle">
+    <property name="title">
+     <string>Oracle</string>
+    </property>
+    <addaction name="actionRecompiler"/>
+    <addaction name="actionLooks"/>
+    <addaction name="actionSessions"/>
+    <addaction name="actionJobs_status"/>
+    <addaction name="actionTables_sizes"/>
+   </widget>
+   <widget class="QMenu" name="menuFavorites">
+    <property name="title">
+     <string>Favorites</string>
+    </property>
+    <addaction name="actionFiles"/>
+    <addaction name="actionDirectories"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionImport_Export"/>
+    <addaction name="actionAscii_Graphics_generator"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="actionProgram_info"/>
+    <addaction name="actionChange_log"/>
+    <addaction name="actionConsole"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuSearch"/>
+   <addaction name="menuBooks"/>
+   <addaction name="menuOracle"/>
+   <addaction name="menuFavorites"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionSave_the_windows_position">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/disk.gif</normaloff>../icons/disk.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Save the windows position</string>
+   </property>
+  </action>
+  <action name="actionReset_main_window_position">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/centre.gif</normaloff>../icons/centre.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Reset main window position</string>
+   </property>
+  </action>
+  <action name="actionFactory_reset">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/factory.gif</normaloff>../icons/factory.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Factory reset</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/kill.gif</normaloff>../icons/kill.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSearch_string">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/search_string.gif</normaloff>../icons/search_string.gif</iconset>
+   </property>
+   <property name="text">
+    <string>String in the code source</string>
+   </property>
+  </action>
+  <action name="actionFiles_in_system">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/search_file.gif</normaloff>../icons/search_file.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Files in system</string>
+   </property>
+  </action>
+  <action name="actionImage_link_in_web_page">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/paint.gif</normaloff>../icons/paint.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Image link in web page</string>
+   </property>
+  </action>
+  <action name="actionPhone_book">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/phone.gif</normaloff>../icons/phone.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Phone book</string>
+   </property>
+  </action>
+  <action name="actionEmail_book">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/mail.gif</normaloff>../icons/mail.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Email book</string>
+   </property>
+  </action>
+  <action name="actionRecompiler">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/gears.gif</normaloff>../icons/gears.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Recompiler</string>
+   </property>
+  </action>
+  <action name="actionLooks">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/lock.gif</normaloff>../icons/lock.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Looks</string>
+   </property>
+  </action>
+  <action name="actionSessions">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/table.gif</normaloff>../icons/table.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Sessions</string>
+   </property>
+  </action>
+  <action name="actionJobs_status">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/oracle.gif</normaloff>../icons/oracle.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Jobs status</string>
+   </property>
+  </action>
+  <action name="actionTables_sizes">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/compile.gif</normaloff>../icons/compile.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Tables sizes</string>
+   </property>
+  </action>
+  <action name="actionFiles">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/favorites_files.gif</normaloff>../icons/favorites_files.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Files</string>
+   </property>
+  </action>
+  <action name="actionDirectories">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/favorites_directories.gif</normaloff>../icons/favorites_directories.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Directories</string>
+   </property>
+  </action>
+  <action name="actionImport_Export">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/db.gif</normaloff>../icons/db.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Import-Export</string>
+   </property>
+  </action>
+  <action name="actionAscii_Graphics_generator">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/font.gif</normaloff>../icons/font.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Ascii Graphics generator</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/help.gif</normaloff>../icons/help.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Help</string>
+   </property>
+  </action>
+  <action name="actionProgram_info">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/info.gif</normaloff>../icons/info.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Program info</string>
+   </property>
+  </action>
+  <action name="actionChange_log">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/history.gif</normaloff>../icons/history.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Change log</string>
+   </property>
+  </action>
+  <action name="actionConsole">
+   <property name="icon">
+    <iconset>
+     <normaloff>../icons/console.gif</normaloff>../icons/console.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Console</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
