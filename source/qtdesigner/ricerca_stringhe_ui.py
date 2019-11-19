@@ -13,7 +13,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
@@ -53,7 +53,7 @@ class Ui_MainWindow(object):
         self.b_add_line = QtWidgets.QPushButton(self.centralwidget)
         self.b_add_line.setText("")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("icons/add.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(":/icons/icons/add.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.b_add_line.setIcon(icon1)
         self.b_add_line.setObjectName("b_add_line")
         self.gridLayout.addWidget(self.b_add_line, 10, 5, 1, 1)
@@ -62,7 +62,7 @@ class Ui_MainWindow(object):
         self.b_save_pref = QtWidgets.QPushButton(self.centralwidget)
         self.b_save_pref.setText("")
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap("icons/disk.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon2.addPixmap(QtGui.QPixmap(":/icons/icons/disk.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.b_save_pref.setIcon(icon2)
         self.b_save_pref.setObjectName("b_save_pref")
         self.gridLayout.addWidget(self.b_save_pref, 10, 4, 1, 1)
@@ -71,7 +71,7 @@ class Ui_MainWindow(object):
         self.b_search.setStatusTip("")
         self.b_search.setWhatsThis("")
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap("icons/go.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(":/icons/icons/go.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.b_search.setIcon(icon3)
         self.b_search.setObjectName("b_search")
         self.gridLayout.addWidget(self.b_search, 10, 7, 1, 3)
@@ -97,7 +97,7 @@ class Ui_MainWindow(object):
         self.b_excludepath = QtWidgets.QPushButton(self.centralwidget)
         self.b_excludepath.setText("")
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap("icons/folder.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icons/folder.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.b_excludepath.setIcon(icon4)
         self.b_excludepath.setObjectName("b_excludepath")
         self.gridLayout.addWidget(self.b_excludepath, 4, 9, 1, 1)
@@ -175,6 +175,7 @@ class Ui_MainWindow(object):
         self.l_pathname.setText(_translate("MainWindow", "Folder name"))
         self.l_outputfile.setText(_translate("MainWindow", "Output file csv"))
 
+import resource_rc
 
 if __name__ == "__main__":
     import sys

@@ -6,16 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>480</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MGrep 2.0</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>../icons/MGrep.ico</normaloff>../icons/MGrep.ico</iconset>
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -23,7 +23,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>640</width>
+     <width>800</width>
      <height>26</height>
     </rect>
    </property>
@@ -97,8 +97,8 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionSave_the_windows_position">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/disk.gif</normaloff>../icons/disk.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/disk.gif</normaloff>:/icons/icons/disk.gif</iconset>
    </property>
    <property name="text">
     <string>Save the windows position</string>
@@ -106,8 +106,8 @@
   </action>
   <action name="actionReset_main_window_position">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/centre.gif</normaloff>../icons/centre.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/centre.gif</normaloff>:/icons/icons/centre.gif</iconset>
    </property>
    <property name="text">
     <string>Reset main window position</string>
@@ -115,8 +115,8 @@
   </action>
   <action name="actionFactory_reset">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/factory.gif</normaloff>../icons/factory.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/factory.gif</normaloff>:/icons/icons/factory.gif</iconset>
    </property>
    <property name="text">
     <string>Factory reset</string>
@@ -124,8 +124,8 @@
   </action>
   <action name="actionExit">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/kill.gif</normaloff>../icons/kill.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/kill.gif</normaloff>:/icons/icons/kill.gif</iconset>
    </property>
    <property name="text">
     <string>Exit</string>
@@ -133,8 +133,8 @@
   </action>
   <action name="actionSearch_string">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/search_string.gif</normaloff>../icons/search_string.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/search_string.gif</normaloff>:/icons/icons/search_string.gif</iconset>
    </property>
    <property name="text">
     <string>String in the code source</string>
@@ -142,8 +142,8 @@
   </action>
   <action name="actionFiles_in_system">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/search_file.gif</normaloff>../icons/search_file.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/search_file.gif</normaloff>:/icons/icons/search_file.gif</iconset>
    </property>
    <property name="text">
     <string>Files in system</string>
@@ -151,8 +151,8 @@
   </action>
   <action name="actionImage_link_in_web_page">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/paint.gif</normaloff>../icons/paint.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/paint.gif</normaloff>:/icons/icons/paint.gif</iconset>
    </property>
    <property name="text">
     <string>Image link in web page</string>
@@ -160,8 +160,8 @@
   </action>
   <action name="actionPhone_book">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/phone.gif</normaloff>../icons/phone.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/phone.gif</normaloff>:/icons/icons/phone.gif</iconset>
    </property>
    <property name="text">
     <string>Phone book</string>
@@ -169,8 +169,8 @@
   </action>
   <action name="actionEmail_book">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/mail.gif</normaloff>../icons/mail.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/mail.gif</normaloff>:/icons/icons/mail.gif</iconset>
    </property>
    <property name="text">
     <string>Email book</string>
@@ -178,8 +178,8 @@
   </action>
   <action name="actionRecompiler">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/gears.gif</normaloff>../icons/gears.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/gears.gif</normaloff>:/icons/icons/gears.gif</iconset>
    </property>
    <property name="text">
     <string>Recompiler</string>
@@ -187,8 +187,8 @@
   </action>
   <action name="actionLooks">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/lock.gif</normaloff>../icons/lock.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/lock.gif</normaloff>:/icons/icons/lock.gif</iconset>
    </property>
    <property name="text">
     <string>Looks</string>
@@ -196,8 +196,8 @@
   </action>
   <action name="actionSessions">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/table.gif</normaloff>../icons/table.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/table.gif</normaloff>:/icons/icons/table.gif</iconset>
    </property>
    <property name="text">
     <string>Sessions</string>
@@ -205,8 +205,8 @@
   </action>
   <action name="actionJobs_status">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/oracle.gif</normaloff>../icons/oracle.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/oracle.gif</normaloff>:/icons/icons/oracle.gif</iconset>
    </property>
    <property name="text">
     <string>Jobs status</string>
@@ -214,8 +214,8 @@
   </action>
   <action name="actionTables_sizes">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/compile.gif</normaloff>../icons/compile.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/compile.gif</normaloff>:/icons/icons/compile.gif</iconset>
    </property>
    <property name="text">
     <string>Tables sizes</string>
@@ -223,8 +223,8 @@
   </action>
   <action name="actionFiles">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/favorites_files.gif</normaloff>../icons/favorites_files.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/favorites_files.gif</normaloff>:/icons/icons/favorites_files.gif</iconset>
    </property>
    <property name="text">
     <string>Files</string>
@@ -232,8 +232,8 @@
   </action>
   <action name="actionDirectories">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/favorites_directories.gif</normaloff>../icons/favorites_directories.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/favorites_directories.gif</normaloff>:/icons/icons/favorites_directories.gif</iconset>
    </property>
    <property name="text">
     <string>Directories</string>
@@ -241,8 +241,8 @@
   </action>
   <action name="actionImport_Export">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/db.gif</normaloff>../icons/db.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/db.gif</normaloff>:/icons/icons/db.gif</iconset>
    </property>
    <property name="text">
     <string>Import-Export</string>
@@ -250,8 +250,8 @@
   </action>
   <action name="actionAscii_Graphics_generator">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/font.gif</normaloff>../icons/font.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/font.gif</normaloff>:/icons/icons/font.gif</iconset>
    </property>
    <property name="text">
     <string>Ascii Graphics generator</string>
@@ -259,8 +259,8 @@
   </action>
   <action name="actionHelp">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/help.gif</normaloff>../icons/help.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/help.gif</normaloff>:/icons/icons/help.gif</iconset>
    </property>
    <property name="text">
     <string>Help</string>
@@ -268,8 +268,8 @@
   </action>
   <action name="actionProgram_info">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/info.gif</normaloff>../icons/info.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/info.gif</normaloff>:/icons/icons/info.gif</iconset>
    </property>
    <property name="text">
     <string>Program info</string>
@@ -277,8 +277,8 @@
   </action>
   <action name="actionChange_log">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/history.gif</normaloff>../icons/history.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/history.gif</normaloff>:/icons/icons/history.gif</iconset>
    </property>
    <property name="text">
     <string>Change log</string>
@@ -286,14 +286,52 @@
   </action>
   <action name="actionConsole">
    <property name="icon">
-    <iconset>
-     <normaloff>../icons/console.gif</normaloff>../icons/console.gif</iconset>
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/console.gif</normaloff>:/icons/icons/console.gif</iconset>
    </property>
    <property name="text">
     <string>Console</string>
    </property>
   </action>
  </widget>
- <resources/>
- <connections/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>239</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSearch_string</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>slot_actionSearch_string()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_actionSearch_string()</slot>
+ </slots>
 </ui>

@@ -14,8 +14,8 @@
    <string>Search string in sources of Oracle Forms/Reports and Oracle Apex</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>icons/MGrep.ico</normaloff>icons/MGrep.ico</iconset>
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="sizePolicy">
@@ -114,8 +114,8 @@
        <string/>
       </property>
       <property name="icon">
-       <iconset>
-        <normaloff>icons/add.gif</normaloff>icons/add.gif</iconset>
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/add.gif</normaloff>:/icons/icons/add.gif</iconset>
       </property>
      </widget>
     </item>
@@ -141,8 +141,8 @@
        <string/>
       </property>
       <property name="icon">
-       <iconset>
-        <normaloff>icons/disk.gif</normaloff>icons/disk.gif</iconset>
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/disk.gif</normaloff>:/icons/icons/disk.gif</iconset>
       </property>
      </widget>
     </item>
@@ -161,8 +161,8 @@
        <string>Start search</string>
       </property>
       <property name="icon">
-       <iconset>
-        <normaloff>icons/go.gif</normaloff>icons/go.gif</iconset>
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
       </property>
      </widget>
     </item>
@@ -215,8 +215,8 @@
        <string/>
       </property>
       <property name="icon">
-       <iconset>
-        <normaloff>icons/folder.gif</normaloff>icons/folder.gif</iconset>
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/folder.gif</normaloff>:/icons/icons/folder.gif</iconset>
       </property>
      </widget>
     </item>
@@ -226,8 +226,8 @@
        <string/>
       </property>
       <property name="icon">
-       <iconset>
-        <normaloff>icons/folder.gif</normaloff>icons/folder.gif</iconset>
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/folder.gif</normaloff>:/icons/icons/folder.gif</iconset>
       </property>
      </widget>
     </item>
@@ -268,7 +268,9 @@
   <tabstop>b_search</tabstop>
   <tabstop>o_lst1</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>o_lst1</sender>
