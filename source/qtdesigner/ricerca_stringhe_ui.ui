@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>MyPrefFileWindow</class>
+ <widget class="QMainWindow" name="MyPrefFileWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Search string in sources of Oracle Forms/Reports and Oracle Apex</string>
+   <string>Search string in sources of Oracle Forms/Reports</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">
@@ -275,7 +275,7 @@
   <connection>
    <sender>o_lst1</sender>
    <signal>doubleClicked(QModelIndex)</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>MyPrefFileWindow</receiver>
    <slot>o_lst1_slot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -291,7 +291,7 @@
   <connection>
    <sender>b_save_pref</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>MyPrefFileWindow</receiver>
    <slot>b_save_slot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -307,7 +307,7 @@
   <connection>
    <sender>b_add_line</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>MyPrefFileWindow</receiver>
    <slot>b_add_line_slot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -323,7 +323,7 @@
   <connection>
    <sender>b_pathname</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>MyPrefFileWindow</receiver>
    <slot>b_pathname_slot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -339,7 +339,7 @@
   <connection>
    <sender>b_excludepath</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>MyPrefFileWindow</receiver>
    <slot>b_excludepath_slot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -355,7 +355,7 @@
   <connection>
    <sender>b_search</sender>
    <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>MyPrefFileWindow</receiver>
    <slot>b_search_slot()</slot>
    <hints>
     <hint type="sourcelabel">

@@ -7,9 +7,7 @@
 """
 
 from PyQt5 import QtGui,QtWidgets
-
-def pathname_icons():    
-    return 'icons\\'    
+import qtdesigner.resource_rc
 
 def message_error(p_message):
     """
@@ -20,7 +18,7 @@ def message_error(p_message):
     msg.setText(p_message)    
     msg.setWindowTitle("Error")
     icon = QtGui.QIcon()
-    icon.addPixmap(QtGui.QPixmap("icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)    
+    icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)    
     msg.setWindowIcon(icon)
     msg.exec_()
     
@@ -33,6 +31,25 @@ def message_info(p_message):
     msg.setText(p_message)    
     msg.setWindowTitle("Info")
     icon = QtGui.QIcon()
-    icon.addPixmap(QtGui.QPixmap("icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)    
+    icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)    
     msg.setWindowIcon(icon)
     msg.exec_()    
+    
+def message_question_yes_no(p_message):
+    """
+       visualizza messaggio con pulsanti Yes, No e restituisce true se pulsante OK è stato premuto
+    """
+    msg = QtWidgets.QMessageBox()
+    msg.setIcon(QtWidgets.QMessageBox.Question)
+    msg.setText(p_message)
+    msg.setWindowTitle("Question")    
+    icon = QtGui.QIcon()
+    icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)        
+    msg.setWindowIcon(icon)
+    msg.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+    
+    valore_di_ritorno = msg.exec()
+    if valore_di_ritorno == QtWidgets.QMessageBox.Yes:
+        return 'Yes'
+    else:
+        return 'No'

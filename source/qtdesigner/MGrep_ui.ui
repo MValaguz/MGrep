@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow">
+ <class>MGrepWindow</class>
+ <widget class="QMainWindow" name="MGrepWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,47 @@
    <iconset resource="resource.qrc">
     <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QMdiArea" name="mdiArea">
+      <property name="background">
+       <brush brushstyle="Dense6Pattern">
+        <color alpha="255">
+         <red>128</red>
+         <green>128</green>
+         <blue>128</blue>
+        </color>
+       </brush>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -76,6 +116,7 @@
     </property>
     <addaction name="actionImport_Export"/>
     <addaction name="actionAscii_Graphics_generator"/>
+    <addaction name="actionDownload_an_object_from_server"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -86,12 +127,22 @@
     <addaction name="actionChange_log"/>
     <addaction name="actionConsole"/>
    </widget>
+   <widget class="QMenu" name="menuWindows">
+    <property name="title">
+     <string>Windows</string>
+    </property>
+    <addaction name="actionCascade"/>
+    <addaction name="actionTile_horizontaly"/>
+    <addaction name="actionTile_vertically"/>
+    <addaction name="separator"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSearch"/>
    <addaction name="menuBooks"/>
    <addaction name="menuOracle"/>
    <addaction name="menuFavorites"/>
    <addaction name="menuTools"/>
+   <addaction name="menuWindows"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -293,6 +344,30 @@
     <string>Console</string>
    </property>
   </action>
+  <action name="actionDownload_an_object_from_server">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/download.gif</normaloff>:/icons/icons/download.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Download an object from server</string>
+   </property>
+  </action>
+  <action name="actionCascade">
+   <property name="text">
+    <string>Cascade</string>
+   </property>
+  </action>
+  <action name="actionTile_horizontaly">
+   <property name="text">
+    <string>Tile horizontally</string>
+   </property>
+  </action>
+  <action name="actionTile_vertically">
+   <property name="text">
+    <string>Tile vertically</string>
+   </property>
+  </action>
  </widget>
  <resources>
   <include location="resource.qrc"/>
@@ -301,7 +376,7 @@
   <connection>
    <sender>actionExit</sender>
    <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>MGrepWindow</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -317,8 +392,56 @@
   <connection>
    <sender>actionSearch_string</sender>
    <signal>triggered()</signal>
-   <receiver>MainWindow</receiver>
+   <receiver>MGrepWindow</receiver>
    <slot>slot_actionSearch_string()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSave_the_windows_position</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionSave_the_windows_position()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionReset_main_window_position</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionReset_main_window_position()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionFactory_reset</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionFactory_reset()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -333,5 +456,9 @@
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
+  <slot>slot_actionSave_the_windows_position()</slot>
+  <slot>slot_actionFactory_reset()</slot>
+  <slot>slot_actionFiles_in_system()</slot>
+  <slot>slot_actionReset_main_window_position()</slot>
  </slots>
 </ui>
