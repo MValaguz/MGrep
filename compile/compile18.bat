@@ -1,7 +1,7 @@
-rmdir o:\Install\SmiGrep\SmiGrep18 /S /Q
-pyinstaller --windowed SmiGrep.spec
+rmdir o:\Install\MGrep\MGrep20 /S /Q
+pyinstaller --windowed MGrep.spec
 cd dist
-xcopy SmiGrep o:\Install\SmiGrep\SmiGrep18\ /S /H /I
+xcopy MGrep o:\Install\MGrep\MGrep20\ /S /H /I
 cd ..
 rmdir dist /S /Q
 rmdir build /S /Q

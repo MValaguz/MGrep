@@ -3,8 +3,8 @@
 block_cipher = None
 
 
-a = Analysis(['..\\sorgenti\\SmiGrep.py'],
-             pathex=['N:\\smi_job\\It&c\\MValaguz\\17 - Python\\SmiGrep18\\compila'],
+a = Analysis(['..\\sorgenti\\MGrep.py'],
+             pathex=['MGrep18\\compila'],
              binaries=[],
              datas=[
 					('..\\sorgenti\\icons\\*.*','icons'),
@@ -25,16 +25,16 @@ exe = EXE(pyz,
           a.scripts,
           [],
           exclude_binaries=True,
-          name='SmiGrep',
+          name='MGrep',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False , icon='..\\sorgenti\\icons\\SmiGrep.ico')
+          console=False , icon='..\\sorgenti\\qtdesigner\\icons\\MGrep.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
                a.datas,
                strip=False,
                upx=True,
-               name='SmiGrep')
+               name='MGrep')
