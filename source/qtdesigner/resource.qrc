@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/qt.gif</file>
     <file>icons/download.gif</file>
     <file>icons/add.gif</file>
     <file>icons/archives.gif</file>

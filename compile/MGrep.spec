@@ -3,15 +3,15 @@
 block_cipher = None
 
 
-a = Analysis(['..\\sorgenti\\MGrep.py'],
-             pathex=['MGrep18\\compila'],
+a = Analysis(['..\\source\\MGrep.py'],
+             pathex=[],
              binaries=[],
-             datas=[
-					('..\\sorgenti\\icons\\*.*','icons'),
+             datas=[					
 					('..\\help\\*.*','help'),
-					('..\\sorgenti\\risorse\\*.*','risorse')
+					('..\\source\\programs\\*.*','programs'),
+					('..\\source\\qtdesigner\\*.py','qtdesigner')
 			       ],
-             hiddenimports=[],
+             hiddenimports=[],             
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
@@ -30,7 +30,8 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False , icon='..\\sorgenti\\qtdesigner\\icons\\MGrep.ico')
+          console=False, 
+		  icon='..\\source\\qtdesigner\\icons\\MGrep.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,

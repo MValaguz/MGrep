@@ -30,7 +30,7 @@ from utilita import message_error, message_info, message_question_yes_no
        
 class MGrep_class(QtWidgets.QMainWindow):
     """
-        Programma per la ricerca delle stringhe all'interno dei sorgenti di Oracle forms
+       Programma per la ricerca delle stringhe all'interno dei sorgenti di Oracle forms
     """                
     def __init__(self):
         super(MGrep_class, self).__init__()
@@ -46,7 +46,7 @@ class MGrep_class(QtWidgets.QMainWindow):
         
     def apre_finestre_salvate(self):
         """
-            Apre le finestre che sono state salvate nella loro posizione e dimensione
+           Apre le finestre che sono state salvate nella loro posizione e dimensione
         """        
         for my_window_pos in self.o_preferenze.l_windows_pos:
             if 'MGrepWindow' in my_window_pos:
@@ -76,7 +76,7 @@ class MGrep_class(QtWidgets.QMainWindow):
     
     def slot_actionSave_the_windows_position(self):
         """
-            Salva la posizione delle finestre per riaprirle identiche all'avvio del programma
+           Salva la posizione delle finestre per riaprirle identiche all'avvio del programma
         """
         if message_question_yes_no('Do you want to save the windows position and set them for the next program startup?') == 'Yes':
             # pulisco la lista delle posizioni delle window
@@ -120,7 +120,7 @@ class MGrep_class(QtWidgets.QMainWindow):
     
     def slot_actionReset_main_window_position(self):
         """
-            Reimposta la posizione e la dimensione della finestra principale
+           Reimposta la posizione e la dimensione della finestra principale
         """
         if message_question_yes_no('Do you want to reset position and size of main window?') == 'Yes':
             # dimensione finestra
@@ -133,7 +133,7 @@ class MGrep_class(QtWidgets.QMainWindow):
     
     def slot_actionFactory_reset(self):
         """
-            ritorna alle preferenze di base eliminando la directory di lavoro. Al termine il programma viene chiuso senza salvare
+           Ritorna alle preferenze di base eliminando la directory di lavoro. Al termine il programma viene chiuso senza salvare
         """
         if message_question_yes_no('Do you want delete the preferences files in folder ' + self.o_preferenze.work_dir + '?') == 'Yes':
             if message_question_yes_no('Are you sure?') == 'Yes':
@@ -142,12 +142,39 @@ class MGrep_class(QtWidgets.QMainWindow):
             
     def slot_actionSearch_string(self):
         """
-          Richiamo form di ricerca stringa
+           Richiamo form di ricerca stringa
         """                
         from ricerca_stringhe import ricerca_stringhe_class        
         my_app = ricerca_stringhe_class()
         self.ui.mdiArea.addSubWindow(my_app)
-        my_app.show()                
+        my_app.show()   
+        
+    def slot_actionHelp(self):
+        """
+           Richiamo help
+        """
+        pass
+        
+    def slot_actionProgram_info(self):
+        """
+           Richiamo form delle informazioni di programma
+        """
+        from program_info import program_info_class
+        my_app = program_info_class(self.ui.mdiArea)
+        self.ui.mdiArea.addSubWindow(my_app)
+        my_app.show()                   
+        
+    def slot_actionChange_log(self):
+        """
+           Richiamo changelog
+        """
+        pass        
+    
+    def slot_actionConsole(self):
+        """
+           Richiamo visualizzazione della console python
+        """
+        pass                
                     
 # ----------------------------------------
 # TEST APPLICAZIONE

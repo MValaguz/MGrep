@@ -127,22 +127,12 @@
     <addaction name="actionChange_log"/>
     <addaction name="actionConsole"/>
    </widget>
-   <widget class="QMenu" name="menuWindows">
-    <property name="title">
-     <string>Windows</string>
-    </property>
-    <addaction name="actionCascade"/>
-    <addaction name="actionTile_horizontaly"/>
-    <addaction name="actionTile_vertically"/>
-    <addaction name="separator"/>
-   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSearch"/>
    <addaction name="menuBooks"/>
    <addaction name="menuOracle"/>
    <addaction name="menuFavorites"/>
    <addaction name="menuTools"/>
-   <addaction name="menuWindows"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -453,6 +443,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionHelp</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionHelp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionProgram_info</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionProgram_info()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionChange_log</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionChange_log()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionConsole</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionConsole()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -460,5 +514,9 @@
   <slot>slot_actionFactory_reset()</slot>
   <slot>slot_actionFiles_in_system()</slot>
   <slot>slot_actionReset_main_window_position()</slot>
+  <slot>slot_actionHelp()</slot>
+  <slot>slot_actionProgram_info()</slot>
+  <slot>slot_actionChange_log()</slot>
+  <slot>slot_actionConsole()</slot>
  </slots>
 </ui>
