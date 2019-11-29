@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Ricerca_elementi_in_pagina_web_window</class>
+ <widget class="QMainWindow" name="Ricerca_elementi_in_pagina_web_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Search images in web pages</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <item row="4" column="0">
+     <widget class="QLabel" name="l_risultati">
+      <property name="text">
+       <string>Result:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0" colspan="6">
+     <widget class="QListView" name="o_lst1">
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="e_url"/>
+    </item>
+    <item row="0" column="0" colspan="2">
+     <widget class="QLabel" name="l_url">
+      <property name="text">
+       <string>Insert a valid URL:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_url</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QPushButton" name="b_url">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
+      <property name="text">
+       <string>Start search</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>e_url</tabstop>
+  <tabstop>o_lst1</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>o_lst1</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>Ricerca_elementi_in_pagina_web_window</receiver>
+   <slot>o_lst1_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>499</x>
+     <y>773</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>504</x>
+     <y>456</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_url</sender>
+   <signal>clicked()</signal>
+   <receiver>Ricerca_elementi_in_pagina_web_window</receiver>
+   <slot>b_search_slot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>957</x>
+     <y>408</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>621</x>
+     <y>211</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>b_pathname_slot()</slot>
+  <slot>b_save_slot()</slot>
+  <slot>b_excludepath_slot()</slot>
+  <slot>b_search_slot()</slot>
+  <slot>b_add_line_slot()</slot>
+  <slot>o_lst1_slot()</slot>
+ </slots>
+</ui>
