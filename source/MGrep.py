@@ -149,6 +149,24 @@ class MGrep_class(QtWidgets.QMainWindow):
         self.ui.mdiArea.addSubWindow(my_app)
         my_app.show()   
         
+    def slot_actionFiles_in_system(self):
+        """
+           Richiamo form di ricerca files
+        """                
+        from ricerca_file import ricerca_file_class        
+        my_app = ricerca_file_class()
+        self.ui.mdiArea.addSubWindow(my_app)
+        my_app.show()  
+        
+    def slot_actionImage_link_in_web_page(self):
+        """
+           Richiamo form di ricerca immagini in pagine web
+        """                
+        from ricerca_elementi_in_pagina_web import ricerca_elementi_in_pagina_web_class        
+        my_app = ricerca_elementi_in_pagina_web_class()
+        self.ui.mdiArea.addSubWindow(my_app)
+        my_app.show()          
+                
     def slot_actionHelp(self):
         """
            Richiamo help

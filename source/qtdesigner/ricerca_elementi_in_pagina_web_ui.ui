@@ -88,30 +88,14 @@
  </resources>
  <connections>
   <connection>
-   <sender>o_lst1</sender>
-   <signal>doubleClicked(QModelIndex)</signal>
-   <receiver>Ricerca_elementi_in_pagina_web_window</receiver>
-   <slot>o_lst1_slot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>499</x>
-     <y>773</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>504</x>
-     <y>456</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>b_url</sender>
    <signal>clicked()</signal>
    <receiver>Ricerca_elementi_in_pagina_web_window</receiver>
    <slot>b_search_slot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>957</x>
-     <y>408</y>
+     <x>774</x>
+     <y>39</y>
     </hint>
     <hint type="destinationlabel">
      <x>621</x>
@@ -121,11 +105,6 @@
   </connection>
  </connections>
  <slots>
-  <slot>b_pathname_slot()</slot>
-  <slot>b_save_slot()</slot>
-  <slot>b_excludepath_slot()</slot>
   <slot>b_search_slot()</slot>
-  <slot>b_add_line_slot()</slot>
-  <slot>o_lst1_slot()</slot>
  </slots>
 </ui>

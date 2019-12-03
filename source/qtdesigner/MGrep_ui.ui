@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MGrep 2.0</string>
+   <string>MGrep 1.0</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">
@@ -507,6 +507,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionFiles_in_system</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionFiles_in_system()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionImage_link_in_web_page</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionImage_link_in_web_page()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -518,5 +550,6 @@
   <slot>slot_actionProgram_info()</slot>
   <slot>slot_actionChange_log()</slot>
   <slot>slot_actionConsole()</slot>
+  <slot>slot_actionImage_link_in_web_page()</slot>
  </slots>
 </ui>

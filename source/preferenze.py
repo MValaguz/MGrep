@@ -4,7 +4,7 @@
  Creato da.....: Marco Valaguzza
  Piattaforma...: Python3.6
  Data..........: 13/07/2018
- Descrizione...: Classe per la gestione delle preferenze del programma SmiGrep
+ Descrizione...: Classe per la gestione delle preferenze del programma MGrep
 """
 
 import os
@@ -15,10 +15,10 @@ class preferenze:
             Definizione delle proprietà della classe preferenze
         """
         # preferenze interne
-        self.work_dir = os.path.dirname('C:\SmiGrep\\')
-        self.name_file_for_db_cache = 'C:\SmiGrep\\SmiGrep.db'
-        self.favorites_file = 'C:\\SmiGrep\\favorites_files.txt'
-        self.favorites_dirs = 'C:\\SmiGrep\\favorites_directories.txt'
+        self.work_dir = os.path.dirname('C:\MGrep\\')
+        self.name_file_for_db_cache = 'C:\MGrep\\MGrep.db'
+        self.favorites_file = 'C:\\MGrep\\favorites_files.txt'
+        self.favorites_dirs = 'C:\\MGrep\\favorites_directories.txt'
         self.v_oracle_user_sys = 'SYS'
         self.v_oracle_password_sys = 'SYSMGR01'
 
@@ -27,7 +27,7 @@ class preferenze:
         self.stringa2 = ''
         self.pathname = 'W:/source'
         self.excludepath = '00-Standards e Guidelines,01-Moduli e Tabelle,02-Documentazione OLD,03-Template,04-FAQ,05-Manutenzioni e Trasferimenti DB,06-Aggiornamento_giornaliero,99-Prove,MO-SMILE Mobile'
-        self.outputfile = 'C:\\SmiGrep\\SmiGrep_Result.csv'
+        self.outputfile = 'C:\\MGrep\\MGrep_Result.csv'
         self.filter = '.fmb,.rdf'
         self.flsearch = True
         self.dboracle1 = 'SMILE/SMILE@BACKUP_815'
@@ -44,12 +44,12 @@ class preferenze:
         self.table_name = ''
         self.dboracle = 'SMILE/SMILE@BACKUP_815'
         self.where_cond = ''
-        self.sqlite_db = 'C:\\SmiGrep\\SmiGrepTransfer.db'
+        self.sqlite_db = 'C:\\MGrep\\MGrepTransfer.db'
         self.table_excel = ''
         self.table_to_oracle = ''
         self.oracle_table = ''
         self.import_excel = ''
-        self.excel_file = 'C:\\SmiGrep\\Exported_table.xlsx'
+        self.excel_file = 'C:\\MGrep\\Exported_table.xlsx'
         self.csv_file = ''
         self.csv_separator = ';'
 
@@ -74,7 +74,7 @@ class preferenze:
         if not os.path.exists(self.work_dir):
             os.makedirs(self.work_dir)
         try:
-            v_file = open(os.path.join(self.work_dir, 'SmiGrep.ini'), 'r')
+            v_file = open(os.path.join(self.work_dir, 'MGrep.ini'), 'r')
             v_ok = True
         except:
             v_ok = False
@@ -185,7 +185,7 @@ class preferenze:
         """
             salva le preferenze della sessione
         """
-        v_file = open(os.path.join(self.work_dir, 'SmiGrep.ini'), 'w')
+        v_file = open(os.path.join(self.work_dir, 'MGrep.ini'), 'w')
         # --------------------------------
         #         RICERCA STRINGE
         # --------------------------------
@@ -280,8 +280,8 @@ class preferenze:
             except:
                 pass
 
-        elimina_file('SmiGrep.ini')
-        elimina_file('SmiGrep.db')
+        elimina_file('MGrep.ini')
+        elimina_file('MGrep.db')
         elimina_file('temp_source_db.sql')
         elimina_file('where_condition.txt')
         elimina_file('favorites_files.txt')

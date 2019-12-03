@@ -219,11 +219,13 @@ class Ui_MGrepWindow(object):
         self.actionProgram_info.triggered.connect(MGrepWindow.slot_actionProgram_info)
         self.actionChange_log.triggered.connect(MGrepWindow.slot_actionChange_log)
         self.actionConsole.triggered.connect(MGrepWindow.slot_actionConsole)
+        self.actionFiles_in_system.triggered.connect(MGrepWindow.slot_actionFiles_in_system)
+        self.actionImage_link_in_web_page.triggered.connect(MGrepWindow.slot_actionImage_link_in_web_page)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):
         _translate = QtCore.QCoreApplication.translate
-        MGrepWindow.setWindowTitle(_translate("MGrepWindow", "MGrep 2.0"))
+        MGrepWindow.setWindowTitle(_translate("MGrepWindow", "MGrep 1.0"))
         self.menuFile.setTitle(_translate("MGrepWindow", "File"))
         self.menuSearch.setTitle(_translate("MGrepWindow", "Search"))
         self.menuBooks.setTitle(_translate("MGrepWindow", "Books"))

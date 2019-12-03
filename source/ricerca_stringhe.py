@@ -19,7 +19,7 @@ import cx_Oracle
 #Librerie grafiche
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ricerca_stringhe_ui import Ui_MyPrefFileWindow
-#Librerie interne SmiGrep
+#Librerie interne 
 from preferenze import preferenze
 from utilita import message_error, message_info
        
