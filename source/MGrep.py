@@ -146,7 +146,8 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from ricerca_stringhe import ricerca_stringhe_class        
         my_app = ricerca_stringhe_class()
-        self.ui.mdiArea.addSubWindow(my_app)
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
+        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
         my_app.show()   
         
     def slot_actionFiles_in_system(self):
@@ -155,7 +156,8 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from ricerca_file import ricerca_file_class        
         my_app = ricerca_file_class()
-        self.ui.mdiArea.addSubWindow(my_app)
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
+        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
         my_app.show()  
         
     def slot_actionImage_link_in_web_page(self):
@@ -164,14 +166,35 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from ricerca_elementi_in_pagina_web import ricerca_elementi_in_pagina_web_class        
         my_app = ricerca_elementi_in_pagina_web_class()
-        self.ui.mdiArea.addSubWindow(my_app)
-        my_app.show()          
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
+        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_app.show()    
+        
+    def slot_actionPhone_book(self):
+        """
+           Richiamo form di ricerca rubrica telefonica
+        """                
+        from rubrica import rubrica_class        
+        my_app = rubrica_class('T')        
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)                
+        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_app.show()            
+        
+    def slot_actionEmail_book(self):
+        """
+           Richiamo form di ricerca rubrica email
+        """                
+        from rubrica import rubrica_class        
+        my_app = rubrica_class('E')
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
+        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_app.show()    
                 
     def slot_actionHelp(self):
         """
-           Richiamo help
+            visualizza help del programma
         """
-        pass
+        os.system("start help\\MGrep_help.html")
         
     def slot_actionProgram_info(self):
         """
@@ -179,14 +202,15 @@ class MGrep_class(QtWidgets.QMainWindow):
         """
         from program_info import program_info_class
         my_app = program_info_class(self.ui.mdiArea)
-        self.ui.mdiArea.addSubWindow(my_app)
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
+        my_sub_window.setGeometry(int(0), int(0), int(400), int(300))
         my_app.show()                   
         
     def slot_actionChange_log(self):
         """
            Richiamo changelog
         """
-        pass        
+        os.system("start help\\MGrep_changelog.html")    
     
     def slot_actionConsole(self):
         """

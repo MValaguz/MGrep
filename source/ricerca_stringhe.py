@@ -18,7 +18,7 @@ sys.path.append('qtdesigner')
 import cx_Oracle
 #Librerie grafiche
 from PyQt5 import QtCore, QtGui, QtWidgets
-from ricerca_stringhe_ui import Ui_MyPrefFileWindow
+from ricerca_stringhe_ui import Ui_Ricerca_stringhe_window
 #Librerie interne 
 from preferenze import preferenze
 from utilita import message_error, message_info
@@ -29,7 +29,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
     """                
     def __init__(self):
         super(ricerca_stringhe_class, self).__init__()
-        self.ui = Ui_MyPrefFileWindow()
+        self.ui = Ui_Ricerca_stringhe_window()
         self.ui.setupUi(self)
         
         # creo un oggetto modello che va ad agganciarsi all'oggetto grafico lista

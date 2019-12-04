@@ -54,6 +54,9 @@
         </color>
        </brush>
       </property>
+      <property name="viewMode">
+       <enum>QMdiArea::TabbedView</enum>
+      </property>
      </widget>
     </item>
    </layout>
@@ -539,6 +542,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionPhone_book</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionPhone_book()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionEmail_book</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionEmail_book()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -551,5 +586,7 @@
   <slot>slot_actionChange_log()</slot>
   <slot>slot_actionConsole()</slot>
   <slot>slot_actionImage_link_in_web_page()</slot>
+  <slot>slot_actionPhone_book()</slot>
+  <slot>slot_actionEmail_book()</slot>
  </slots>
 </ui>
