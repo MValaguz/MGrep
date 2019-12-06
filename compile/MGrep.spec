@@ -7,7 +7,7 @@ a = Analysis(['..\\source\\MGrep.py'],
              pathex=[],
              binaries=[],
              datas=[					
-					('..\\help\\*.*','help'),
+					('..\\source\\help\\*.*','help'),
 					('..\\source\\programs\\*.*','programs'),
 					('..\\source\\qtdesigner\\*.py','qtdesigner')
 			       ],

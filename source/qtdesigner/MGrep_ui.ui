@@ -57,6 +57,15 @@
       <property name="viewMode">
        <enum>QMdiArea::TabbedView</enum>
       </property>
+      <property name="documentMode">
+       <bool>false</bool>
+      </property>
+      <property name="tabsClosable">
+       <bool>true</bool>
+      </property>
+      <property name="tabsMovable">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
    </layout>
@@ -574,6 +583,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionRecompiler</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionRecompiler()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLooks</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionLocks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -588,5 +629,7 @@
   <slot>slot_actionImage_link_in_web_page()</slot>
   <slot>slot_actionPhone_book()</slot>
   <slot>slot_actionEmail_book()</slot>
+  <slot>slot_actionRecompiler()</slot>
+  <slot>slot_actionLocks()</slot>
  </slots>
 </ui>

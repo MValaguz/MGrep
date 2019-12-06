@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>oracle_recompiler_window</class>
+ <widget class="QMainWindow" name="oracle_recompiler_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Oracle recompiler</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="l_server_name">
+      <property name="text">
+       <string>Oracle name server:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_server_name</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2" colspan="2">
+     <widget class="QPushButton" name="b_compile_all">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
+      <property name="text">
+       <string>Compile all invalid object</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/compile.gif</normaloff>:/icons/icons/compile.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0" colspan="4">
+     <widget class="QTableView" name="o_lst1">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0" colspan="2">
+     <widget class="QPushButton" name="b_search_all">
+      <property name="text">
+       <string>Search invalid object</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/search.gif</normaloff>:/icons/icons/search.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="e_server_name"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>e_server_name</tabstop>
+  <tabstop>b_search_all</tabstop>
+  <tabstop>b_compile_all</tabstop>
+  <tabstop>o_lst1</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>b_compile_all</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_recompiler_window</receiver>
+   <slot>slot_b_compile_all()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>520</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_search_all</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_recompiler_window</receiver>
+   <slot>slot_b_search_all()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>177</x>
+     <y>54</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_b_compile_all()</slot>
+  <slot>slot_b_search_all()</slot>
+ </slots>
+</ui>

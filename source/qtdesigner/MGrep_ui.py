@@ -32,6 +32,9 @@ class Ui_MGrepWindow(object):
         brush.setStyle(QtCore.Qt.Dense6Pattern)
         self.mdiArea.setBackground(brush)
         self.mdiArea.setViewMode(QtWidgets.QMdiArea.TabbedView)
+        self.mdiArea.setDocumentMode(False)
+        self.mdiArea.setTabsClosable(True)
+        self.mdiArea.setTabsMovable(True)
         self.mdiArea.setObjectName("mdiArea")
         self.verticalLayout.addWidget(self.mdiArea)
         MGrepWindow.setCentralWidget(self.centralwidget)
@@ -224,6 +227,8 @@ class Ui_MGrepWindow(object):
         self.actionImage_link_in_web_page.triggered.connect(MGrepWindow.slot_actionImage_link_in_web_page)
         self.actionPhone_book.triggered.connect(MGrepWindow.slot_actionPhone_book)
         self.actionEmail_book.triggered.connect(MGrepWindow.slot_actionEmail_book)
+        self.actionRecompiler.triggered.connect(MGrepWindow.slot_actionRecompiler)
+        self.actionLooks.triggered.connect(MGrepWindow.slot_actionLocks)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):

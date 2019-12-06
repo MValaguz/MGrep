@@ -37,7 +37,7 @@ def message_info(p_message):
     
 def message_question_yes_no(p_message):
     """
-       visualizza messaggio con pulsanti Yes, No e restituisce true se pulsante OK è stato premuto
+       visualizza messaggio con pulsanti Yes, No e restituisce Yes se pulsante OK è stato premuto
     """
     msg = QtWidgets.QMessageBox()
     msg.setIcon(QtWidgets.QMessageBox.Question)

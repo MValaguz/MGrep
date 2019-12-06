@@ -189,6 +189,26 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
         my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
         my_app.show()    
+        
+    def slot_actionRecompiler(self):
+        """
+           Richiamo form di ricompilazione oggetti invalidi lato oracle
+        """                
+        from oracle_recompiler import oracle_recompiler_class
+        my_app = oracle_recompiler_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
+        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_app.show()            
+        
+    def slot_actionLocks(self):
+        """
+           Richiamo form di controllo sessioni e tabelle bloccate
+        """                
+        from oracle_locks import oracle_locks_class
+        my_app = oracle_locks_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
+        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_app.show()                
                 
     def slot_actionHelp(self):
         """
