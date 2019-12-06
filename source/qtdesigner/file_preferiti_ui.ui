@@ -26,7 +26,7 @@
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="11">
-     <widget class="QPushButton" name="pushButton_4">
+     <widget class="QPushButton" name="b_backup_line">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -49,7 +49,7 @@
      </widget>
     </item>
     <item row="0" column="5">
-     <widget class="QPushButton" name="b_add_line">
+     <widget class="QPushButton" name="b_sposta_giu">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -75,7 +75,7 @@
      </widget>
     </item>
     <item row="0" column="13">
-     <widget class="QPushButton" name="pushButton_9">
+     <widget class="QPushButton" name="b_pubblica_icom">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -98,7 +98,7 @@
      </widget>
     </item>
     <item row="0" column="6">
-     <widget class="QPushButton" name="b_search">
+     <widget class="QPushButton" name="b_delete_line">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -130,7 +130,7 @@
      </widget>
     </item>
     <item row="0" column="14">
-     <widget class="QPushButton" name="pushButton_8">
+     <widget class="QPushButton" name="b_compile_icom_backup1">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -153,7 +153,7 @@
      </widget>
     </item>
     <item row="0" column="15">
-     <widget class="QPushButton" name="pushButton_7">
+     <widget class="QPushButton" name="b_compile_icom_backup2">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -176,7 +176,7 @@
      </widget>
     </item>
     <item row="0" column="4">
-     <widget class="QPushButton" name="b_save_pref">
+     <widget class="QPushButton" name="b_sposta_su">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -202,7 +202,7 @@
      </widget>
     </item>
     <item row="0" column="2">
-     <widget class="QPushButton" name="b_pathname">
+     <widget class="QPushButton" name="b_refresh">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -225,7 +225,7 @@
      </widget>
     </item>
     <item row="0" column="7">
-     <widget class="QPushButton" name="pushButton">
+     <widget class="QPushButton" name="b_clear">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -248,7 +248,7 @@
      </widget>
     </item>
     <item row="0" column="3">
-     <widget class="QPushButton" name="b_excludepath">
+     <widget class="QPushButton" name="b_insert_line">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -271,7 +271,7 @@
      </widget>
     </item>
     <item row="0" column="8">
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="b_save">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -294,12 +294,12 @@
      </widget>
     </item>
     <item row="0" column="9">
-     <widget class="QLabel" name="l_risultati">
+     <widget class="QLabel" name="l_titolo2">
       <property name="text">
        <string>Item actions:</string>
       </property>
       <property name="buddy">
-       <cstring>pushButton_3</cstring>
+       <cstring>b_open_folder</cstring>
       </property>
      </widget>
     </item>
@@ -309,12 +309,12 @@
        <string>List actions:</string>
       </property>
       <property name="buddy">
-       <cstring>b_pathname</cstring>
+       <cstring>b_refresh</cstring>
       </property>
      </widget>
     </item>
     <item row="0" column="16">
-     <widget class="QPushButton" name="pushButton_6">
+     <widget class="QPushButton" name="b_compile_smile_backup1">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -337,7 +337,7 @@
      </widget>
     </item>
     <item row="0" column="17">
-     <widget class="QPushButton" name="pushButton_5">
+     <widget class="QPushButton" name="b_compile_smile_backup2">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -360,7 +360,7 @@
      </widget>
     </item>
     <item row="0" column="10">
-     <widget class="QPushButton" name="pushButton_3">
+     <widget class="QPushButton" name="b_open_folder">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -383,7 +383,7 @@
      </widget>
     </item>
     <item row="0" column="12">
-     <widget class="QPushButton" name="pushButton_10">
+     <widget class="QPushButton" name="b_pubblica_smile">
       <property name="minimumSize">
        <size>
         <width>30</width>
@@ -417,18 +417,300 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <tabstops>
+  <tabstop>b_refresh</tabstop>
+  <tabstop>b_insert_line</tabstop>
+  <tabstop>b_sposta_su</tabstop>
+  <tabstop>b_sposta_giu</tabstop>
+  <tabstop>b_delete_line</tabstop>
+  <tabstop>b_clear</tabstop>
+  <tabstop>b_save</tabstop>
+  <tabstop>b_open_folder</tabstop>
+  <tabstop>b_backup_line</tabstop>
+  <tabstop>b_pubblica_smile</tabstop>
+  <tabstop>b_pubblica_icom</tabstop>
+  <tabstop>b_compile_icom_backup1</tabstop>
+  <tabstop>b_compile_icom_backup2</tabstop>
+  <tabstop>b_compile_smile_backup1</tabstop>
+  <tabstop>b_compile_smile_backup2</tabstop>
   <tabstop>o_lst1</tabstop>
  </tabstops>
  <resources>
   <include location="resource.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>b_refresh</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_refresh()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>172</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>216</x>
+     <y>653</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_insert_line</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_insert_line()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>207</x>
+     <y>31</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>261</x>
+     <y>632</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_sposta_su</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_sposta_su()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>254</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>250</x>
+     <y>640</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_sposta_giu</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_sposta_giu()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>288</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>306</x>
+     <y>618</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_delete_line</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_delete_line()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>314</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>604</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_clear</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>361</x>
+     <y>26</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>353</x>
+     <y>641</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_save</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_save()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>398</x>
+     <y>34</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>568</x>
+     <y>641</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_open_folder</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_open_folder()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>517</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>504</x>
+     <y>607</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_backup_line</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_backup_line()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>550</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>547</x>
+     <y>605</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_pubblica_smile</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_pubblica_smile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>587</x>
+     <y>25</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>585</x>
+     <y>601</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_pubblica_icom</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_pubblica_icom()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>626</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>636</x>
+     <y>607</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_compile_icom_backup1</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_compile_icom_backup1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>663</x>
+     <y>28</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>678</x>
+     <y>692</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_compile_icom_backup2</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_compile_icom_backup2()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>698</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>704</x>
+     <y>726</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_compile_smile_backup1</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_compile_smile_backup1()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>737</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>747</x>
+     <y>663</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_compile_smile_backup2</sender>
+   <signal>clicked()</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_compile_smile_backup2()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>782</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>760</x>
+     <y>622</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>o_lst1</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_doppio_click_lista()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>95</x>
+     <y>136</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>79</x>
+     <y>673</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
-  <slot>b_pathname_slot()</slot>
-  <slot>b_save_slot()</slot>
-  <slot>b_excludepath_slot()</slot>
-  <slot>b_search_slot()</slot>
-  <slot>b_add_line_slot()</slot>
-  <slot>o_lst1_slot()</slot>
+  <slot>slot_backup_line()</slot>
+  <slot>slot_clear()</slot>
+  <slot>slot_compile_icom_backup1()</slot>
+  <slot>slot_compile_icom_backup2()</slot>
+  <slot>slot_compile_smile_backup1()</slot>
+  <slot>slot_compile_smile_backup2()</slot>
+  <slot>slot_delete_line()</slot>
+  <slot>slot_insert_line()</slot>
+  <slot>slot_open_folder()</slot>
+  <slot>slot_pubblica_icom()</slot>
+  <slot>slot_pubblica_smile()</slot>
+  <slot>slot_refresh()</slot>
+  <slot>slot_save()</slot>
+  <slot>slot_sposta_su()</slot>
+  <slot>slot_sposta_giu()</slot>
+  <slot>slot_doppio_click_lista()</slot>
  </slots>
 </ui>
