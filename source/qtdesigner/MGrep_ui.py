@@ -229,6 +229,8 @@ class Ui_MGrepWindow(object):
         self.actionEmail_book.triggered.connect(MGrepWindow.slot_actionEmail_book)
         self.actionRecompiler.triggered.connect(MGrepWindow.slot_actionRecompiler)
         self.actionLooks.triggered.connect(MGrepWindow.slot_actionLocks)
+        self.actionFiles.triggered.connect(MGrepWindow.slot_actionFavorites_files)
+        self.actionDirectories.triggered.connect(MGrepWindow.slot_actionFavorites_dirs)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):

@@ -146,8 +146,7 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from ricerca_stringhe import ricerca_stringhe_class        
         my_app = ricerca_stringhe_class()
-        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
-        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
         my_app.show()   
         
     def slot_actionFiles_in_system(self):
@@ -156,8 +155,7 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from ricerca_file import ricerca_file_class        
         my_app = ricerca_file_class()
-        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
-        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
         my_app.show()  
         
     def slot_actionImage_link_in_web_page(self):
@@ -166,8 +164,7 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from ricerca_elementi_in_pagina_web import ricerca_elementi_in_pagina_web_class        
         my_app = ricerca_elementi_in_pagina_web_class()
-        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
-        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
         my_app.show()    
         
     def slot_actionPhone_book(self):
@@ -176,8 +173,7 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from rubrica import rubrica_class        
         my_app = rubrica_class('T')        
-        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)                
-        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)                        
         my_app.show()            
         
     def slot_actionEmail_book(self):
@@ -186,8 +182,7 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from rubrica import rubrica_class        
         my_app = rubrica_class('E')
-        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
-        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
         my_app.show()    
         
     def slot_actionRecompiler(self):
@@ -196,8 +191,7 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from oracle_recompiler import oracle_recompiler_class
         my_app = oracle_recompiler_class()
-        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
-        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
         my_app.show()            
         
     def slot_actionLocks(self):
@@ -206,10 +200,24 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from oracle_locks import oracle_locks_class
         my_app = oracle_locks_class()
-        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
-        my_sub_window.setGeometry(int(0), int(0), int(800), int(550))
-        my_app.show()                
-                
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_app.show()   
+        
+    def slot_actionFavorites_files(self):
+        """
+           Richiamo form elenco e gestione file preferiti
+        """                
+        from file_preferiti import file_preferiti_class
+        my_app = file_preferiti_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_app.show()           
+        
+    def slot_actionFavorites_dirs(self):
+        """
+           Richiamo form elenco e gestione directory preferite
+        """                
+        pass
+        
     def slot_actionHelp(self):
         """
             visualizza help del programma
@@ -222,8 +230,7 @@ class MGrep_class(QtWidgets.QMainWindow):
         """
         from program_info import program_info_class
         my_app = program_info_class(self.ui.mdiArea)
-        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)
-        my_sub_window.setGeometry(int(0), int(0), int(400), int(300))
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
         my_app.show()                   
         
     def slot_actionChange_log(self):

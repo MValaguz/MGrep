@@ -615,6 +615,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionFiles</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionFavorites_files()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDirectories</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionFavorites_dirs()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -631,5 +663,7 @@
   <slot>slot_actionEmail_book()</slot>
   <slot>slot_actionRecompiler()</slot>
   <slot>slot_actionLocks()</slot>
+  <slot>slot_actionFavorites_files()</slot>
+  <slot>slot_actionFavorites_dirs()</slot>
  </slots>
 </ui>
