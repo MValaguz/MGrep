@@ -24,7 +24,7 @@ class CustomProgressBar(QProgressBar):
         maximum = self.maximum()
         rate = step * 100 / maximum
         string = "{}/{} ({}%)".format(step, maximum, rate)
-        time.sleep(0.02)
+        time.sleep(1)
         self.set_text(string)
         self.setValue(step)
 
@@ -43,14 +43,14 @@ class FormWidget(QWidget):
         super(FormWidget, self).__init__(parent)
         layout = QBoxLayout(QBoxLayout.TopToBottom)
         self.setLayout(layout)
-        self.progressbar = CustomProgressBar(0, 200)
+        self.progressbar = CustomProgressBar(0, 3)
         btn_start = QPushButton("START")
         layout.addWidget(self.progressbar, 0)
         layout.addWidget(btn_start, 0)
         btn_start.clicked.connect(self.on_start)
 
     def on_start(self):
-        max = self.progressbar.maximum()
+        max = self.progressbar.maximum()        
         for n in range(max + 1):
             self.progressbar.update(n)
 

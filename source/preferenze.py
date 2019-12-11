@@ -3,22 +3,30 @@
 """
  Creato da.....: Marco Valaguzza
  Piattaforma...: Python3.6
- Data..........: 13/07/2018
+ Data..........: 11/12/2019
  Descrizione...: Classe per la gestione delle preferenze del programma MGrep
 """
 
 import os
+import platform
 
 class preferenze:
     def __init__(self):
         """
             Definizione delle proprietà della classe preferenze
         """
-        # preferenze interne
-        self.work_dir = os.path.dirname('C:\MGrep\\')
-        self.name_file_for_db_cache = 'C:\MGrep\\MGrep.db'
-        self.favorites_file = 'C:\\MGrep\\favorites_files.txt'
-        self.favorites_dirs = 'C:\\MGrep\\favorites_directories.txt'
+        # controllo su quale piattaforma viene eseguito il programma e identifico il prefisso
+        if 'Windows' in platform.system():
+            v_prefix = 'C:\\'
+        else:
+            v_prefix = ''
+        
+        # preferenze interne (da notare come tutti i nomi passano attraverso la funzione normpath 
+        # che a seconda del sistema operativo normalizza i vari caratteri)
+        self.work_dir = os.path.dirname(v_prefix + 'MGrep\\')
+        self.name_file_for_db_cache = os.path.normpath(v_prefix + 'MGrep\\MGrep.db')
+        self.favorites_file = os.path.normpath(v_prefix + 'MGrep\\favorites_files.txt')
+        self.favorites_dirs = os.path.normpath(v_prefix + 'MGrep\\favorites_directories.txt')
         self.v_oracle_user_sys = 'SYS'
         self.v_oracle_password_sys = 'SYSMGR01'
 
@@ -27,14 +35,12 @@ class preferenze:
         self.stringa2 = ''
         self.pathname = 'W:/source'
         self.excludepath = '00-Standards e Guidelines,01-Moduli e Tabelle,02-Documentazione OLD,03-Template,04-FAQ,05-Manutenzioni e Trasferimenti DB,06-Aggiornamento_giornaliero,99-Prove,MO-SMILE Mobile'
-        self.outputfile = 'C:\\MGrep\\MGrep_Result.csv'
+        self.outputfile = os.path.normpath(v_prefix + 'MGrep\\MGrep_Result.csv')
         self.filter = '.fmb,.rdf'
         self.flsearch = True
         self.dboracle1 = 'SMILE/SMILE@BACKUP_815'
         self.dboracle2 = 'SMI/SMI@BACKUP_815'
         self.dbsearch = True
-        self.flapexsearch = False
-        self.dbapexsearch = 'SMILE/SMILE@BACKUP_2_815'
         # imposto default campi ricerca files
         self.filesearch = ''
         self.pathname2 = 'W:/source'
@@ -44,12 +50,12 @@ class preferenze:
         self.table_name = ''
         self.dboracle = 'SMILE/SMILE@BACKUP_815'
         self.where_cond = ''
-        self.sqlite_db = 'C:\\MGrep\\MGrepTransfer.db'
+        self.sqlite_db = os.path.normpath(v_prefix + 'MGrep\\MGrepTransfer.db')
         self.table_excel = ''
         self.table_to_oracle = ''
         self.oracle_table = ''
         self.import_excel = ''
-        self.excel_file = 'C:\\MGrep\\Exported_table.xlsx'
+        self.excel_file = os.path.normpath(v_prefix + 'MGrep\\Exported_table.xlsx')
         self.csv_file = ''
         self.csv_separator = ';'        
 
@@ -156,17 +162,6 @@ class preferenze:
             self.csv_file = carica_riga_nel_campo()
             # csv separatore
             self.csv_separator = carica_riga_nel_campo()
-            # --------------------------------
-            #         RICERCA STRINGE (PARTE2)
-            # --------------------------------                
-            # execute search in Apex
-            v_check = carica_riga_nel_campo()
-            if v_check == '1':
-                self.flapexsearch = True
-            else:
-                self.flapexsearch = False            
-            # db apex
-            self.dbapexsearch = carica_riga_nel_campo()                        
             
             # chiusura del file
             v_file.close()
@@ -249,16 +244,6 @@ class preferenze:
 
         v_file.write(self.csv_file + '\n')
         v_file.write(self.csv_separator + '\n')        
-        # --------------------------------
-        #         RICERCA STRINGE (PARTE2)
-        # --------------------------------                
-        # execute search in Apex
-        if self.flapexsearch:
-            v_file.write('1' + '\n')
-        else:
-            v_file.write('0' + '\n')
-        # db apex
-        v_file.write(self.dbapexsearch + '\n')        
 
         # Chiusura dei file
         v_file.close()

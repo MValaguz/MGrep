@@ -110,9 +110,9 @@ class import_excel_into_oracle:
         
         self.label_1.SetLabel( 'Total records number to copy...' + str(self.v_numero_totale_righe) )
         
-        #Collegamento a Oracle
+        #Collegamento a Oracle                
         try:
-            self.v_oracle_db = cx_Oracle.connect(user=p_user_db, password=p_password_db, dsn=p_dsn_db)        
+            self.v_oracle_db = cx_Oracle.connect(user=p_user_db, password=p_password_db, dsn=p_dsn_db, encoding = "UTF-8", nencoding = "UTF-8")
         except:
             wx.MessageBox(message='Connecting problems to Oracle DB!', caption='Error', style=wx.OK|wx.ICON_ERROR)
             #esco
@@ -348,7 +348,7 @@ if __name__ == "__main__":
     app = import_excel_into_oracle(True,
                                   "SMILE",
                                   "SMILE",
-                                  "BACKUP_815",
-                                  "CANCELLAMI_109",                                         
-                                  "C:\SmiGrep\Exported_table.xlsx",
+                                  "ICOM_815",
+                                  "CANCELLAMI_90",                                         
+                                  "C:\SmiGrep\IMPORTA.xlsx",
                                   True)      

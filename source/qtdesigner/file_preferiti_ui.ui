@@ -30,6 +30,12 @@
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
       </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="dragDropMode">
+       <enum>QAbstractItemView::DragDrop</enum>
+      </property>
      </widget>
     </item>
    </layout>
@@ -293,22 +299,6 @@
   <include location="resource.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>o_lst1</sender>
-   <signal>doubleClicked(QModelIndex)</signal>
-   <receiver>file_preferiti_window</receiver>
-   <slot>slot_doppio_click_lista()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>95</x>
-     <y>136</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>79</x>
-     <y>673</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>actionRefresh</sender>
    <signal>triggered()</signal>
