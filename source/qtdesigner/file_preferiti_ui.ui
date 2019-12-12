@@ -539,6 +539,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>o_lst1</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>file_preferiti_window</receiver>
+   <slot>slot_doppio_click_lista()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>400</x>
+     <y>304</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_backup_line()</slot>

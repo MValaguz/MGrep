@@ -160,6 +160,7 @@ class Ui_file_preferiti_window(object):
         self.actionZip.triggered.connect(file_preferiti_window.slot_backup_line)
         self.actionPublish_smile.triggered.connect(file_preferiti_window.slot_pubblica_smile)
         self.actionPublish_ICOM.triggered.connect(file_preferiti_window.slot_pubblica_icom)
+        self.o_lst1.doubleClicked['QModelIndex'].connect(file_preferiti_window.slot_doppio_click_lista)
         QtCore.QMetaObject.connectSlotsByName(file_preferiti_window)
 
     def retranslateUi(self, file_preferiti_window):

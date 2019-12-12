@@ -23,7 +23,7 @@ class preferenze:
         
         # preferenze interne (da notare come tutti i nomi passano attraverso la funzione normpath 
         # che a seconda del sistema operativo normalizza i vari caratteri)
-        self.work_dir = os.path.dirname(v_prefix + 'MGrep\\')
+        self.work_dir = os.path.normpath(v_prefix + 'MGrep\\')
         self.name_file_for_db_cache = os.path.normpath(v_prefix + 'MGrep\\MGrep.db')
         self.favorites_file = os.path.normpath(v_prefix + 'MGrep\\favorites_files.txt')
         self.favorites_dirs = os.path.normpath(v_prefix + 'MGrep\\favorites_directories.txt')

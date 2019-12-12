@@ -44,6 +44,14 @@ class file_preferiti_class(QtWidgets.QMainWindow):
         
         # carica la lista dei preferiti
         self.carica_files_preferiti()
+        self.setAcceptDrops(True)        
+        
+    def dragMoveEvent(self, e):
+        print('Marco! era così semplice!!!')
+        if e.mimeData().hasUrls:
+            e.accept()
+        else:
+            e.ignore()        
         
     def carica_files_preferiti(self):
         """
