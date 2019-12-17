@@ -44,14 +44,33 @@ class file_preferiti_class(QtWidgets.QMainWindow):
         
         # carica la lista dei preferiti
         self.carica_files_preferiti()
-        self.setAcceptDrops(True)        
         
-    def dragMoveEvent(self, e):
-        print('Marco! era così semplice!!!')
-        if e.mimeData().hasUrls:
-            e.accept()
+        # attivo il drag and drop (da notare come questa attivazione di fatto sembra valere per tutti gli elementi)
+        self.setAcceptDrops(True)                
+            
+    def dragEnterEvent(self, event):
+        """
+           Attivo evento di drag sovrascrivendolo alla classe sottostante 
+        """
+        if event.mimeData().hasText():
+            if event.source() in self.children():
+                event.setDropAction(Qt.MoveAction)
+                event.accept()
+            else:
+                event.acceptProposedAction()
         else:
-            e.ignore()        
+            event.ignore()    
+
+    def dropEvent(self, event):        
+        """
+           Attivo evento di drop. Attenzione! Senza evento di drag di cui sopra, il drop non funzionerebbe!
+        """        
+        if event.mimeData().hasText():
+            mime = event.mimeData()
+            elementi = mime.text().split()
+            # prendo tutti gli elementi e li aggiungo alla lista
+            for elemento in elementi:
+                self.lista_risultati.appendRow(QtGui.QStandardItem(elemento))                                
         
     def carica_files_preferiti(self):
         """

@@ -25,13 +25,10 @@
     </sizepolicy>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="6" column="0" rowspan="2" colspan="12">
+    <item row="0" column="0">
      <widget class="QListView" name="o_lst1">
       <property name="editTriggers">
        <set>QAbstractItemView::NoEditTriggers</set>
-      </property>
-      <property name="dragEnabled">
-       <bool>true</bool>
       </property>
       <property name="dragDropMode">
        <enum>QAbstractItemView::DragDrop</enum>
@@ -292,9 +289,6 @@
    </property>
   </action>
  </widget>
- <tabstops>
-  <tabstop>o_lst1</tabstop>
- </tabstops>
  <resources>
   <include location="resource.qrc"/>
  </resources>
