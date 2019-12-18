@@ -203,6 +203,15 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
         my_app.show()   
         
+    def slot_actionSessions(self):
+        """
+           Richiamo form di elenco sessioni
+        """                
+        from oracle_sessions import oracle_sessions_class
+        my_app = oracle_sessions_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_app.show()           
+        
     def slot_actionFavorites_files(self):
         """
            Richiamo form elenco e gestione file preferiti
@@ -216,7 +225,10 @@ class MGrep_class(QtWidgets.QMainWindow):
         """
            Richiamo form elenco e gestione directory preferite
         """                
-        pass
+        from directory_preferite import directory_preferite_class
+        my_app = directory_preferite_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_app.show()           
         
     def slot_actionHelp(self):
         """
@@ -238,13 +250,7 @@ class MGrep_class(QtWidgets.QMainWindow):
            Richiamo changelog
         """
         os.system("start help\\MGrep_changelog.html")    
-    
-    def slot_actionConsole(self):
-        """
-           Richiamo visualizzazione della console python
-        """
-        pass                
-                    
+                        
 # ----------------------------------------
 # TEST APPLICAZIONE
 # ----------------------------------------

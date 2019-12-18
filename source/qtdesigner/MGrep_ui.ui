@@ -137,7 +137,6 @@
     <addaction name="actionHelp"/>
     <addaction name="actionProgram_info"/>
     <addaction name="actionChange_log"/>
-    <addaction name="actionConsole"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSearch"/>
@@ -504,22 +503,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionConsole</sender>
-   <signal>triggered()</signal>
-   <receiver>MGrepWindow</receiver>
-   <slot>slot_actionConsole()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>actionFiles_in_system</sender>
    <signal>triggered()</signal>
    <receiver>MGrepWindow</receiver>
@@ -647,6 +630,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionSessions</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionSessions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -657,7 +656,6 @@
   <slot>slot_actionHelp()</slot>
   <slot>slot_actionProgram_info()</slot>
   <slot>slot_actionChange_log()</slot>
-  <slot>slot_actionConsole()</slot>
   <slot>slot_actionImage_link_in_web_page()</slot>
   <slot>slot_actionPhone_book()</slot>
   <slot>slot_actionEmail_book()</slot>
@@ -665,5 +663,6 @@
   <slot>slot_actionLocks()</slot>
   <slot>slot_actionFavorites_files()</slot>
   <slot>slot_actionFavorites_dirs()</slot>
+  <slot>slot_actionSessions()</slot>
  </slots>
 </ui>

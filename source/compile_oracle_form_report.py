@@ -18,40 +18,41 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 #Librerie interne MGrep
 from utilita import message_error, message_info, message_question_yes_no
 
-class pubblica_form_report(object):
+class pubblica_form_report(QtWidgets.QWidget):
     """
         Compila un oggetto form o report
-        Va indicato attraverso l'instanziazione della classe:
+        Va indicato attraverso l'avvio della procedura "pubblica":
             p_sorgente       = Path name completa del file sorgente
             p_work_dir       = Directory di lavoro
             p_tipo           = 1=SMILE, 2=ICOM
     """
-    def __init__(self,
-                 p_sorgente,
-                 p_work_dir,
-                 p_tipo):
+    def __init__(self, p_sorgente, p_work_dir, p_tipo):        
+        # rendo la mia classe una superclasse
+        super(pubblica_form_report, self).__init__()        
         
         # creazione della wait window
+        self.v_progress_step = 0
         self.progress = QtWidgets.QProgressDialog(self)        
         self.progress.setMinimumDuration(0)
         self.progress.setWindowModality(QtCore.Qt.WindowModal)
-        self.progress.setWindowTitle("Please wait...")        
+        self.progress.setWindowTitle("Pubblication on server iAS12g")                
+        
         # imposto valore minimo e massimo a 0 in modo venga considerata una progress a tempo indefinito
         # Attenzione! dentro nel ciclo deve essere usata la funzione setvalue altrimenti non visualizza e non avanza nulla!
         self.progress.setMinimum(0)
-        self.progress.setMaximum(0) 
+        self.progress.setMaximum(100) 
         # creo un campo label che viene impostato con 100 caratteri in modo venga data una dimensione di base standard
         self.progress_label = QtWidgets.QLabel()            
         self.progress_label.setText('.'*100)
         # collego la label già presente nell'oggetto progress bar con la mia label 
-        self.progress.setLabel(self.progress_label)             
-
+        self.progress.setLabel(self.progress_label)                           
+    
         #Compilazione su server 12g
         if self.compilazione('10.0.4.14', 'fmw12Oracle_01', p_sorgente, p_work_dir, p_tipo) == 'ok':
-            message_info('Compilation completed successful!')
-
-        self.my_window.Close()
-        return None
+            message_info('Pubblication completed successful!')    
+            
+        self.progress.close()
+        self.close()
 
     def compilazione(self,
                      p_ip,
@@ -59,13 +60,10 @@ class pubblica_form_report(object):
                      p_sorgente,
                      p_work_dir,
                      p_tipo):
-
+        
         #Aggiorno informazioni di avanzamento
-        self.label_2.SetLabel('Copy source in server...')
-        self.panel.Layout()
-        self.gauge_1.SetValue(33)
-        self.panel.Update()
-
+        self.avanza_progress('Copy source in server...')
+        
         v_solo_nome_file = os.path.split(p_sorgente)[1]
         v_solo_nome_file_senza_suffisso = os.path.splitext(v_solo_nome_file)[0]
         v_suffisso_nome_file = os.path.splitext(v_solo_nome_file)[1]
@@ -84,18 +82,16 @@ class pubblica_form_report(object):
         v_sshinput = ''
 
         #tramite il comando pscp (che deve essere copiato nella directory dell'eseguibile, copio il file nella cartella incoming)
-        v_command = 'echo y | risorse\\pscp -pw ' + p_pwd + ' "' + p_sorgente + '" oracle@' + p_ip + ':/appl/incoming/' + v_nuovo_nome_file
-        try:
+        v_command = 'echo y | utility_prog\\pscp -pw ' + p_pwd + ' "' + p_sorgente + '" oracle@' + p_ip + ':/appl/incoming/' + v_nuovo_nome_file        
+        try:            
             v_ssh = subprocess.Popen(v_command, shell=True, stdin=subprocess.PIPE, stdout=v_sshoutput, stderr=v_sshoutputerror)                                    
             v_ssh.communicate(v_sshinput)
         except:
             message_error('Copy file in dir "Incoming" failed!')
             return 'ko'
-
-        self.label_2.SetLabel('Compiling source in server...')
-        self.panel.Layout()
-        self.gauge_1.SetValue(66)
-        self.panel.Update()
+        
+        #Aggiorno informazioni di avanzamento
+        self.avanza_progress('Compiling source in server...')        
         
         #eseguo la compilazione (il risultato della compilazione finisce in un file pcname_output.txt dove pcname è il nome del pc di esecuzione
         v_nome_pc = os.getenv('COMPUTERNAME').replace('-','_')
@@ -106,21 +102,19 @@ class pubblica_form_report(object):
             else:
                 v_utente_oracle = 'SMI/SMI@ICOM_815'
             #compilazione
-            v_command = 'echo y | risorse\\plink -pw ' + p_pwd + ' oracle@' + p_ip + ' "/appl/incoming/./frmcmpl "' + v_nuovo_nome_file + '" ' + v_utente_oracle + ' ' + v_nome_file_output
+            v_command = 'echo y | utility_prog\\plink -pw ' + p_pwd + ' oracle@' + p_ip + ' "/appl/incoming/./frmcmpl "' + v_nuovo_nome_file + '" ' + v_utente_oracle + ' ' + v_nome_file_output            
             v_ssh = subprocess.Popen(v_command, shell=True, stdin=subprocess.PIPE, stdout=v_sshoutput, stderr=v_sshoutputerror)
             v_ssh.communicate(v_sshinput)
         except:
             message_error('Plink command error!')
             return 'ko'
 
-        #eseguo controllo se compilazione terminata con errore
-        self.label_2.SetLabel('Analyze compile output...')
-        self.panel.Layout()
-        self.gauge_1.SetValue(100)
-        self.panel.Update()        
+        #eseguo controllo se compilazione terminata con errore        
+        self.avanza_progress('Analyze compile output...')        
+        
         try:
-            #scarico il file di output generato dal compilatore nella dir smigrep del disco c
-            v_command = 'echo y | risorse\\pscp -pw ' + p_pwd + ' oracle@' + p_ip + ':/appl/incoming/' + v_nome_file_output + ' ' + os.path.join(p_work_dir, v_nome_file_output)
+            #scarico il file di output generato dal compilatore nella dir MGrep del disco c
+            v_command = 'echo y | utility_prog\\pscp -pw ' + p_pwd + ' oracle@' + p_ip + ':/appl/incoming/' + v_nome_file_output + ' ' + os.path.join(p_work_dir, v_nome_file_output)            
             v_ssh = subprocess.Popen(v_command, shell=True, stdin=subprocess.PIPE, stdout=v_sshoutput, stderr=v_sshoutputerror)
             v_ssh.communicate(v_sshinput)
         except:
@@ -160,17 +154,28 @@ class pubblica_form_report(object):
 
         #fine tutto ok
         return 'ok'
+    
+    def avanza_progress(self, p_msg):
+        """
+           Visualizza prossimo avanzamento sulla progress bar. Per una ragione al momento sconosciuta
+           ho dovuto fare un doppio giro perché effettuasse il refresh a video!
+        """
+        self.v_progress_step += 1
+        self.progress.setValue(self.v_progress_step);                                        
+        self.progress_label.setText(p_msg)
+        self.progress.setLabel(self.progress_label)             
+        self.v_progress_step += 32
+        if self.v_progress_step > 90:
+            self.v_progress_step = 100
+        self.progress.setValue(self.v_progress_step);                                        
+        self.progress_label.setText(p_msg)
+        self.progress.setLabel(self.progress_label)                     
 
 # ----------------------------------------
 # TEST APPLICAZIONE
 # ----------------------------------------
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    file_preferiti_window = QtWidgets.QMainWindow()
-    """
-    application = pubblica_form_report("W:\\source\\MA-Magazzino\\Sviluppo\\Form\\MA2000701F-ANAGRAFICA ARTICOLI.fmb",
-                                "C:\\SMIGREP\\",
-                                "1")    
-    """                                
-    file_preferiti_window.show()
-    sys.exit(app.exec())                    
+    app = QtWidgets.QApplication(sys.argv)    
+    pubblica_form_report("W:\\source\\DO-Documenti SMILE\\Sviluppo\\Form\\DO3000401F-Gestione documento.fmb",
+                         "C:\\MGrep\\",
+                         "1")        

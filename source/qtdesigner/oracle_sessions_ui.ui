@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>oracle_sessions_window</class>
+ <widget class="QMainWindow" name="oracle_sessions_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Oracle sessions list</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <item row="4" column="0">
+     <widget class="QLabel" name="l_server_name">
+      <property name="text">
+       <string>Oracle name server:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_server_name</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="0" colspan="9">
+     <widget class="QTableView" name="o_lst1">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0" colspan="9">
+     <widget class="Line" name="line_1">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="l_program_name">
+      <property name="text">
+       <string>Program name:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_program_name</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="l_user_name">
+      <property name="text">
+       <string>User name:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_user_name</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="e_terminal_2">
+      <property name="text">
+       <string>Terminal:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_terminal</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLineEdit" name="e_program_name"/>
+    </item>
+    <item row="8" column="8">
+     <widget class="QPushButton" name="b_start_search">
+      <property name="text">
+       <string>Start search</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="e_user_name"/>
+    </item>
+    <item row="8" column="1">
+     <widget class="QLineEdit" name="e_terminal"/>
+    </item>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="e_server_name"/>
+    </item>
+    <item row="15" column="5" colspan="4">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="b_session_information">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Create a file with session information</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/icons/icons/sql.gif</normaloff>:/icons/icons/sql.gif</iconset>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="b_kill_session">
+        <property name="maximumSize">
+         <size>
+          <width>30</width>
+          <height>30</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Kill selected session</string>
+        </property>
+        <property name="statusTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/icons/icons/kill.gif</normaloff>:/icons/icons/kill.gif</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <tabstops>
+  <tabstop>o_lst1</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>e_user_name</sender>
+   <signal>returnPressed()</signal>
+   <receiver>oracle_sessions_window</receiver>
+   <slot>slot_search_session()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>463</x>
+     <y>57</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>631</x>
+     <y>57</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>e_program_name</sender>
+   <signal>returnPressed()</signal>
+   <receiver>oracle_sessions_window</receiver>
+   <slot>slot_search_session()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>238</x>
+     <y>93</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>566</x>
+     <y>84</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>e_terminal</sender>
+   <signal>returnPressed()</signal>
+   <receiver>oracle_sessions_window</receiver>
+   <slot>slot_search_session()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>497</x>
+     <y>122</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>567</x>
+     <y>120</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_start_search</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_sessions_window</receiver>
+   <slot>slot_search_session()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>637</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>519</x>
+     <y>444</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_kill_session</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_sessions_window</receiver>
+   <slot>slot_kill_session()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>656</x>
+     <y>449</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>657</x>
+     <y>467</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_session_information</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_sessions_window</receiver>
+   <slot>slot_log_session()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>604</x>
+     <y>453</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>603</x>
+     <y>471</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_search_session()</slot>
+  <slot>slot_kill_session()</slot>
+  <slot>slot_log_session()</slot>
+ </slots>
+</ui>

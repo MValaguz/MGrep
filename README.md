@@ -9,3 +9,9 @@ File structure:
 	- qtdesigner: the user interface (the .bat file convert the .ui file in .py file)
 		- icons: a list of icons. This list is convert with qtDesigner into a resource (see the source.bat script)!		
 		
+To Do:
+- Nella gestione dei file preferiti permettere la compilazione e la pubblicazione multipla di oggetti
+- In generale vedere se possibile definire uno stile che può essere cambiato (es. colori e font)
+- Se possibile cambiare le icone delle window figlie
+- La console che usciva a video è meglio che scriva il log da qualche parte in modo che sia leggibile anche in blocchi totali del programma
+		

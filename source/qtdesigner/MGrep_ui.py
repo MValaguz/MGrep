@@ -204,7 +204,6 @@ class Ui_MGrepWindow(object):
         self.menuHelp.addAction(self.actionHelp)
         self.menuHelp.addAction(self.actionProgram_info)
         self.menuHelp.addAction(self.actionChange_log)
-        self.menuHelp.addAction(self.actionConsole)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuSearch.menuAction())
         self.menubar.addAction(self.menuBooks.menuAction())
@@ -222,7 +221,6 @@ class Ui_MGrepWindow(object):
         self.actionHelp.triggered.connect(MGrepWindow.slot_actionHelp)
         self.actionProgram_info.triggered.connect(MGrepWindow.slot_actionProgram_info)
         self.actionChange_log.triggered.connect(MGrepWindow.slot_actionChange_log)
-        self.actionConsole.triggered.connect(MGrepWindow.slot_actionConsole)
         self.actionFiles_in_system.triggered.connect(MGrepWindow.slot_actionFiles_in_system)
         self.actionImage_link_in_web_page.triggered.connect(MGrepWindow.slot_actionImage_link_in_web_page)
         self.actionPhone_book.triggered.connect(MGrepWindow.slot_actionPhone_book)
@@ -231,6 +229,7 @@ class Ui_MGrepWindow(object):
         self.actionLooks.triggered.connect(MGrepWindow.slot_actionLocks)
         self.actionFiles.triggered.connect(MGrepWindow.slot_actionFavorites_files)
         self.actionDirectories.triggered.connect(MGrepWindow.slot_actionFavorites_dirs)
+        self.actionSessions.triggered.connect(MGrepWindow.slot_actionSessions)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):

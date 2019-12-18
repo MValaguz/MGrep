@@ -27,7 +27,7 @@ from utilita import message_error, message_info, message_question_yes_no
        
 class file_preferiti_class(QtWidgets.QMainWindow):
     """
-        Programma per la ricerca delle stringhe all'interno dei sorgenti di Oracle forms
+        Programma per la gestione dei file preferiti
     """                
     def __init__(self):
         super(file_preferiti_class, self).__init__()
@@ -67,11 +67,14 @@ class file_preferiti_class(QtWidgets.QMainWindow):
         """        
         if event.mimeData().hasText():
             mime = event.mimeData()
-            elementi = mime.text().split()
-            # prendo tutti gli elementi e li aggiungo alla lista
-            for elemento in elementi:
-                self.lista_risultati.appendRow(QtGui.QStandardItem(elemento))                                
-        
+            elementi = mime.text().split("file:///")            
+            # prendo tutti gli elementi e li aggiungo alla lista                        
+            for elemento in elementi:                                
+                if elemento != '':
+                    # normalizza il path name del file
+                    elemento_normalizzato = os.path.normpath(elemento).replace(chr(10),'')                    
+                    self.lista_risultati.appendRow(QtGui.QStandardItem(elemento_normalizzato))        
+            
     def carica_files_preferiti(self):
         """
             Carica quanto presente nel file dei preferiti
@@ -228,6 +231,8 @@ class file_preferiti_class(QtWidgets.QMainWindow):
             Pubblica il file Oracle Form o Oracle Report nei server indicati
             se p_tipo_server = 1 compila in SMILE, altrimenti in ICOM
         """
+        from compile_oracle_form_report import pubblica_form_report
+        
         # ricerco la posizione dell'indice selezionato e ne ricavo il contenuto 
         try:
             v_index = self.ui.o_lst1.selectedIndexes()[0]                    
@@ -248,9 +253,9 @@ class file_preferiti_class(QtWidgets.QMainWindow):
                 message_error('File is not in format "Oracle Form" or "Oracle Report"!')
             else:
                 # apro una nuova finestra figlia della principale
-                canvas = pubblica_form_report(v_file, 
-                                              self.o_preferenze.work_dir, 
-                                              p_tipo_server)
+                pubblica_form_report(v_file, 
+                                     self.o_preferenze.work_dir, 
+                                     p_tipo_server)
         
     def slot_pubblica_smile(self):
         """
