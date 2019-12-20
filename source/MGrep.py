@@ -77,6 +77,8 @@ class MGrep_class(QtWidgets.QMainWindow):
                 self.slot_actionFavorites_files()
             elif 'My favorites directories'.replace(' ','_') in my_window_pos:            
                 self.slot_actionFavorites_dirs()
+            elif 'Ascii_Graphics_Generator'.replace(' ','_') in my_window_pos:            
+                self.slot_actionAscii_graphics()                            
     
     def slot_actionSave_the_windows_position(self):
         """
@@ -229,6 +231,15 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_app = directory_preferite_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
         my_app.show()           
+        
+    def slot_actionAscii_graphics(self):
+        """
+           Richiamo form per conversione testo in big testo
+        """                
+        from ascii_graphics import ascii_graphics_class
+        my_app = ascii_graphics_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_app.show()               
         
     def slot_actionHelp(self):
         """

@@ -231,6 +231,7 @@ class Ui_MGrepWindow(object):
         self.actionSessions.triggered.connect(MGrepWindow.slot_actionSessions)
         self.actionJobs_status.triggered.connect(MGrepWindow.slot_actionJobs_status)
         self.actionVolume.triggered.connect(MGrepWindow.slot_actionVolume)
+        self.actionAscii_Graphics_generator.triggered.connect(MGrepWindow.slot_actionAscii_graphics)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):

@@ -677,6 +677,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionAscii_Graphics_generator</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionAscii_graphics()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -697,5 +713,6 @@
   <slot>slot_actionSessions()</slot>
   <slot>slot_actionJobs_status()</slot>
   <slot>slot_actionVolume()</slot>
+  <slot>slot_actionAscii_graphics()</slot>
  </slots>
 </ui>

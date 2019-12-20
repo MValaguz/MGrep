@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ascii_graphics_window</class>
+ <widget class="QMainWindow" name="ascii_graphics_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Ascii Graphics Generator</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <item row="0" column="2">
+     <widget class="QComboBox" name="e_fonts_list"/>
+    </item>
+    <item row="1" column="3">
+     <widget class="QPushButton" name="b_converte">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="statusTip">
+       <string/>
+      </property>
+      <property name="whatsThis">
+       <string/>
+      </property>
+      <property name="text">
+       <string>Convert</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="e_converte"/>
+    </item>
+    <item row="1" column="0" colspan="2">
+     <widget class="QLabel" name="l_converte">
+      <property name="text">
+       <string>Insert a text to convert:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_converte</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="l_fonts_list">
+      <property name="text">
+       <string>Ascii graphics fonts available</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_fonts_list</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="l_risultato">
+      <property name="text">
+       <string>Result:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_risultato</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0" colspan="4">
+     <widget class="QTextEdit" name="e_risultato">
+      <property name="font">
+       <font>
+        <family>Courier New</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>e_converte</tabstop>
+  <tabstop>b_converte</tabstop>
+  <tabstop>e_fonts_list</tabstop>
+  <tabstop>e_risultato</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>b_converte</sender>
+   <signal>clicked()</signal>
+   <receiver>ascii_graphics_window</receiver>
+   <slot>slot_converte()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>788</x>
+     <y>68</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>621</x>
+     <y>211</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>e_converte</sender>
+   <signal>returnPressed()</signal>
+   <receiver>b_converte</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>425</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>728</x>
+     <y>54</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_converte()</slot>
+ </slots>
+</ui>
