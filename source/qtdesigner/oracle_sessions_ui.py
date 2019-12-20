@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'oracle_sessions_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_oracle_sessions_window(object):
     def setupUi(self, oracle_sessions_window):
@@ -90,9 +92,6 @@ class Ui_oracle_sessions_window(object):
         self.horizontalLayout.addWidget(self.b_kill_session)
         self.gridLayout.addLayout(self.horizontalLayout, 15, 5, 1, 4)
         oracle_sessions_window.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(oracle_sessions_window)
-        self.statusbar.setObjectName("statusbar")
-        oracle_sessions_window.setStatusBar(self.statusbar)
         self.l_server_name.setBuddy(self.e_server_name)
         self.l_program_name.setBuddy(self.e_program_name)
         self.l_user_name.setBuddy(self.e_user_name)
@@ -117,8 +116,8 @@ class Ui_oracle_sessions_window(object):
         self.b_start_search.setText(_translate("oracle_sessions_window", "Start search"))
         self.b_session_information.setToolTip(_translate("oracle_sessions_window", "Create a file with session information"))
         self.b_kill_session.setToolTip(_translate("oracle_sessions_window", "Kill selected session"))
-
 import resource_rc
+
 
 if __name__ == "__main__":
     import sys
@@ -128,4 +127,3 @@ if __name__ == "__main__":
     ui.setupUi(oracle_sessions_window)
     oracle_sessions_window.show()
     sys.exit(app.exec_())
-

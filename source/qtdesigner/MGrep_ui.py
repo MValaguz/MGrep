@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'MGrep_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MGrepWindow(object):
     def setupUi(self, MGrepWindow):
@@ -56,9 +58,6 @@ class Ui_MGrepWindow(object):
         self.menuHelp = QtWidgets.QMenu(self.menubar)
         self.menuHelp.setObjectName("menuHelp")
         MGrepWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MGrepWindow)
-        self.statusbar.setObjectName("statusbar")
-        MGrepWindow.setStatusBar(self.statusbar)
         self.actionSave_the_windows_position = QtWidgets.QAction(MGrepWindow)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/icons/disk.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -124,11 +123,11 @@ class Ui_MGrepWindow(object):
         icon13.addPixmap(QtGui.QPixmap(":/icons/icons/oracle.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionJobs_status.setIcon(icon13)
         self.actionJobs_status.setObjectName("actionJobs_status")
-        self.actionTables_sizes = QtWidgets.QAction(MGrepWindow)
+        self.actionVolume = QtWidgets.QAction(MGrepWindow)
         icon14 = QtGui.QIcon()
         icon14.addPixmap(QtGui.QPixmap(":/icons/icons/compile.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionTables_sizes.setIcon(icon14)
-        self.actionTables_sizes.setObjectName("actionTables_sizes")
+        self.actionVolume.setIcon(icon14)
+        self.actionVolume.setObjectName("actionVolume")
         self.actionFiles = QtWidgets.QAction(MGrepWindow)
         icon15 = QtGui.QIcon()
         icon15.addPixmap(QtGui.QPixmap(":/icons/icons/favorites_files.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -195,7 +194,7 @@ class Ui_MGrepWindow(object):
         self.menuOracle.addAction(self.actionLooks)
         self.menuOracle.addAction(self.actionSessions)
         self.menuOracle.addAction(self.actionJobs_status)
-        self.menuOracle.addAction(self.actionTables_sizes)
+        self.menuOracle.addAction(self.actionVolume)
         self.menuFavorites.addAction(self.actionFiles)
         self.menuFavorites.addAction(self.actionDirectories)
         self.menuTools.addAction(self.actionImport_Export)
@@ -230,6 +229,8 @@ class Ui_MGrepWindow(object):
         self.actionFiles.triggered.connect(MGrepWindow.slot_actionFavorites_files)
         self.actionDirectories.triggered.connect(MGrepWindow.slot_actionFavorites_dirs)
         self.actionSessions.triggered.connect(MGrepWindow.slot_actionSessions)
+        self.actionJobs_status.triggered.connect(MGrepWindow.slot_actionJobs_status)
+        self.actionVolume.triggered.connect(MGrepWindow.slot_actionVolume)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):
@@ -255,7 +256,7 @@ class Ui_MGrepWindow(object):
         self.actionLooks.setText(_translate("MGrepWindow", "Looks"))
         self.actionSessions.setText(_translate("MGrepWindow", "Sessions"))
         self.actionJobs_status.setText(_translate("MGrepWindow", "Jobs status"))
-        self.actionTables_sizes.setText(_translate("MGrepWindow", "Tables sizes"))
+        self.actionVolume.setText(_translate("MGrepWindow", "Volume"))
         self.actionFiles.setText(_translate("MGrepWindow", "Files"))
         self.actionDirectories.setText(_translate("MGrepWindow", "Directories"))
         self.actionImport_Export.setText(_translate("MGrepWindow", "Import-Export"))
@@ -268,8 +269,8 @@ class Ui_MGrepWindow(object):
         self.actionCascade.setText(_translate("MGrepWindow", "Cascade"))
         self.actionTile_horizontaly.setText(_translate("MGrepWindow", "Tile horizontally"))
         self.actionTile_vertically.setText(_translate("MGrepWindow", "Tile vertically"))
-
 import resource_rc
+
 
 if __name__ == "__main__":
     import sys
@@ -279,4 +280,3 @@ if __name__ == "__main__":
     ui.setupUi(MGrepWindow)
     MGrepWindow.show()
     sys.exit(app.exec_())
-

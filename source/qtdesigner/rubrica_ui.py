@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'rubrica_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_rubrica_window(object):
     def setupUi(self, rubrica_window):
@@ -48,9 +50,6 @@ class Ui_rubrica_window(object):
         self.o_lst1.setObjectName("o_lst1")
         self.gridLayout.addWidget(self.o_lst1, 1, 0, 1, 4)
         rubrica_window.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(rubrica_window)
-        self.statusbar.setObjectName("statusbar")
-        rubrica_window.setStatusBar(self.statusbar)
         self.l_ricerca.setBuddy(self.e_ricerca)
 
         self.retranslateUi(rubrica_window)
@@ -63,8 +62,8 @@ class Ui_rubrica_window(object):
         rubrica_window.setWindowTitle(_translate("rubrica_window", "Book"))
         self.b_ricerca.setText(_translate("rubrica_window", "Start search"))
         self.l_ricerca.setText(_translate("rubrica_window", "Search"))
-
 import resource_rc
+
 
 if __name__ == "__main__":
     import sys
@@ -74,4 +73,3 @@ if __name__ == "__main__":
     ui.setupUi(rubrica_window)
     rubrica_window.show()
     sys.exit(app.exec_())
-

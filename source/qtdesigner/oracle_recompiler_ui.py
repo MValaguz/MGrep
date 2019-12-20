@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'oracle_recompiler_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_oracle_recompiler_window(object):
     def setupUi(self, oracle_recompiler_window):
@@ -54,9 +56,6 @@ class Ui_oracle_recompiler_window(object):
         self.e_server_name.setObjectName("e_server_name")
         self.gridLayout.addWidget(self.e_server_name, 0, 1, 1, 1)
         oracle_recompiler_window.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(oracle_recompiler_window)
-        self.statusbar.setObjectName("statusbar")
-        oracle_recompiler_window.setStatusBar(self.statusbar)
         self.l_server_name.setBuddy(self.e_server_name)
 
         self.retranslateUi(oracle_recompiler_window)
@@ -73,8 +72,8 @@ class Ui_oracle_recompiler_window(object):
         self.l_server_name.setText(_translate("oracle_recompiler_window", "Oracle name server:"))
         self.b_compile_all.setText(_translate("oracle_recompiler_window", "Compile all invalid object"))
         self.b_search_all.setText(_translate("oracle_recompiler_window", "Search invalid object"))
-
 import resource_rc
+
 
 if __name__ == "__main__":
     import sys
@@ -84,4 +83,3 @@ if __name__ == "__main__":
     ui.setupUi(oracle_recompiler_window)
     oracle_recompiler_window.show()
     sys.exit(app.exec_())
-

@@ -26,13 +26,7 @@ class program_info_class(QtWidgets.QDialog):
         self.ui = Ui_Program_info()
         self.ui.setupUi(self)
         self.mdi_area = p_mdi_area
-            
-    def slot_Program_info_close(self):
-        """
-            Chiude la window (attenzione! durante l'inizializzazione viene passato il riferimento al widget mdi)
-        """
-        self.mdi_area.closeActiveSubWindow()
-            
+                        
 # ----------------------------------------
 # TEST APPLICAZIONE
 # ----------------------------------------

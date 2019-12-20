@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'oracle_locks_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_oracle_locks_window(object):
     def setupUi(self, oracle_locks_window):
@@ -99,9 +101,6 @@ class Ui_oracle_locks_window(object):
         self.b_load_list_table.setObjectName("b_load_list_table")
         self.gridLayout.addWidget(self.b_load_list_table, 18, 1, 1, 1)
         oracle_locks_window.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(oracle_locks_window)
-        self.statusbar.setObjectName("statusbar")
-        oracle_locks_window.setStatusBar(self.statusbar)
         self.l_server_name.setBuddy(self.e_server_name)
         self.l_table_name.setBuddy(self.e_table_name)
 
@@ -131,8 +130,8 @@ class Ui_oracle_locks_window(object):
         self.b_table_lock.setToolTip(_translate("oracle_locks_window", "Search lock table"))
         self.b_session_lock.setText(_translate("oracle_locks_window", "Check session lock"))
         self.b_load_list_table.setToolTip(_translate("oracle_locks_window", "Load into combo box the list of tables"))
-
 import resource_rc
+
 
 if __name__ == "__main__":
     import sys
@@ -142,4 +141,3 @@ if __name__ == "__main__":
     ui.setupUi(oracle_locks_window)
     oracle_locks_window.show()
     sys.exit(app.exec_())
-

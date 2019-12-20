@@ -113,7 +113,7 @@
     <addaction name="actionLooks"/>
     <addaction name="actionSessions"/>
     <addaction name="actionJobs_status"/>
-    <addaction name="actionTables_sizes"/>
+    <addaction name="actionVolume"/>
    </widget>
    <widget class="QMenu" name="menuFavorites">
     <property name="title">
@@ -146,7 +146,6 @@
    <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="actionSave_the_windows_position">
    <property name="icon">
     <iconset resource="resource.qrc">
@@ -264,13 +263,13 @@
     <string>Jobs status</string>
    </property>
   </action>
-  <action name="actionTables_sizes">
+  <action name="actionVolume">
    <property name="icon">
     <iconset resource="resource.qrc">
      <normaloff>:/icons/icons/compile.gif</normaloff>:/icons/icons/compile.gif</iconset>
    </property>
    <property name="text">
-    <string>Tables sizes</string>
+    <string>Volume</string>
    </property>
   </action>
   <action name="actionFiles">
@@ -646,6 +645,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionJobs_status</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionJobs_status()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionVolume</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionVolume()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -664,5 +695,7 @@
   <slot>slot_actionFavorites_files()</slot>
   <slot>slot_actionFavorites_dirs()</slot>
   <slot>slot_actionSessions()</slot>
+  <slot>slot_actionJobs_status()</slot>
+  <slot>slot_actionVolume()</slot>
  </slots>
 </ui>

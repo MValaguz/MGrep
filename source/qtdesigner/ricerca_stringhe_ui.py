@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'ricerca_stringhe_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Ricerca_stringhe_window(object):
     def setupUi(self, Ricerca_stringhe_window):
@@ -125,9 +127,6 @@ class Ui_Ricerca_stringhe_window(object):
         self.l_risultati.setObjectName("l_risultati")
         self.gridLayout.addWidget(self.l_risultati, 11, 1, 1, 1)
         Ricerca_stringhe_window.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(Ricerca_stringhe_window)
-        self.statusbar.setObjectName("statusbar")
-        Ricerca_stringhe_window.setStatusBar(self.statusbar)
         self.l_excludepath.setBuddy(self.e_excludepath)
         self.l_dboracle1.setBuddy(self.e_dboracle1)
         self.l_dboracle2.setBuddy(self.e_dboracle2)
@@ -178,8 +177,8 @@ class Ui_Ricerca_stringhe_window(object):
         self.l_outputfile.setText(_translate("Ricerca_stringhe_window", "Output file csv"))
         self.l_stringa1.setText(_translate("Ricerca_stringhe_window", "Search string1"))
         self.l_risultati.setText(_translate("Ricerca_stringhe_window", "Result:"))
-
 import resource_rc
+
 
 if __name__ == "__main__":
     import sys
@@ -189,4 +188,3 @@ if __name__ == "__main__":
     ui.setupUi(Ricerca_stringhe_window)
     Ricerca_stringhe_window.show()
     sys.exit(app.exec_())
-

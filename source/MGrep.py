@@ -48,31 +48,35 @@ class MGrep_class(QtWidgets.QMainWindow):
         """
            Apre le finestre che sono state salvate nella loro posizione e dimensione
         """        
-        for my_window_pos in self.o_preferenze.l_windows_pos:
-            if 'MGrepWindow' in my_window_pos:
+        for my_window_pos in self.o_preferenze.l_windows_pos:                        
+            if 'MainWindow' in my_window_pos:
                 o_rect = QtCore.QRect()
                 o_rect.setRect( int(my_window_pos[1]), int(my_window_pos[2]), int(my_window_pos[3]), int(my_window_pos[4]) )
                 self.setGeometry(o_rect)                
-            '''    
-            elif 'MyPrefFileWindow' in my_window_pos:
-                canvas1 = file_preferiti(self, modalita_test=False)
-            elif 'MyPrefDir' in my_window_pos:
-                canvas2 = directory_preferite(self, modalita_test=False)
-            elif 'SearchString' in my_window_pos:
-                canvas3 = ricerca_stringhe(self, modalita_test=False)
-            elif 'SearchFile' in my_window_pos:
-                canvas4 = ricerca_file(self, modalita_test=False)                
-            elif 'OraRecompiler' in my_window_pos:
-                canvas4 = oracle_recompiler(self, modalita_test=False)                            
-            elif 'OraLocks' in my_window_pos:
-                canvas4 = oracle_locks(self, modalita_test=False)                                        
-            elif 'OraSessions' in my_window_pos:
-                canvas4 = oracle_sessions(self, modalita_test=False)                                                        
-            elif 'OraJobsStatus' in my_window_pos:
-                canvas4 = oracle_jobs(self, modalita_test=False)                                                    
-            elif 'OraSize' in my_window_pos:
-                canvas4 = oracle_size(self, modalita_test=False)                                                                
-            '''        
+            elif 'Search string in sources of Oracle Forms/Reports'.replace(' ','_') in my_window_pos:
+                self.slot_actionSearch_string()
+            elif 'Search file in system'.replace(' ','_') in my_window_pos:
+                self.slot_actionFiles_in_system()
+            elif 'Search images in web pages'.replace(' ','_') in my_window_pos:
+                self.slot_actionImage_link_in_web_page()
+            elif 'Phone book'.replace(' ','_') in my_window_pos:
+                self.slot_actionPhone_book()
+            elif 'Email book'.replace(' ','_') in my_window_pos:
+                self.slot_actionEmail_book()
+            elif 'Oracle recompiler'.replace(' ','_') in my_window_pos:
+                self.slot_actionRecompiler()
+            elif 'Oracle locks'.replace(' ','_') in my_window_pos:
+                self.slot_actionLocks()
+            elif 'Oracle sessions list'.replace(' ','_') in my_window_pos:
+                self.slot_actionSessions()
+            elif 'Oracle jobs'.replace(' ','_') in my_window_pos:
+                self.slot_actionJobs_status()
+            elif 'Oracle volume'.replace(' ','_') in my_window_pos:
+                self.slot_actionVolume()
+            elif 'My favorites files'.replace(' ','_') in my_window_pos:
+                self.slot_actionFavorites_files()
+            elif 'My favorites directories'.replace(' ','_') in my_window_pos:            
+                self.slot_actionFavorites_dirs()
     
     def slot_actionSave_the_windows_position(self):
         """
@@ -82,41 +86,17 @@ class MGrep_class(QtWidgets.QMainWindow):
             # pulisco la lista delle posizioni delle window
             self.o_preferenze.l_windows_pos.clear()
             
-            # ricerco informazioni della window principale                                                
+            # ricerco informazioni della window principale (è l'unica window di cui salvo sia posizione che dimensione)
             o_pos = self.geometry()            
             o_rect = o_pos.getRect()            
-            self.o_preferenze.l_windows_pos.append( "MGrepWindow " + str(o_rect[0]) + " " + str(o_rect[1]) + " " +  str(o_rect[2]) + " " + str(o_rect[3]) )                                    
-            # ricerco le dimensione delle varie window che vengono aperte dal programma (non tutte al momento vengono salvate)
+            self.o_preferenze.l_windows_pos.append( "MainWindow " + str(o_rect[0]) + " " + str(o_rect[1]) + " " +  str(o_rect[2]) + " " + str(o_rect[3]) )                                    
+            # salvo i nomi delle varie finestre aperte
             o_window_list = self.ui.mdiArea.subWindowList()                        
-            for i in range(0,len(o_window_list)):
-                v_titolo = ''                
-                if o_window_list[i].windowTitle() == 'My favorites files':
-                    v_titolo = 'MyPrefFile'
-                elif o_window_list[i].windowTitle() == 'My favorites directories':
-                    v_titolo = 'MyPrefDir'                    
-                elif o_window_list[i].windowTitle() == 'Search string in sources of Oracle Forms/Reports':
-                    v_titolo = 'SearchString'                                        
-                elif o_window_list[i].windowTitle() == 'Search file in system':
-                    v_titolo = 'SearchFile'                                                            
-                elif o_window_list[i].windowTitle() == 'Oracle recompiler':
-                    v_titolo = 'OraRecompiler'                                                                                
-                elif o_window_list[i].windowTitle() == 'Oracle locks':
-                    v_titolo = 'OraLocks'                                                                                                    
-                elif o_window_list[i].windowTitle() == 'Oracle sessions list':
-                    v_titolo = 'OraSessions'                                                                                                                        
-                elif o_window_list[i].windowTitle() == 'Oracle jobs':
-                    v_titolo = 'OraJobsStatus'                                                                                                                                            
-                elif o_window_list[i].windowTitle() == 'Oracle tables size':
-                    v_titolo = 'OraSize'                                                                                                                                                                
-                
-                if v_titolo != '':                    
-                    o_pos = o_window_list[i].geometry()            
-                    o_rect = o_pos.getRect()            
-                    self.o_preferenze.l_windows_pos.append( v_titolo + "  " + str(o_rect[0]) + " " + str(o_rect[1]) + " " +  str(o_rect[2]) + " " + str(o_rect[3]) )                                                        
+            for i in range(0,len(o_window_list)):                
+                self.o_preferenze.l_windows_pos.append( str(o_window_list[i].windowTitle()).replace(' ','_') ) 
                     
             # salvo la lista
             self.o_preferenze.salva_pos_finestre()            
-
     
     def slot_actionReset_main_window_position(self):
         """
@@ -174,6 +154,7 @@ class MGrep_class(QtWidgets.QMainWindow):
         from rubrica import rubrica_class        
         my_app = rubrica_class('T')        
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)                        
+        my_sub_window.setWindowTitle('Phone book')
         my_app.show()            
         
     def slot_actionEmail_book(self):
@@ -183,6 +164,7 @@ class MGrep_class(QtWidgets.QMainWindow):
         from rubrica import rubrica_class        
         my_app = rubrica_class('E')
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_sub_window.setWindowTitle('Email book')
         my_app.show()    
         
     def slot_actionRecompiler(self):
@@ -212,6 +194,24 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
         my_app.show()           
         
+    def slot_actionJobs_status(self):
+        """
+           Richiamo form stato dei jobs 
+        """                
+        from oracle_jobs import oracle_jobs_class
+        my_app = oracle_jobs_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_app.show()           
+        
+    def slot_actionVolume(self):
+        """
+           Richiamo form occupazione volume
+        """                
+        from oracle_volume import oracle_volume_class
+        my_app = oracle_volume_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_app.show()               
+            
     def slot_actionFavorites_files(self):
         """
            Richiamo form elenco e gestione file preferiti

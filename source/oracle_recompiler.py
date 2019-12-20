@@ -114,6 +114,8 @@ class oracle_recompiler_class(QtWidgets.QMainWindow):
             v_error = True
 
         if not v_error:
+            # imposto l'icona della freccia del cursore a waiting
+            QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))      
             # apro cursori
             v_cursor = v_connection.cursor()
 
@@ -125,6 +127,8 @@ class oracle_recompiler_class(QtWidgets.QMainWindow):
             # select per la ricerca degli oggetti invalidi
             self.slot_b_search_all()
             
+            # tolgo icona freccia cursore e lo riporto a normale ed emetto messaggio di fine
+            QtWidgets.QApplication.restoreOverrideCursor()          
             message_info('Invalid objects recompiled!')
         
 # ----------------------------------------

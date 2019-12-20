@@ -22,31 +22,6 @@ from oracle_jobs_ui import Ui_oracle_jobs_window
 #Librerie interne MGrep
 from preferenze import preferenze
 from utilita import message_error, message_info
-import resource_rc
-
-class my_wait_window(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.setWindowModality(QtCore.Qt.ApplicationModal)
-        #Form.setWindowFlag(QtCore.Qt.FramelessWindowHint)
-        #Form.setWindowFlag(QtCore.Qt.CustomizeWindowHint)
-        Form.resize(246, 77)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
-        self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
-        self.horizontalLayout.setObjectName("horizontalLayout")
-        self.label = QtWidgets.QLabel(Form)
-        self.label.setObjectName("label")
-        self.horizontalLayout.addWidget(self.label, 0, QtCore.Qt.AlignHCenter)
-
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-
-    def retranslateUi(self, Form):
-        _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "..."))
-        self.label.setText(_translate("Form", "......wait a moment please......"))
        
 class oracle_jobs_class(QtWidgets.QMainWindow):
     """
@@ -65,46 +40,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         # carico elenco dei server prendendolo dalle preferenze
         for nome in self.o_preferenze.elenco_server:
             self.ui.e_server_name.addItem(nome)
-            
-    def wait_window(self, p_stato):
-        """
-           Apre una finestra di wait
-        """       
-        if p_stato:
-            self.primo = QtWidgets.QWidget()
-            self.secondo = my_wait_window()
-            self.secondo.setupUi(self.primo)
-            self.primo.show()        
-        else:
-            self.primo.close()
-        """
-        if p_stato:
-            # creazione della wait window
-            self.v_progress_step = 0
-            self.progress = QtWidgets.QProgressDialog(self)        
-            self.progress.setMinimumDuration(0)
-            self.progress.setWindowModality(QtCore.Qt.WindowModal)
-            self.progress.setWindowTitle("Wait window")                
-            self.progress.setCancelButton(None)
-            
-            # imposto valore minimo e massimo a 0 in modo venga considerata una progress a tempo indefinito
-            # Attenzione! dentro nel ciclo deve essere usata la funzione setvalue altrimenti non visualizza e non avanza nulla!
-            self.progress.setMinimum(0)
-            self.progress.setMaximum(101)             
-            # creo un campo label che viene impostato con 100 caratteri in modo venga data una dimensione di base standard
-            self.progress_label = QtWidgets.QLabel()            
-            self.progress_label.setText('.....wait a moment please......')
-            # collego la label già presente nell'oggetto progress bar con la mia label 
-            self.progress.setLabel(self.progress_label)
-            # imposto %100
-            self.v_progress_step = 1
-            self.progress.setValue(self.v_progress_step);                                                    
-            self.v_progress_step = 100
-            self.progress.setValue(self.v_progress_step);                                                                
-        else:
-            self.progress.close()
-        """
-                                                    
+                                                                
     def get_elenco_jobs(self):
         """
             Restituisce in una tupla elenco dei jobs di sistema
@@ -164,10 +100,10 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
     def slot_startSearch(self):            
         """
             Ricerca le sessioni 
-        """        
-        self.wait_window(True)
+        """       
+        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))        
         matrice_dati = self.get_elenco_jobs()                        
-        #self.wait_window(False)
+        QtWidgets.QApplication.restoreOverrideCursor()
         
         # lista contenente le intestazioni
         intestazioni = ['Job name','Comments','Job action','Last start date','Next run date','Last status','Additional info']                        
@@ -182,9 +118,13 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         y =0
         # carico i dati presi dal db dentro il modello
         for row in matrice_dati:            
-            x = 0
+            x = 0                            
             for field in row:
-                self.lista_risultati.setItem(y, x, QtGui.QStandardItem(str(field)) )
+                q_item = QtGui.QStandardItem()
+                q_item.setText( str(field) )
+                if x == 5 and field == 'FAILED':                    
+                    q_item.setBackground( QtGui.QColor('red') )                    
+                self.lista_risultati.setItem(y, x, q_item )                
                 x += 1
             y += 1
         # carico il modello nel widget        

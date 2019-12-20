@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'ricerca_file_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Ricerca_file_window(object):
     def setupUi(self, Ricerca_file_window):
@@ -100,9 +102,6 @@ class Ui_Ricerca_file_window(object):
         spacerItem1 = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem1, 0, 12, 1, 1)
         Ricerca_file_window.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(Ricerca_file_window)
-        self.statusbar.setObjectName("statusbar")
-        Ricerca_file_window.setStatusBar(self.statusbar)
         self.l_excludepath.setBuddy(self.e_excludepath)
         self.l_pathname_2.setBuddy(self.e_pathname)
         self.l_filesearch.setBuddy(self.e_filesearch)
@@ -134,8 +133,8 @@ class Ui_Ricerca_file_window(object):
         self.b_save_pref.setToolTip(_translate("Ricerca_file_window", "<html><head/><body><p>Save the search data in order to be retrieved at the next start of SmiGrep</p></body></html>"))
         self.l_risultati.setText(_translate("Ricerca_file_window", "Result:"))
         self.b_search.setText(_translate("Ricerca_file_window", "Start search"))
-
 import resource_rc
+
 
 if __name__ == "__main__":
     import sys
@@ -145,4 +144,3 @@ if __name__ == "__main__":
     ui.setupUi(Ricerca_file_window)
     Ricerca_file_window.show()
     sys.exit(app.exec_())
-

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>427</width>
-    <height>229</height>
+    <height>257</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,39 +35,12 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
   </layout>
  </widget>
  <resources>
   <include location="resource.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>Program_info</receiver>
-   <slot>slot_Program_info_close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>344</x>
-     <y>204</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>64</x>
-     <y>199</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <slots>
   <slot>slot_Program_info_close()</slot>
  </slots>

@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'ricerca_elementi_in_pagina_web_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Ricerca_elementi_in_pagina_web_window(object):
     def setupUi(self, Ricerca_elementi_in_pagina_web_window):
@@ -48,9 +50,6 @@ class Ui_Ricerca_elementi_in_pagina_web_window(object):
         self.b_url.setObjectName("b_url")
         self.gridLayout.addWidget(self.b_url, 0, 3, 1, 1)
         Ricerca_elementi_in_pagina_web_window.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(Ricerca_elementi_in_pagina_web_window)
-        self.statusbar.setObjectName("statusbar")
-        Ricerca_elementi_in_pagina_web_window.setStatusBar(self.statusbar)
         self.l_url.setBuddy(self.e_url)
 
         self.retranslateUi(Ricerca_elementi_in_pagina_web_window)
@@ -64,8 +63,8 @@ class Ui_Ricerca_elementi_in_pagina_web_window(object):
         self.l_risultati.setText(_translate("Ricerca_elementi_in_pagina_web_window", "Result:"))
         self.l_url.setText(_translate("Ricerca_elementi_in_pagina_web_window", "Insert a valid URL:"))
         self.b_url.setText(_translate("Ricerca_elementi_in_pagina_web_window", "Start search"))
-
 import resource_rc
+
 
 if __name__ == "__main__":
     import sys
@@ -75,4 +74,3 @@ if __name__ == "__main__":
     ui.setupUi(Ricerca_elementi_in_pagina_web_window)
     Ricerca_elementi_in_pagina_web_window.show()
     sys.exit(app.exec_())
-

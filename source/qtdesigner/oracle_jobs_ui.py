@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'oracle_jobs_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_oracle_jobs_window(object):
     def setupUi(self, oracle_jobs_window):
@@ -27,7 +29,6 @@ class Ui_oracle_jobs_window(object):
         self.gridLayout.setObjectName("gridLayout")
         self.o_lst1 = QtWidgets.QTableView(self.centralwidget)
         self.o_lst1.setMinimumSize(QtCore.QSize(0, 0))
-        self.o_lst1.setEditTriggers(QtWidgets.QAbstractItemView.AllEditTriggers)
         self.o_lst1.setDragEnabled(True)
         self.o_lst1.setAlternatingRowColors(True)
         self.o_lst1.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectItems)
@@ -47,9 +48,6 @@ class Ui_oracle_jobs_window(object):
         self.b_start_search.setObjectName("b_start_search")
         self.gridLayout.addWidget(self.b_start_search, 4, 3, 1, 1)
         oracle_jobs_window.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(oracle_jobs_window)
-        self.statusbar.setObjectName("statusbar")
-        oracle_jobs_window.setStatusBar(self.statusbar)
         self.l_server_name.setBuddy(self.e_server_name)
 
         self.retranslateUi(oracle_jobs_window)
@@ -61,8 +59,8 @@ class Ui_oracle_jobs_window(object):
         oracle_jobs_window.setWindowTitle(_translate("oracle_jobs_window", "Oracle jobs"))
         self.l_server_name.setText(_translate("oracle_jobs_window", "Oracle name server:"))
         self.b_start_search.setText(_translate("oracle_jobs_window", "Start search"))
-
 import resource_rc
+
 
 if __name__ == "__main__":
     import sys
@@ -72,4 +70,3 @@ if __name__ == "__main__":
     ui.setupUi(oracle_jobs_window)
     oracle_jobs_window.show()
     sys.exit(app.exec_())
-

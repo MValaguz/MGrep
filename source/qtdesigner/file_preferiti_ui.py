@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file 'file_preferiti_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.11.3
+# Created by: PyQt5 UI code generator 5.13.2
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_file_preferiti_window(object):
     def setupUi(self, file_preferiti_window):
@@ -30,9 +32,6 @@ class Ui_file_preferiti_window(object):
         self.o_lst1.setObjectName("o_lst1")
         self.gridLayout.addWidget(self.o_lst1, 0, 0, 1, 1)
         file_preferiti_window.setCentralWidget(self.centralwidget)
-        self.statusbar = QtWidgets.QStatusBar(file_preferiti_window)
-        self.statusbar.setObjectName("statusbar")
-        file_preferiti_window.setStatusBar(self.statusbar)
         self.toolBar = QtWidgets.QToolBar(file_preferiti_window)
         self.toolBar.setIconSize(QtCore.QSize(25, 25))
         self.toolBar.setObjectName("toolBar")
@@ -199,8 +198,8 @@ class Ui_file_preferiti_window(object):
         self.actionCompile_SMILE_BCK1.setToolTip(_translate("file_preferiti_window", "Compile form as SMILE user into BACKUP1"))
         self.actionCompile_SMILE_BCK2.setText(_translate("file_preferiti_window", "Compile SMILE BCK2"))
         self.actionCompile_SMILE_BCK2.setToolTip(_translate("file_preferiti_window", "Compile form as SMILE user into BACKUP2"))
-
 import resource_rc
+
 
 if __name__ == "__main__":
     import sys
@@ -210,4 +209,3 @@ if __name__ == "__main__":
     ui.setupUi(file_preferiti_window)
     file_preferiti_window.show()
     sys.exit(app.exec_())
-
