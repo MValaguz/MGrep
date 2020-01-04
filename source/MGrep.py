@@ -239,7 +239,10 @@ class MGrep_class(QtWidgets.QMainWindow):
         from ascii_graphics import ascii_graphics_class
         my_app = ascii_graphics_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
-        my_app.show()               
+        my_app.show()     
+        
+    def slot_actionTranslate(self):
+        pass
         
     def slot_actionHelp(self):
         """

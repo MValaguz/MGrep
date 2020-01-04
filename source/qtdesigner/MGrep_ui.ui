@@ -31,16 +31,7 @@
     <property name="spacing">
      <number>0</number>
     </property>
-    <property name="leftMargin">
-     <number>0</number>
-    </property>
-    <property name="topMargin">
-     <number>0</number>
-    </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
+    <property name="margin">
      <number>0</number>
     </property>
     <item>
@@ -76,7 +67,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>26</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -129,6 +120,7 @@
     <addaction name="actionImport_Export"/>
     <addaction name="actionAscii_Graphics_generator"/>
     <addaction name="actionDownload_an_object_from_server"/>
+    <addaction name="actionTranslate"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -366,6 +358,15 @@
   <action name="actionTile_vertically">
    <property name="text">
     <string>Tile vertically</string>
+   </property>
+  </action>
+  <action name="actionTranslate">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/translate.png</normaloff>:/icons/icons/translate.png</iconset>
+   </property>
+   <property name="text">
+    <string>Translate</string>
    </property>
   </action>
  </widget>
@@ -693,6 +694,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionTranslate</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionTranslate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -714,5 +731,6 @@
   <slot>slot_actionJobs_status()</slot>
   <slot>slot_actionVolume()</slot>
   <slot>slot_actionAscii_graphics()</slot>
+  <slot>slot_actionTranslate()</slot>
  </slots>
 </ui>

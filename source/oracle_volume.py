@@ -148,9 +148,11 @@ class oracle_volume_class(QtWidgets.QMainWindow):
             Calcola il volume
         """        
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))        
-        matrice_dati = self.get_lista_volumi()    
+        matrice_dati = self.get_lista_volumi()   
         QtWidgets.QApplication.restoreOverrideCursor()        
-        
+        # se la matrice è vuota esco
+        if len(matrice_dati) == 0:
+            return None
         # lista contenente le intestazioni
         intestazioni = ['Table name','Megabyte']                        
         # creo un oggetto modello-matrice che va ad agganciarsi all'oggetto grafico lista        

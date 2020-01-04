@@ -2,13 +2,11 @@
 
 # Form implementation generated from reading ui file 'MGrep_ui.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.2
+# Created by: PyQt5 UI code generator 5.10.1
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_MGrepWindow(object):
     def setupUi(self, MGrepWindow):
@@ -41,7 +39,7 @@ class Ui_MGrepWindow(object):
         self.verticalLayout.addWidget(self.mdiArea)
         MGrepWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MGrepWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 25))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -179,6 +177,11 @@ class Ui_MGrepWindow(object):
         self.actionTile_horizontaly.setObjectName("actionTile_horizontaly")
         self.actionTile_vertically = QtWidgets.QAction(MGrepWindow)
         self.actionTile_vertically.setObjectName("actionTile_vertically")
+        self.actionTranslate = QtWidgets.QAction(MGrepWindow)
+        icon24 = QtGui.QIcon()
+        icon24.addPixmap(QtGui.QPixmap(":/icons/icons/translate.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionTranslate.setIcon(icon24)
+        self.actionTranslate.setObjectName("actionTranslate")
         self.menuFile.addAction(self.actionSave_the_windows_position)
         self.menuFile.addAction(self.actionReset_main_window_position)
         self.menuFile.addAction(self.actionFactory_reset)
@@ -200,6 +203,7 @@ class Ui_MGrepWindow(object):
         self.menuTools.addAction(self.actionImport_Export)
         self.menuTools.addAction(self.actionAscii_Graphics_generator)
         self.menuTools.addAction(self.actionDownload_an_object_from_server)
+        self.menuTools.addAction(self.actionTranslate)
         self.menuHelp.addAction(self.actionHelp)
         self.menuHelp.addAction(self.actionProgram_info)
         self.menuHelp.addAction(self.actionChange_log)
@@ -232,6 +236,7 @@ class Ui_MGrepWindow(object):
         self.actionJobs_status.triggered.connect(MGrepWindow.slot_actionJobs_status)
         self.actionVolume.triggered.connect(MGrepWindow.slot_actionVolume)
         self.actionAscii_Graphics_generator.triggered.connect(MGrepWindow.slot_actionAscii_graphics)
+        self.actionTranslate.triggered.connect(MGrepWindow.slot_actionTranslate)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):
@@ -270,8 +275,9 @@ class Ui_MGrepWindow(object):
         self.actionCascade.setText(_translate("MGrepWindow", "Cascade"))
         self.actionTile_horizontaly.setText(_translate("MGrepWindow", "Tile horizontally"))
         self.actionTile_vertically.setText(_translate("MGrepWindow", "Tile vertically"))
-import resource_rc
+        self.actionTranslate.setText(_translate("MGrepWindow", "Translate"))
 
+import resource_rc
 
 if __name__ == "__main__":
     import sys
@@ -281,3 +287,4 @@ if __name__ == "__main__":
     ui.setupUi(MGrepWindow)
     MGrepWindow.show()
     sys.exit(app.exec_())
+
