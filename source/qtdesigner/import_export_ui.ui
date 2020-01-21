@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>import_export_window</class>
+ <widget class="QMainWindow" name="import_export_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>566</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Import-Export</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <item row="11" column="2">
+     <widget class="QLineEdit" name="e_excel_file"/>
+    </item>
+    <item row="14" column="3">
+     <widget class="QPushButton" name="b_import_excel">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/folder.gif</normaloff>:/icons/icons/folder.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="3">
+     <widget class="QPushButton" name="b_excel_file">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/folder.gif</normaloff>:/icons/icons/folder.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="2">
+     <widget class="QComboBox" name="e_table_to_oracle"/>
+    </item>
+    <item row="18" column="0">
+     <widget class="QLabel" name="l_label15">
+      <property name="text">
+       <string>CSV file</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_csv_file</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="19" column="0">
+     <widget class="QLabel" name="l_label16">
+      <property name="text">
+       <string>CSV separator</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_csv_separator</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QComboBox" name="e_table_name"/>
+    </item>
+    <item row="10" column="2">
+     <widget class="QComboBox" name="e_table_excel"/>
+    </item>
+    <item row="14" column="2">
+     <widget class="QLineEdit" name="e_import_excel"/>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="l_label5">
+      <property name="text">
+       <string>Table name</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_table_name</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="l_label6">
+      <property name="text">
+       <string>Where condition</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_where_cond</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="0">
+     <widget class="QLabel" name="l_label11">
+      <property name="text">
+       <string>SQLite table name</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_table_to_oracle</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0">
+     <widget class="QLabel" name="l_label8">
+      <property name="text">
+       <string>Table name</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_table_excel</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="0">
+     <widget class="QLabel" name="l_label9">
+      <property name="text">
+       <string>Destination file</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_excel_file</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="0">
+     <widget class="QLabel" name="l_label12">
+      <property name="text">
+       <string>Excel file</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_import_excel</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="0">
+     <widget class="QLabel" name="l_label13">
+      <property name="text">
+       <string>Destination table</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_oracle_table</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="2">
+     <widget class="QComboBox" name="e_oracle_table">
+      <property name="editable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="5" colspan="3">
+     <widget class="QPushButton" name="b_start_excel">
+      <property name="text">
+       <string>Export to Excel</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/excel.gif</normaloff>:/icons/icons/excel.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="18" column="5" colspan="3">
+     <widget class="QPushButton" name="b_start_csv_to_excel">
+      <property name="text">
+       <string>CSV file format to Excel format</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/excel.gif</normaloff>:/icons/icons/excel.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="16" column="5" colspan="3">
+     <widget class="QPushButton" name="b_start_import_excel">
+      <property name="text">
+       <string>Import Excel file into Oracle table</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/excel.gif</normaloff>:/icons/icons/excel.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="5" colspan="3">
+     <widget class="QPushButton" name="b_copy_to_oracle">
+      <property name="text">
+       <string>Start copy table from SQLite DB to Oracle DB</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="19" column="2">
+     <widget class="QLineEdit" name="e_csv_separator"/>
+    </item>
+    <item row="10" column="5" colspan="3">
+     <widget class="QPushButton" name="b_view_table">
+      <property name="text">
+       <string>View table</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/table.gif</normaloff>:/icons/icons/table.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="18" column="2">
+     <widget class="QLineEdit" name="e_csv_file"/>
+    </item>
+    <item row="18" column="3">
+     <widget class="QPushButton" name="b_csv_file">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/folder.gif</normaloff>:/icons/icons/folder.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="19" column="5" colspan="3">
+     <widget class="QPushButton" name="b_start_clip_to_excel">
+      <property name="text">
+       <string>Text Clipboard to Excel format</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/clipboard.gif</normaloff>:/icons/icons/clipboard.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="5">
+     <widget class="QLabel" name="l_label2">
+      <property name="text">
+       <string>SQLite DB:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_sqlite_db</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="l_label1">
+      <property name="text">
+       <string>Oracle name server:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_dboracle</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="0" colspan="4">
+     <widget class="QLabel" name="l_label10">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Copy a SQLite table or Excel file, into an Oracle table:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="21" column="0" colspan="8">
+     <widget class="QPushButton" name="b_save">
+      <property name="text">
+       <string>Save as default</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/disk.gif</normaloff>:/icons/icons/disk.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0" colspan="3">
+     <widget class="QLabel" name="l_label7">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>SQLite table utility:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0" colspan="4">
+     <widget class="QLabel" name="l_label4">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Copy an Oracle table into a SQLite DB:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="17" column="0" colspan="3">
+     <widget class="QLabel" name="l_label14">
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Convert a CSV file format in Excel file format:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QComboBox" name="e_dboracle"/>
+    </item>
+    <item row="4" column="6">
+     <widget class="QLineEdit" name="e_sqlite_db"/>
+    </item>
+    <item row="4" column="7">
+     <widget class="QPushButton" name="b_sqlite_db">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/folder.gif</normaloff>:/icons/icons/folder.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="20" column="0" colspan="8">
+     <widget class="Line" name="line">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2">
+     <widget class="QLineEdit" name="e_where_cond">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>60</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="5" colspan="3">
+     <widget class="QPushButton" name="b_copy_to_sqlite">
+      <property name="text">
+       <string>Start copy table from Oracle DB to SQLite DB</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>e_dboracle</tabstop>
+  <tabstop>e_sqlite_db</tabstop>
+  <tabstop>b_sqlite_db</tabstop>
+  <tabstop>e_table_name</tabstop>
+  <tabstop>e_where_cond</tabstop>
+  <tabstop>e_table_excel</tabstop>
+  <tabstop>b_view_table</tabstop>
+  <tabstop>e_excel_file</tabstop>
+  <tabstop>b_excel_file</tabstop>
+  <tabstop>b_start_excel</tabstop>
+  <tabstop>e_table_to_oracle</tabstop>
+  <tabstop>e_import_excel</tabstop>
+  <tabstop>b_import_excel</tabstop>
+  <tabstop>b_copy_to_oracle</tabstop>
+  <tabstop>e_oracle_table</tabstop>
+  <tabstop>b_start_import_excel</tabstop>
+  <tabstop>e_csv_file</tabstop>
+  <tabstop>b_csv_file</tabstop>
+  <tabstop>b_start_csv_to_excel</tabstop>
+  <tabstop>e_csv_separator</tabstop>
+  <tabstop>b_start_clip_to_excel</tabstop>
+  <tabstop>b_save</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>b_sqlite_db</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_sqlite_db()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>668</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>668</x>
+     <y>77</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_copy_to_sqlite</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_copy_to_sqlite()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>432</x>
+     <y>143</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>432</x>
+     <y>173</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_view_table</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_view_table()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>516</x>
+     <y>227</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>517</x>
+     <y>178</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_excel_file</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_excel_file()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>362</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>356</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_start_excel</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_start_excell()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>473</x>
+     <y>265</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>488</x>
+     <y>307</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_import_excel</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_import_excel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>360</x>
+     <y>346</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>360</x>
+     <y>315</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_copy_to_oracle</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_copy_to_oracle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>503</x>
+     <y>350</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>662</x>
+     <y>308</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_start_import_excel</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_start_import_excel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>574</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>574</x>
+     <y>411</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_csv_file</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_csv_file()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>361</x>
+     <y>458</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>360</x>
+     <y>486</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_start_csv_to_excel</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_start_csv_to_excel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>519</x>
+     <y>453</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>442</x>
+     <y>415</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_start_clip_to_excel</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_start_clip_to_excel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>670</x>
+     <y>495</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>658</x>
+     <y>417</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_save</sender>
+   <signal>clicked()</signal>
+   <receiver>import_export_window</receiver>
+   <slot>slot_b_save()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>372</x>
+     <y>542</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>393</x>
+     <y>562</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_b_sqlite_db()</slot>
+  <slot>slot_b_copy_to_sqlite()</slot>
+  <slot>slot_b_view_table()</slot>
+  <slot>slot_b_excel_file()</slot>
+  <slot>slot_b_start_excell()</slot>
+  <slot>slot_b_import_excel()</slot>
+  <slot>slot_b_copy_to_oracle()</slot>
+  <slot>slot_b_start_import_excel()</slot>
+  <slot>slot_b_csv_file()</slot>
+  <slot>slot_b_start_csv_to_excel()</slot>
+  <slot>slot_b_start_clip_to_excel()</slot>
+  <slot>slot_b_save()</slot>
+ </slots>
+</ui>

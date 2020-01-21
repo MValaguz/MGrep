@@ -44,10 +44,16 @@ class MGrep_class(QtWidgets.QMainWindow):
         # se dalle preferenze emerge che vanno aperte delle window in una certa posizione, procedo con apertura
         self.apre_finestre_salvate()    
         
+        # se il programma è lanciato "live", cioè da editor, la console si apre di default
+        # l'attributo frozen che viene controllato viene generato durante la compilazione tramite il comando pyinstaller                
+        # reindirizzo l'output su di un file di testo            
+        sys.stdout = open(self.o_preferenze.work_dir + '\\MGrep_stdout.txt','w')
+        sys.stderr = open(self.o_preferenze.work_dir + '\\MGrep_stderr.txt','w')
+        
     def apre_finestre_salvate(self):
         """
            Apre le finestre che sono state salvate nella loro posizione e dimensione
-        """        
+        """
         for my_window_pos in self.o_preferenze.l_windows_pos:                        
             if 'MainWindow' in my_window_pos:
                 o_rect = QtCore.QRect()
@@ -97,7 +103,7 @@ class MGrep_class(QtWidgets.QMainWindow):
             for i in range(0,len(o_window_list)):                
                 self.o_preferenze.l_windows_pos.append( str(o_window_list[i].windowTitle()).replace(' ','_') ) 
                     
-            # salvo la lista
+            # salvo la lista            
             self.o_preferenze.salva_pos_finestre()            
     
     def slot_actionReset_main_window_position(self):
@@ -128,7 +134,10 @@ class MGrep_class(QtWidgets.QMainWindow):
         """                
         from ricerca_stringhe import ricerca_stringhe_class        
         my_app = ricerca_stringhe_class()
-        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)                        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/search_string.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)
         my_app.show()   
         
     def slot_actionFiles_in_system(self):
@@ -138,6 +147,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         from ricerca_file import ricerca_file_class        
         my_app = ricerca_file_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/search_file.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)        
         my_app.show()  
         
     def slot_actionImage_link_in_web_page(self):
@@ -147,6 +159,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         from ricerca_elementi_in_pagina_web import ricerca_elementi_in_pagina_web_class        
         my_app = ricerca_elementi_in_pagina_web_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/paint.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                
         my_app.show()    
         
     def slot_actionPhone_book(self):
@@ -157,6 +172,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_app = rubrica_class('T')        
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)                        
         my_sub_window.setWindowTitle('Phone book')
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/phone.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                        
         my_app.show()            
         
     def slot_actionEmail_book(self):
@@ -167,6 +185,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_app = rubrica_class('E')
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
         my_sub_window.setWindowTitle('Email book')
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/mail.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                
         my_app.show()    
         
     def slot_actionRecompiler(self):
@@ -176,6 +197,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         from oracle_recompiler import oracle_recompiler_class
         my_app = oracle_recompiler_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/gears.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                        
         my_app.show()            
         
     def slot_actionLocks(self):
@@ -185,6 +209,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         from oracle_locks import oracle_locks_class
         my_app = oracle_locks_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/lock.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                
         my_app.show()   
         
     def slot_actionSessions(self):
@@ -194,6 +221,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         from oracle_sessions import oracle_sessions_class
         my_app = oracle_sessions_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/table.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                        
         my_app.show()           
         
     def slot_actionJobs_status(self):
@@ -203,6 +233,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         from oracle_jobs import oracle_jobs_class
         my_app = oracle_jobs_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/oracle.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                                
         my_app.show()           
         
     def slot_actionVolume(self):
@@ -212,6 +245,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         from oracle_volume import oracle_volume_class
         my_app = oracle_volume_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/compile.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                                        
         my_app.show()               
             
     def slot_actionFavorites_files(self):
@@ -221,6 +257,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         from file_preferiti import file_preferiti_class
         my_app = file_preferiti_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/favorites_files.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                                                
         my_app.show()           
         
     def slot_actionFavorites_dirs(self):
@@ -230,7 +269,22 @@ class MGrep_class(QtWidgets.QMainWindow):
         from directory_preferite import directory_preferite_class
         my_app = directory_preferite_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
-        my_app.show()           
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/favorites_directories.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                                                        
+        my_app.show()       
+        
+    def slot_actionImport_Export(self):
+        """
+           Richiamo tools per import-export
+        """                
+        from import_export import import_export_class
+        my_app = import_export_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/db.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                                                                
+        my_app.show()             
         
     def slot_actionAscii_graphics(self):
         """
@@ -239,6 +293,9 @@ class MGrep_class(QtWidgets.QMainWindow):
         from ascii_graphics import ascii_graphics_class
         my_app = ascii_graphics_class()
         my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/font.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                                                                
         my_app.show()     
         
     def slot_actionTranslate(self):

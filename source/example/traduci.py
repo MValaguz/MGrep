@@ -12,7 +12,7 @@
 
 from translate import Translator
 
-o_traduci = Translator(provider='mymemory', from_lang='en', to_lang='it')
+o_traduci = Translator(provider='mymemory', from_lang='it', to_lang='en')
 
 print('|--------TRANSLATE DA INGLESE A ITALIANO---------|')
 print('|                                                |')
