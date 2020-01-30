@@ -29,13 +29,18 @@ class pubblica_form_report(QtWidgets.QWidget):
     def __init__(self, p_sorgente, p_work_dir, p_tipo):        
         # rendo la mia classe una superclasse
         super(pubblica_form_report, self).__init__()        
-        
+                        
         # creazione della wait window
         self.v_progress_step = 0
         self.progress = QtWidgets.QProgressDialog(self)        
         self.progress.setMinimumDuration(0)
         self.progress.setWindowModality(QtCore.Qt.WindowModal)
         self.progress.setWindowTitle("Pubblication on server iAS12g")                
+        
+        # icona di riferimento
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)        
+        self.progress.setWindowIcon(icon)
         
         # imposto valore minimo e massimo a 0 in modo venga considerata una progress a tempo indefinito
         # Attenzione! dentro nel ciclo deve essere usata la funzione setvalue altrimenti non visualizza e non avanza nulla!
@@ -158,7 +163,7 @@ class pubblica_form_report(QtWidgets.QWidget):
     def avanza_progress(self, p_msg):
         """
            Visualizza prossimo avanzamento sulla progress bar. Per una ragione al momento sconosciuta
-           ho dovuto fare un doppio giro perché effettuasse il refresh a video!
+           ho dovuto fare un doppio giro per effettuasse il refresh a video!
         """
         self.v_progress_step += 1
         self.progress.setValue(self.v_progress_step);                                        

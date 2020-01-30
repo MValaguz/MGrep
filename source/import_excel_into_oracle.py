@@ -3,7 +3,7 @@
 """
  Creato da.....: Marco Valaguzza
  Piattaforma...: Python3.6
- Data..........: 16/08/2018
+ Data..........: 24/01/2020
  Descrizione...: Scopo dello script è prendere un foglio di excel e caricarlo in un DB Oracle.
  Note..........: Al momento la procedura non permette di personalizzare il tipo e il numero di colonne da importare.
                  Si dà per scontato che alla prima riga siano presenti i nomi delle colonne.
@@ -14,14 +14,17 @@
 
 #Librerie di data base
 import  cx_Oracle
+#Librerie di sistema
+import os
+import sys
 #Librerie grafiche
-import  wx
+from PyQt5 import QtCore, QtGui, QtWidgets
 #Libreria per la lettura e scrittura file di excel
 from    openpyxl import load_workbook
 #Liberia regular expression
 import  re
 #Moduli di progetto
-from utilita import pathname_icons
+from utilita import message_error, message_info, message_question_yes_no
 
 def slugify(text, lower=1):
     """
@@ -34,7 +37,7 @@ def slugify(text, lower=1):
     text = re.sub(r'[- ]+', '_', text)
     return text
 
-class import_excel_into_oracle:
+class import_excel_into_oracle(QtWidgets.QWidget):
     """
         Importa un foglio di excel dentro una tabella di Oracle
         Va indicato attraverso l'instanziazione della classe:
@@ -54,52 +57,48 @@ class import_excel_into_oracle:
                  p_table_name,
                  p_excel_file,
                  p_modalita_test):
-
-        # creo la finestra come figlia della finestra di partenza
-        self.my_window = wx.Frame(None, title = u'Copying Excel file into Oracle table', size=(400,120))
-        self.my_window.SetIcon(wx.Icon(pathname_icons() + 'search.ico', wx.BITMAP_TYPE_ICO))
-        # creo un pannello contenitore
-        self.panel = wx.Panel(self.my_window, wx.ID_ANY)
-        self.panel.SetBackgroundColour("WHITE")
-
-        self.label_1 = wx.StaticText(self.panel, wx.ID_ANY, "...")
-        self.gauge_1 = wx.Gauge(self.panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL)
-        self.gauge_1.SetValue(1)
-        self.label_2 = wx.StaticText(self.panel, wx.ID_ANY, "Analizing excel file...")
-
-        # creo il layout
-        bSizer1 = wx.BoxSizer( wx.VERTICAL )
-        gbSizer1 = wx.GridBagSizer( 0, 0 )
-        gbSizer1.SetFlexibleDirection( wx.BOTH )
-        gbSizer1.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
-        gbSizer1.Add( self.label_1, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER|wx.ALL, 2 )
-        gbSizer1.Add( self.gauge_1, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 2 )
-        gbSizer1.Add( self.label_2, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER|wx.ALL, 2 )
-        gbSizer1.AddGrowableCol(0)
-        bSizer1.Add( gbSizer1, 1, wx.ALL|wx.EXPAND, 10 )
-
-        # visualizzo il pannello
-        self.panel.SetSizer( bSizer1 )
-        self.my_window.Centre(wx.BOTH)
-        self.my_window.SetFocus()
-        self.my_window.Show()
-        self.panel.Layout()
-        self.panel.Update()
+                
+        # rendo la mia classe una superclasse
+        super(import_excel_into_oracle, self).__init__()                
+        
+                # creazione della wait window
+        self.v_progress_step = 0
+        self.progress = QtWidgets.QProgressDialog(self)        
+        self.progress.setMinimumDuration(0)
+        self.progress.setWindowModality(QtCore.Qt.WindowModal)
+        self.progress.setWindowTitle("Copy...")                
+        
+        # icona di riferimento
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)        
+        self.progress.setWindowIcon(icon)
+        
+        # imposto valore minimo e massimo a 0 in modo venga considerata una progress a tempo indefinito
+        # Attenzione! dentro nel ciclo deve essere usata la funzione setvalue altrimenti non visualizza e non avanza nulla!
+        self.progress.setMinimum(0)
+        self.progress.setMaximum(100) 
+        # creo un campo label che viene impostato con 100 caratteri in modo venga data una dimensione di base standard
+        self.progress_label = QtWidgets.QLabel()            
+        self.progress_label.setText('.'*100)
+        # collego la label già presente nell'oggetto progress bar con la mia label 
+        self.progress.setLabel(self.progress_label)                           
+        # creo una scritta iniziale...
+        self.avanza_progress("Analizing excel file...")
+        self.avanza_progress("Analizing excel file...")
         
         #Apro il file di excel
         try:
             wb = load_workbook(filename = p_excel_file)
         except:
-            wx.MessageBox(message='Format file invalid. Only xlsx file format!', caption='Error', style=wx.OK|wx.ICON_ERROR)
+            message_error('Format file invalid. Only xlsx file format!')
             #esco
             return None
         #Leggo tutti i nomi dei fogli in esso contenuti
         v_nomi_fogli = wb.sheetnames
         #Se il file contiene più fogli, avverto che verrà preso solo il primo
         if len(v_nomi_fogli) > 1:
-            wx.MessageBox(message='This file contains more than one sheet. It will be taken the first ' + v_nomi_fogli[0] + '!', caption='Info', style=wx.OK|wx.ICON_INFORMATION)
-            #Forzo il fuoco sulla window        
-            self.my_window.SetFocus()
+            message_info('This file contains more than one sheet. It will be taken the first ' + v_nomi_fogli[0] + '!')            
+        
         #Mi posiziono sul primo foglio 
         v_foglio = wb[v_nomi_fogli[0]]
         
@@ -108,13 +107,13 @@ class import_excel_into_oracle:
         self.v_debug = p_debug
         v_definizione_colonne = self.struttura_foglio(v_foglio) 
         
-        self.label_1.SetLabel( 'Total records number to copy...' + str(self.v_numero_totale_righe) )
+        self.avanza_progress( 'Total records number to copy...' + str(self.v_numero_totale_righe) )
         
         #Collegamento a Oracle                
         try:
             self.v_oracle_db = cx_Oracle.connect(user=p_user_db, password=p_password_db, dsn=p_dsn_db, encoding = "UTF-8", nencoding = "UTF-8")
         except:
-            wx.MessageBox(message='Connecting problems to Oracle DB!', caption='Error', style=wx.OK|wx.ICON_ERROR)
+            message_error('Connecting problems to Oracle DB!')
             #esco
             return None
         
@@ -124,10 +123,9 @@ class import_excel_into_oracle:
         if self.creo_tabella(v_definizione_colonne, p_table_name) == 'ok':
             if self.importa_foglio(v_foglio, v_definizione_colonne, p_table_name) == 'ok':
                 #Messaggio finale
-                wx.MessageBox(message='Action completed with ' + str(self.v_numero_totale_righe) + ' records imported!', caption='Info', style=wx.OK|wx.ICON_INFORMATION)        
+                message_info('Action completed with ' + str(self.v_numero_totale_righe) + ' records imported!')        
         
-        self.v_oracle_db.close()        
-        self.my_window.Close()
+        self.v_oracle_db.close()                
         return None        
     
     def struttura_foglio(self, p_foglio):        
@@ -270,7 +268,7 @@ class import_excel_into_oracle:
         try:    
             self.v_oracle_cursor.execute(v_query)
         except:
-            wx.MessageBox(message="Problem during create Oracle table! The table " + p_table_name + " already exists?", caption='Error', style=wx.OK|wx.ICON_ERROR)            
+            message_error("Problem during create Oracle table! The table " + p_table_name + " already exists?")            
             #esco
             return 'ko'
 
@@ -331,24 +329,33 @@ class import_excel_into_oracle:
                 #Emetto percentuale di avanzamento ma solo se righe maggiori di 100
                 if self.v_numero_totale_righe > 100:
                     v_progress += 1
-                    if v_progress % v_rif_percent == 0:                
-                        self.gauge_1.SetValue( (v_progress*100//self.v_numero_totale_righe)+1 )
-                        self.label_2.SetLabel( 'Importing...' + str((v_progress*100//self.v_numero_totale_righe)+1) + '%' )
-                        self.panel.Layout()
-                        self.panel.Update()
+                    if v_progress % v_rif_percent == 0:                                        
+                        self.avanza_progress( 'Total records to copy: ' + str(self.v_numero_totale_righe) )
+                        
             else:
                 v_1a_riga = False
                     
         self.v_oracle_db.commit()
         return 'ok'
+    
+    def avanza_progress(self, p_msg):
+        """
+           Visualizza prossimo avanzamento sulla progress bar
+        """
+        self.v_progress_step += 1
+        if self.v_progress_step <= 100:
+            self.progress.setValue(self.v_progress_step);                                        
+            self.progress_label.setText(p_msg)         
         
-# Eseguo applicazione d'esempio se non richiamato da altro programma
-if __name__ == "__main__":    
-    app = wx.App()
-    app = import_excel_into_oracle(True,
-                                  "SMILE",
-                                  "SMILE",
-                                  "ICOM_815",
-                                  "CANCELLAMI_90",                                         
-                                  "C:\SmiGrep\IMPORTA.xlsx",
-                                  True)      
+# ----------------------------------------
+# TEST APPLICAZIONE
+# ----------------------------------------
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)    
+    import_excel_into_oracle(True,
+                             "SMILE",
+                             "SMILE",
+                             "BACKUP_815",
+                             "CANCELLAMI_91",                                         
+                             "C:/MGrep/exportdb.xlsx",
+                             True)      

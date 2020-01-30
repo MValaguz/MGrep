@@ -3,7 +3,7 @@
 """
  Creato da.....: Marco Valaguzza
  Piattaforma...: Python3.6
- Data..........: 16/08/2018
+ Data..........: 24/01/2020
  Descrizione...: Scopo del programma è prendere una tabella SQLite ed esportarla dentro un DB Oracle. 
 """
 #Librerie di data base
@@ -11,13 +11,14 @@ import cx_Oracle
 import sqlite3 
 #Librerie di sistema
 import os
+import sys
 #Librerie grafiche
-import  wx
+from PyQt5 import QtCore, QtGui, QtWidgets
 #Moduli di progetto
-from    utilita_database import estrae_struttura_tabella_sqlite        
-from    utilita import pathname_icons
+from utilita_database import estrae_struttura_tabella_sqlite        
+from utilita import message_error, message_info, message_question_yes_no
 
-class copy_from_sqlite_to_oracle:
+class copy_from_sqlite_to_oracle(QtWidgets.QWidget):
     """
         Esegue la copia di una tabella SQLite dentro una tabella Oracle che NON deve esistere
         Va indicato attraverso l'instanziazione della classe:
@@ -39,43 +40,41 @@ class copy_from_sqlite_to_oracle:
                  p_oracle_table,
                  p_modalita_test):
                 
+        # rendo la mia classe una superclasse
+        super(copy_from_sqlite_to_oracle, self).__init__()                
+                
         #Completo la pathname 
         p_blob_pathname = p_blob_pathname + '\\'        
                 
-        # creo la finestra come figlia della finestra di partenza
-        self.my_window = wx.Frame(None, title = u"Copying table from SQLite to Oracle", size=(400,120))
-        self.my_window.SetIcon(wx.Icon(pathname_icons() + 'search.ico', wx.BITMAP_TYPE_ICO))
-        # creo un pannello contenitore
-        self.panel = wx.Panel(self.my_window, wx.ID_ANY)
-        self.panel.SetBackgroundColour("WHITE")
-
-        self.label_1 = wx.StaticText(self.panel, wx.ID_ANY, "...")
-        self.gauge_1 = wx.Gauge(self.panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL)
-        self.label_2 = wx.StaticText(self.panel, wx.ID_ANY, "...")
-
-        # creo il layout
-        bSizer1 = wx.BoxSizer( wx.VERTICAL )
-        gbSizer1 = wx.GridBagSizer( 0, 0 )
-        gbSizer1.SetFlexibleDirection( wx.BOTH )
-        gbSizer1.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
-        gbSizer1.Add( self.label_1, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER|wx.ALL, 2 )
-        gbSizer1.Add( self.gauge_1, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 2 )
-        gbSizer1.Add( self.label_2, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER|wx.ALL, 2 )
-        gbSizer1.AddGrowableCol(0)
-        bSizer1.Add( gbSizer1, 1, wx.ALL|wx.EXPAND, 10 )
-
-        # visualizzo il pannello
-        self.panel.SetSizer( bSizer1 )
-        self.my_window.Centre(wx.BOTH)
-        self.my_window.SetFocus()
-        self.my_window.Show()
+                # creazione della wait window
+        self.v_progress_step = 0
+        self.progress = QtWidgets.QProgressDialog(self)        
+        self.progress.setMinimumDuration(0)
+        self.progress.setWindowModality(QtCore.Qt.WindowModal)
+        self.progress.setWindowTitle("Copy...")                
+        
+        # icona di riferimento
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)        
+        self.progress.setWindowIcon(icon)
+        
+        # imposto valore minimo e massimo a 0 in modo venga considerata una progress a tempo indefinito
+        # Attenzione! dentro nel ciclo deve essere usata la funzione setvalue altrimenti non visualizza e non avanza nulla!
+        self.progress.setMinimum(0)
+        self.progress.setMaximum(100) 
+        # creo un campo label che viene impostato con 100 caratteri in modo venga data una dimensione di base standard
+        self.progress_label = QtWidgets.QLabel()            
+        self.progress_label.setText('.'*100)
+        # collego la label già presente nell'oggetto progress bar con la mia label 
+        self.progress.setLabel(self.progress_label)                           
+        # creo una scritta iniziale...
+        self.avanza_progress('Collecting data...')
         
         #Avvio la copia della tabella        
         if self.copia_tabella(p_table_name, p_sqlite_db_name, p_blob_pathname, p_user_db, p_password_db, p_dsn_db, p_oracle_table) == 'ok':
             #Messaggio finale            
-            wx.MessageBox(message='Table copy completed!', caption='Info', style=wx.OK | wx.ICON_INFORMATION)
-
-        self.my_window.Close()
+            message_info('Table copy completed!')
+        
         return None                
 
     def copia_tabella(self,
@@ -86,13 +85,7 @@ class copy_from_sqlite_to_oracle:
                       v_password_db,
                       v_dsn_db,
                       v_oracle_table): 
-                
-        #Aggiorno informazioni di avanzamento della copia
-        self.label_2.SetLabel('Collecting data...')
-        self.gauge_1.SetValue(0)
-        self.panel.Layout()
-        self.panel.Update()
-        
+                        
         #Controllo se esiste una directory con il nome della tabella e al cui interno sia presente il file di definizione dei blob    
         #Eventualmente preparo una lista con le posizioni dei campi di blob che userò solo dopo aver fatto le insert
         v_posizioni_blob = []
@@ -109,7 +102,7 @@ class copy_from_sqlite_to_oracle:
         try:
             v_oracle_db = cx_Oracle.connect(user=v_user_db, password=v_password_db, dsn=v_dsn_db)        
         except:
-            wx.MessageBox(message="Connecting problems to Oracle DB!", caption='Error', style=wx.OK|wx.ICON_ERROR)            
+            message_error("Connecting problems to Oracle DB!")            
             #esco
             return 'ko'            
         v_oracle_cursor = v_oracle_db.cursor()    
@@ -123,22 +116,22 @@ class copy_from_sqlite_to_oracle:
         try:
             v_oracle_cursor.execute("SELECT COUNT(*) FROM ALL_TABLES WHERE TABLE_NAME='" + v_oracle_table + "'")                        
         except:
-            wx.MessageBox(message="Table in Oracle DB not exists!", caption='Error', style=wx.OK|wx.ICON_ERROR)           
+            message_error("Table in Oracle DB not exists!")           
             #esco
             return 'ko'
         #Se la tabella esiste errore ed esco
         if v_oracle_cursor.fetchone()[0] > 0:
-            wx.MessageBox(message="Table in Oracle DB already exist!", caption='Error', style=wx.OK|wx.ICON_ERROR)           
+            message_error("Table in Oracle DB already exist!")           
             #esco
             return 'ko'
             
         #Conto i record della tabella di partenza        
-        query = 'SELECT COUNT(*) FROM ' + v_table_name
+        query = 'SELECT COUNT(*) FROM ' + v_table_name                
         #Aggiungo la where (solo se caricata)        
         try:    
             v_sqlite_cur.execute(query)
         except:
-            wx.MessageBox(message="SQLite table do not exists!", caption='Error', style=wx.OK|wx.ICON_ERROR)           
+            message_error("SQLite table do not exists!")           
             #esco
             return 'ko'
                 
@@ -149,12 +142,6 @@ class copy_from_sqlite_to_oracle:
         v_rif_percent = 0
         if v_total_rows > 100:
             v_rif_percent = v_total_rows // 100
-
-        #print('Righe totali da copiare...' + str(v_total_rows))
-        self.my_window.SetFocus()
-        self.label_1.SetLabel('Total records number to copy...' + str(v_total_rows))
-        self.panel.Layout()
-        self.panel.Update()
     
         #Chiedo a db SQLite di restituirmi la struttura della tabella di partenza
         query = estrae_struttura_tabella_sqlite('c', v_sqlite_cur, v_table_name)                             
@@ -217,24 +204,32 @@ class copy_from_sqlite_to_oracle:
             if v_total_rows > 100:
                 v_progress += 1
                 if v_progress % v_rif_percent == 0:                
-                    self.gauge_1.SetValue( (v_progress*100//v_total_rows)+1 )
-                    self.label_2.SetLabel( 'Copying...' + str((v_progress*100//v_total_rows)+1) + '%' )
-                    self.panel.Layout()
-                    self.panel.Update()
+                    self.avanza_progress('Total records to copy: ' + str(v_total_rows))                    
                 
         #chiusura dei db
         v_sqlite_conn.close()                    
         v_oracle_db.close()        
         return 'ok'
-        
-# Eseguo applicazione d'esempio se non richiamato da altro programma
-if __name__ == "__main__":    
-    app = wx.App()
-    app = copy_from_sqlite_to_oracle("OC_ORTES",                                        
-                                     "C:\SmiGrep\SmiGrepTransfer.db",
-                                     "C:\SmiGrep",
-                                     "SMILE",
-                                     "SMILE",
-                                     "BACKUP_815",
-                                     "CANCELLAMI_103",
-                                     True)      
+    
+    def avanza_progress(self, p_msg):
+        """
+           Visualizza prossimo avanzamento sulla progress bar
+        """
+        self.v_progress_step += 1
+        if self.v_progress_step <= 100:
+            self.progress.setValue(self.v_progress_step);                                        
+            self.progress_label.setText(p_msg)        
+            
+# ----------------------------------------
+# TEST APPLICAZIONE
+# ----------------------------------------
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)    
+    copy_from_sqlite_to_oracle("OC_ORTES",  
+                               "C:/MGrep/MGrepTransfer.db",                               
+                               "C:\MGrep",
+                               "SMILE",
+                               "SMILE",
+                               "BACKUP_815",
+                               "CANCELLAMI_103",
+                               True)      

@@ -26,7 +26,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from MGrep_ui import Ui_MGrepWindow
 #Librerie interne 
 from preferenze import preferenze
-from utilita import message_error, message_info, message_question_yes_no
+from utilita import message_error, message_info, message_question_yes_no, my_console
        
 class MGrep_class(QtWidgets.QMainWindow):
     """
@@ -44,11 +44,14 @@ class MGrep_class(QtWidgets.QMainWindow):
         # se dalle preferenze emerge che vanno aperte delle window in una certa posizione, procedo con apertura
         self.apre_finestre_salvate()    
         
-        # se il programma è lanciato "live", cioè da editor, la console si apre di default
+        # se il programma è lanciato "live", cioè da editor, la console viene diretta sul file MGrep_stxxx
         # l'attributo frozen che viene controllato viene generato durante la compilazione tramite il comando pyinstaller                
         # reindirizzo l'output su di un file di testo            
-        sys.stdout = open(self.o_preferenze.work_dir + '\\MGrep_stdout.txt','w')
-        sys.stderr = open(self.o_preferenze.work_dir + '\\MGrep_stderr.txt','w')
+        if not getattr(sys, 'frozen', False):            
+            sys.stdout = my_console(self.o_preferenze.work_dir + '\\MGrep_stdout.txt')
+            sys.stderr = my_console(self.o_preferenze.work_dir + '\\MGrep_stderr.txt')
+        
+        a = 1/0 
         
     def apre_finestre_salvate(self):
         """

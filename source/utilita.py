@@ -9,7 +9,21 @@
 from PyQt5 import QtGui,QtWidgets
 import qtdesigner.resource_rc
 import os
+import sys
 
+class my_console(object):
+    '''
+       Reindirizza i messaggi della console direttamente su un file
+    '''
+    def __init__(self, filename):
+         self.out = open(filename, "w")
+
+    def flush(self, s):
+        self.out.write(s)
+
+    def write(self,s):
+        self.out.write(s)
+        
 def file_in_directory(p_node):
     '''
        Restituisce tupla con elenco dei file contenuti nella dir p_node e nelle sue sottodir

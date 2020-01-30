@@ -19,7 +19,7 @@ from program_info_ui import Ui_Program_info
        
 class program_info_class(QtWidgets.QDialog):
     """
-        Programma per la ricerca delle stringhe all'interno dei sorgenti di Oracle forms
+        visualizza le info del programma
     """                
     def __init__(self, p_mdi_area):
         super(program_info_class, self).__init__()

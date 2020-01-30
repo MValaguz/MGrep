@@ -3,21 +3,20 @@
 """
  Creato da.....: Marco Valaguzza
  Piattaforma...: Python3.6
- Data..........: 26/03/2018
+ Data..........: 24/01/2020
  Descrizione...: Scopo del programma è prendere un file CSV e convertirlo nel rispettivo formato di Excel
 
- Modificato da.: Marco Valaguzza
- Data..........: 25/07/2018
- Motivo........: Inserita conversione automatica delle celle numeriche (attenzione! Non conversione di colonne ma di celle!)
+ Note! Inserita conversione automatica delle celle numeriche (attenzione! Non conversione di colonne ma di celle!)
 """
 #Librerie di sistema
 import  os
+import sys
 #Librerie grafiche
-import  wx
+from PyQt5 import QtCore, QtGui, QtWidgets
 #Libreria per export in excel
 from    xlsxwriter.workbook import Workbook
-#Librerie interne SmiGrep
-from utilita import pathname_icons
+#Moduli di progetto
+from utilita import message_error, message_info, message_question_yes_no
 
 def check_campo_numerico(valore):
     v_ok = True
@@ -30,7 +29,7 @@ def check_campo_numerico(valore):
 def campo_numerico(valore):
     return float(valore.replace(',','.'))
 
-class convert_csv_to_excel:
+class convert_csv_to_excel(QtWidgets.QWidget):
     """
         Converte file csv in formato excel
         Va indicato attraverso l'instanziazione della classe:
@@ -41,35 +40,37 @@ class convert_csv_to_excel:
                  p_csv_name,
                  p_csv_separator,
                  p_modalita_test):
-
-        # creo la finestra come figlia della finestra di partenza
-        self.my_window = wx.Frame(None, title = u"Convert CSV file format in Excel file format", size=(400,120))
-        self.my_window.SetIcon(wx.Icon(pathname_icons() + 'search.ico', wx.BITMAP_TYPE_ICO))
-        # creo un pannello contenitore
-        self.panel = wx.Panel(self.my_window, wx.ID_ANY)
-        self.panel.SetBackgroundColour("WHITE")
-
-        self.label_1 = wx.StaticText(self.panel, wx.ID_ANY, "...")
-        self.gauge_1 = wx.Gauge(self.panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL)
-        self.label_2 = wx.StaticText(self.panel, wx.ID_ANY, "...")
-
-        # creo il layout
-        bSizer1 = wx.BoxSizer( wx.VERTICAL )
-        gbSizer1 = wx.GridBagSizer( 0, 0 )
-        gbSizer1.SetFlexibleDirection( wx.BOTH )
-        gbSizer1.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
-        gbSizer1.Add( self.label_1, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER|wx.ALL, 2 )
-        gbSizer1.Add( self.gauge_1, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 2 )
-        gbSizer1.Add( self.label_2, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER|wx.ALL, 2 )
-        gbSizer1.AddGrowableCol(0)
-        bSizer1.Add( gbSizer1, 1, wx.ALL|wx.EXPAND, 10 )
-
-        # visualizzo il pannello
-        self.panel.SetSizer( bSizer1 )
-        self.my_window.Centre(wx.BOTH)
-        self.my_window.SetFocus()
-        self.my_window.Show()
         
+        # rendo la mia classe una superclasse
+        super(convert_csv_to_excel, self).__init__()                
+        
+        # creazione della wait window
+        self.v_progress_step = 0
+        self.progress = QtWidgets.QProgressDialog(self)        
+        self.progress.setMinimumDuration(0)
+        self.progress.setWindowModality(QtCore.Qt.WindowModal)
+        self.progress.setWindowTitle("Copy...")                
+        
+        # icona di riferimento
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)        
+        self.progress.setWindowIcon(icon)
+        
+        # imposto valore minimo e massimo a 0 in modo venga considerata una progress a tempo indefinito
+        # Attenzione! dentro nel ciclo deve essere usata la funzione setvalue altrimenti non visualizza e non avanza nulla!
+        self.progress.setMinimum(0)
+        self.progress.setMaximum(100) 
+        # creo un campo label che viene impostato con 100 caratteri in modo venga data una dimensione di base standard
+        self.progress_label = QtWidgets.QLabel()            
+        self.progress_label.setText('.'*100)
+        # collego la label già presente nell'oggetto progress bar con la mia label 
+        self.progress.setLabel(self.progress_label)                           
+        
+        # controllo sia stato indicato il separatore csv
+        if p_csv_separator == '':
+            message_error( 'Insert a csv separator!')
+            return None
+                
         #Spezzo il nome del file per ricavare il nome di destinazione e controllo che la destinazione non esista
         v_solo_nome_file = os.path.split(p_csv_name)[1]
         v_solo_directory = os.path.split(p_csv_name)[0]
@@ -77,12 +78,10 @@ class convert_csv_to_excel:
         v_suffisso_nome_file = os.path.splitext(v_solo_nome_file)[1]
         v_xls_name = v_solo_directory + '//' + v_solo_nome_file_senza_suffisso + '.xlsx'
         if os.path.isfile(v_xls_name):
-            if wx.MessageBox(message="Destination file already exists. Do you to replace it?", caption='Notice', style=wx.YES_NO|wx.ICON_INFORMATION) == wx.YES:
-                self.my_window.SetFocus()
-            else:
+            if message_question_yes_no("Destination file already exists. Do you to replace it?") == 'No':
                 # esco dalla procedura perché utente ha deciso di non preseguire
                 return None
-
+            
         #Apro il file e conto le righe
         v_total_rows = 0
         with open(p_csv_name, encoding='latin-1', mode='r') as v_file:
@@ -93,9 +92,6 @@ class convert_csv_to_excel:
         v_rif_percent = 0
         if v_total_rows > 100:
             v_rif_percent = v_total_rows // 100
-        self.label_1.SetLabel( 'Total records number...' + str(v_total_rows) )
-        self.panel.Layout()
-        self.panel.Update()
 
         #Creazione del file excel
         workbook = Workbook(v_xls_name)
@@ -119,23 +115,26 @@ class convert_csv_to_excel:
                 if v_total_rows > 100:
                     v_progress += 1
                     if v_progress % v_rif_percent == 0:
-                        self.gauge_1.SetValue( (v_progress*100//v_total_rows)+1 )
-                        self.label_2.SetValue( 'Converting...' + str((v_progress*100//v_total_rows)+1) + '%' )
-                        self.panel.Layout()
-                        self.panel.Update()
-
+                        self.avanza_progress( 'Total record to copy: ' + str(v_total_rows) )
+                        
         #Chiusura del file e del db
-        self.label_2.SetLabel('Finalizing process...')
-        self.panel.Layout()
-        self.panel.Update()
+        self.avanza_progress('Finalizing process...')
         workbook.close()
         #Messaggio finale
-        wx.MessageBox(message='File conversion completed!', caption='Info', style=wx.OK|wx.ICON_INFORMATION)
-
-        self.my_window.Close()
+        message_info('File conversion completed!')
+        
         return None
+    
+    def avanza_progress(self, p_msg):
+        """
+           Visualizza prossimo avanzamento sulla progress bar
+        """
+        self.v_progress_step += 1
+        if self.v_progress_step <= 100:
+            self.progress.setValue(self.v_progress_step);                                        
+            self.progress_label.setText(p_msg)            
 
-class convert_csv_clipboard_to_excel:
+class convert_csv_clipboard_to_excel(QtWidgets.QWidget):
     """
         Converte il testo contenuto nella clipboard (appunti) nel formato di excel
         Va indicato attraverso l'instanziazione della classe:
@@ -147,50 +146,46 @@ class convert_csv_clipboard_to_excel:
                  p_csv_separator,
                  p_modalita_test):
 
-        # creo la finestra come figlia della finestra di partenza
-        self.my_window = wx.Frame(None, title = u"Convert clipboard to Excel", size=(400,120))
-        self.my_window.SetIcon(wx.Icon(pathname_icons() + 'search.ico', wx.BITMAP_TYPE_ICO))
-        # creo un pannello contenitore
-        self.panel = wx.Panel(self.my_window, wx.ID_ANY)
-        self.panel.SetBackgroundColour("WHITE")
-
-        self.label_1 = wx.StaticText(self.panel, wx.ID_ANY, "...")
-        self.gauge_1 = wx.Gauge(self.panel, wx.ID_ANY, 100, wx.DefaultPosition, wx.DefaultSize, wx.GA_HORIZONTAL)
-        self.label_2 = wx.StaticText(self.panel, wx.ID_ANY, "...")
-
-        # creo il layout
-        bSizer1 = wx.BoxSizer( wx.VERTICAL )
-        gbSizer1 = wx.GridBagSizer( 0, 0 )
-        gbSizer1.SetFlexibleDirection( wx.BOTH )
-        gbSizer1.SetNonFlexibleGrowMode( wx.FLEX_GROWMODE_SPECIFIED )
-        gbSizer1.Add( self.label_1, wx.GBPosition( 0, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER|wx.ALL, 2 )
-        gbSizer1.Add( self.gauge_1, wx.GBPosition( 1, 0 ), wx.GBSpan( 1, 1 ), wx.ALL|wx.EXPAND, 2 )
-        gbSizer1.Add( self.label_2, wx.GBPosition( 2, 0 ), wx.GBSpan( 1, 1 ), wx.ALIGN_CENTER|wx.ALL, 2 )
-        gbSizer1.AddGrowableCol(0)
-        bSizer1.Add( gbSizer1, 1, wx.ALL|wx.EXPAND, 10 )
-
-        # visualizzo il pannello
-        self.panel.SetSizer( bSizer1 )
-        self.my_window.Centre(wx.BOTH)
-        self.my_window.SetFocus()
-        self.my_window.Show()
+        # rendo la mia classe una superclasse
+        super(convert_csv_clipboard_to_excel, self).__init__()                
+                
+        # controllo sia stato indicato il separatore csv
+        if p_csv_separator == '':
+            message_error( 'Insert a csv separator!')
+            return None
 
         # nome file di lavoro
         v_nome_file_di_lavoro = p_work_dir + '\\clipboard.csv'
 
         # definizione del file di destinazione (apertura della finestra di dialogo e richiesta del file di arrivo)
         #v_xls_name = p_work_dir + '\\clipboard.xlsx'        
-        dlg = wx.FileDialog(self.panel, message="Save a Excel file",wildcard = "Excel XLSX |*.xlsx", style=wx.FD_SAVE)
-        if dlg.ShowModal() == wx.ID_OK:
-            v_xls_name = dlg.GetPath()
-        else:
-            wx.MessageBox(message="Not a valid file name is selected", caption='Error', style=wx.OK|wx.ICON_ERROR)
-            return None            
-        dlg.Destroy()                                
+        v_xls_name = QtWidgets.QFileDialog.getSaveFileName(self, "Save a Excel file","export.xlsx","XLSX (*.xlsx)") [0]                  
+        if v_xls_name == "":            
+            message_error("Not a valid file name is selected")
+            return None    
+        
+        # creazione della wait window
+        self.v_progress_step = 0
+        self.progress = QtWidgets.QProgressDialog(self)        
+        self.progress.setMinimumDuration(0)
+        self.progress.setWindowModality(QtCore.Qt.WindowModal)
+        self.progress.setWindowTitle("Copy...")                
+        
+        # icona di riferimento
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)        
+        self.progress.setWindowIcon(icon)
+        
+        # imposto valore minimo e massimo a 0 in modo venga considerata una progress a tempo indefinito
+        # Attenzione! dentro nel ciclo deve essere usata la funzione setvalue altrimenti non visualizza e non avanza nulla!
+        self.progress.setMinimum(0)
+        self.progress.setMaximum(100) 
+        # creo un campo label che viene impostato con 100 caratteri in modo venga data una dimensione di base standard
+        self.progress_label = QtWidgets.QLabel()            
+        self.progress_label.setText('.'*100)
+        # collego la label già presente nell'oggetto progress bar con la mia label 
+        self.progress.setLabel(self.progress_label)                                   
             
-        #Forzo il fuoco sulla window
-        self.my_window.SetFocus()
-
         ###############################################
         # lettura della clipboard e scrittura in file
         ###############################################
@@ -211,7 +206,7 @@ class convert_csv_clipboard_to_excel:
             file.close()
             kernel32.GlobalUnlock(data_locked)
         else:
-            wx.MessageBox(message="Clipboard not contains csv format text", caption='Error', style=wx.OK|wx.ICON_ERROR)
+            message_error("Clipboard not contains csv format text")
             return None
 
         user32.CloseClipboard()
@@ -227,10 +222,7 @@ class convert_csv_clipboard_to_excel:
         v_rif_percent = 0
         if v_total_rows > 100:
             v_rif_percent = v_total_rows // 100
-        self.label_2.SetLabel('Total records number...' + str(v_total_rows))
-        self.panel.Layout()
-        self.panel.Update()
-
+        
         #Creazione del file excel
         workbook = Workbook(v_xls_name)
         worksheet = workbook.add_worksheet()
@@ -253,32 +245,42 @@ class convert_csv_clipboard_to_excel:
                 if v_total_rows > 100:
                     v_progress += 1
                     if v_progress % v_rif_percent == 0:
-                        self.gauge_1.SetValue( (v_progress*100//v_total_rows)+1 )
-                        self.label_2.SetLabel( 'Converting...' + str((v_progress*100//v_total_rows)+1) + '%' )
-                        self.panel.Layout()
-                        self.panel.Update()
+                        self.avanza_progress( 'Total record to copy: ' + str(v_total_rows), False )                        
 
-        #Chiusura del file e del db
-        self.label_2.SetLabel('Finalizing process...')
-        self.panel.Layout()
-        self.panel.Update()
+        #Chiusura del file e del db          
+        self.avanza_progress('Finalizing process...',True)
+        self.avanza_progress('Finalizing process...',True)
         workbook.close()
         #Messaggio finale
-        wx.MessageBox(message='File ' + v_xls_name + ' created!', caption='Info', style=wx.OK|wx.ICON_INFORMATION)
+        message_info('File ' + v_xls_name + ' created!')
 
         #Il file di lavoro viene eliminatao
         os.remove(os.path.join(v_nome_file_di_lavoro))
- 
-        self.my_window.Close()
+         
         return None
-
-# Eseguo applicazione d'esempio se non richiamato da altro programma
+    
+    def avanza_progress(self, p_msg, p_final):
+        """
+           Visualizza prossimo avanzamento sulla progress bar
+        """        
+        if p_final:
+            self.v_progress_step += 1
+        else:
+            if self.v_progress_step < 97:
+                self.v_progress_step += 1
+                
+        self.progress.setValue(self.v_progress_step);                                        
+        self.progress_label.setText(p_msg)               
+# ----------------------------------------
+# TEST APPLICAZIONE
+# ----------------------------------------
 if __name__ == "__main__":
-    app = wx.App()
+    app = QtWidgets.QApplication(sys.argv)    
+    
     """
-    app = convert_csv_to_excel("C:/Users/mvalaguz/Desktop/Script1.csv",
-                               "|",
-                               True)
+    app = convert_csv_to_excel("C:/MGrep/dualuse.csv",
+                               ";",
+                               True)                            
     """
     app = convert_csv_clipboard_to_excel("C:/Users/mvalaguz/Desktop/",
                                          "|",
