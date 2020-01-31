@@ -14,6 +14,8 @@
  Descrizione...: Main del programma MGrep
  
  Note..........: Il layout è stato creato utilizzando qtdesigner e il file MGrep_ui.py è ricavato partendo da MGrep_ui.ui 
+ 
+ Note!!!!!!!!!!! Il programma quando si avvia reindirizza output verso i file di testo! Quindi se non lanciato da Wings-Editor, gli errori potrebbero non vedersi!
 """
 
 #Librerie sistema
@@ -43,15 +45,12 @@ class MGrep_class(QtWidgets.QMainWindow):
     
         # se dalle preferenze emerge che vanno aperte delle window in una certa posizione, procedo con apertura
         self.apre_finestre_salvate()    
-        
-        # se il programma è lanciato "live", cioè da editor, la console viene diretta sul file MGrep_stxxx
-        # l'attributo frozen che viene controllato viene generato durante la compilazione tramite il comando pyinstaller                
-        # reindirizzo l'output su di un file di testo            
-        if not getattr(sys, 'frozen', False):            
-            sys.stdout = my_console(self.o_preferenze.work_dir + '\\MGrep_stdout.txt')
-            sys.stderr = my_console(self.o_preferenze.work_dir + '\\MGrep_stderr.txt')
-        
-        a = 1/0 
+                
+        # l'attributo frozen viene attivato quando il programma viene compilato; quindi,
+        # quando il programma viene eseguito onsite, evenutali errori non controllati vengono reindirizzati
+        # verso specifici file di testo presenti nella directory di lavoro        
+        sys.stdout = my_console(self.o_preferenze.work_dir + '\\MGrep_stdout.txt')
+        sys.stderr = my_console(self.o_preferenze.work_dir + '\\MGrep_stderr.txt')
         
     def apre_finestre_salvate(self):
         """
@@ -301,8 +300,17 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_sub_window.setWindowIcon(my_icon)                                                                                                
         my_app.show()     
         
-    def slot_actionTranslate(self):
-        pass
+    def slot_actionDownload(self):
+        """
+           Richiamo form per download di un sorgente da server iAS12g
+        """                
+        from download_from_server import download_from_server_class
+        my_app = download_from_server_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/download.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                                                                
+        my_app.show()             
         
     def slot_actionHelp(self):
         """

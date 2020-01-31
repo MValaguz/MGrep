@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>download_from_window</class>
+ <widget class="QMainWindow" name="download_from_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>444</width>
+    <height>116</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Download from iAS12g</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0" columnstretch="0,0,0">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="e_destination_dir"/>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="e_source"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="l_label9">
+      <property name="text">
+       <string>Destination directory</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_destination_dir</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="l_label2">
+      <property name="text">
+       <string>Source object name</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_source</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QPushButton" name="b_destination_dir">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/folder.gif</normaloff>:/icons/icons/folder.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QPushButton" name="b_start_download">
+      <property name="text">
+       <string>Start download</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>e_source</tabstop>
+  <tabstop>e_destination_dir</tabstop>
+  <tabstop>b_destination_dir</tabstop>
+  <tabstop>b_start_download</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>b_destination_dir</sender>
+   <signal>clicked()</signal>
+   <receiver>download_from_window</receiver>
+   <slot>slot_b_destination_dir()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>424</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>417</x>
+     <y>78</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_start_download</sender>
+   <signal>clicked()</signal>
+   <receiver>download_from_window</receiver>
+   <slot>slot_b_start_download()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>168</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>80</x>
+     <y>85</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_b_destination_dir()</slot>
+  <slot>slot_b_start_download()</slot>
+ </slots>
+</ui>

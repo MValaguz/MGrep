@@ -350,7 +350,7 @@
      <normaloff>:/icons/icons/download.gif</normaloff>:/icons/icons/download.gif</iconset>
    </property>
    <property name="text">
-    <string>Download an object from server</string>
+    <string>Download an object from iAS12g</string>
    </property>
   </action>
   <action name="actionCascade">
@@ -718,6 +718,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionDownload_an_object_from_server</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionDownload()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -741,5 +757,6 @@
   <slot>slot_actionAscii_graphics()</slot>
   <slot>slot_actionTranslate()</slot>
   <slot>slot_actionImport_Export()</slot>
+  <slot>slot_actionDownload()</slot>
  </slots>
 </ui>

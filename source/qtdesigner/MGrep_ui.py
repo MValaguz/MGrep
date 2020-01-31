@@ -238,6 +238,7 @@ class Ui_MGrepWindow(object):
         self.actionVolume.triggered.connect(MGrepWindow.slot_actionVolume)
         self.actionAscii_Graphics_generator.triggered.connect(MGrepWindow.slot_actionAscii_graphics)
         self.actionImport_Export.triggered.connect(MGrepWindow.slot_actionImport_Export)
+        self.actionDownload_an_object_from_server.triggered.connect(MGrepWindow.slot_actionDownload)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):
@@ -272,7 +273,7 @@ class Ui_MGrepWindow(object):
         self.actionProgram_info.setText(_translate("MGrepWindow", "Program info"))
         self.actionChange_log.setText(_translate("MGrepWindow", "Change log"))
         self.actionConsole.setText(_translate("MGrepWindow", "Console"))
-        self.actionDownload_an_object_from_server.setText(_translate("MGrepWindow", "Download an object from server"))
+        self.actionDownload_an_object_from_server.setText(_translate("MGrepWindow", "Download an object from iAS12g"))
         self.actionCascade.setText(_translate("MGrepWindow", "Cascade"))
         self.actionTile_horizontaly.setText(_translate("MGrepWindow", "Tile horizontally"))
         self.actionTile_vertically.setText(_translate("MGrepWindow", "Tile vertically"))
