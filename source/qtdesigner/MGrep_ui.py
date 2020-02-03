@@ -243,7 +243,7 @@ class Ui_MGrepWindow(object):
 
     def retranslateUi(self, MGrepWindow):
         _translate = QtCore.QCoreApplication.translate
-        MGrepWindow.setWindowTitle(_translate("MGrepWindow", "MGrep 1.0"))
+        MGrepWindow.setWindowTitle(_translate("MGrepWindow", "The title is set at runtime"))
         self.menuFile.setTitle(_translate("MGrepWindow", "File"))
         self.menuSearch.setTitle(_translate("MGrepWindow", "Search"))
         self.menuBooks.setTitle(_translate("MGrepWindow", "Books"))

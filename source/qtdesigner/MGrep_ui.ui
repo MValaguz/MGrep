@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MGrep 1.0</string>
+   <string>The title is set at runtime</string>
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">

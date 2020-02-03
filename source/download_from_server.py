@@ -54,7 +54,15 @@ class download_from_server_class(QtWidgets.QMainWindow):
         
         if self.ui.e_destination_dir.displayText() == '':
             message_error('You must enter a destination dir!')
-            return None     
+            return None 
+        
+        # controllo che il file di destinazione non esista; questo perché al termine del download solo controllando la presenza del file
+        # potrò dire che il download è stato correttamente eseguito        
+        v_sorgente = self.ui.e_source.displayText()            
+        v_destinazione = os.path.join(self.ui.e_destination_dir.displayText() + '/' + v_sorgente)        
+        if os.path.isfile(v_destinazione):
+            message_error("Destination file already exists!")                
+            return None        
         
         #imposto i nomi dei file su cui ridirigere output dei comandi (in questo modo non escono le brutte window di dos)
         v_sshoutput = open(os.path.join(self.o_preferenze.work_dir, 'sshoutput.txt'), 'w')
@@ -62,19 +70,21 @@ class download_from_server_class(QtWidgets.QMainWindow):
         v_sshinput = ''
         
         # eseguo il download
-        #try:
-            # scarico il file nella directory indicata
-        v_sorgente = self.ui.e_source.displayText()
-        v_destinazione = os.path.join(self.ui.e_destination_dir.displayText() + '/' + v_sorgente)
-        v_ip = '10.0.4.14'
-        v_pwd = 'fmw12Oracle_01'
-        v_command = 'echo y | utility_prog\\pscp -pw ' + v_pwd + ' oracle@' + v_ip + ':/appl/source/' + v_sorgente + ' ' + v_destinazione                    
-        v_ssh = subprocess.Popen(v_command, shell=True, stdin=subprocess.PIPE, stdout=v_sshoutput, stderr=v_sshoutputerror)
-        v_ssh.communicate(v_sshinput)
-        message_info('Download finished!')
-        #except:
-        #    message_error('Error to download ' + self.ui.e_source.displayText() + '!')
-        #    return None
+        try:
+            # scarico il file nella directory indicata            
+            v_ip = '10.0.4.14'
+            v_pwd = 'fmw12Oracle_01'
+            v_command = 'echo y | utility_prog\\pscp -pw ' + v_pwd + ' oracle@' + v_ip + ':/appl/source/' + v_sorgente + ' ' + v_destinazione                    
+            v_ssh = subprocess.Popen(v_command, shell=True, stdin=subprocess.PIPE, stdout=v_sshoutput, stderr=v_sshoutputerror)
+            v_ssh.communicate(v_sshinput)
+            # controllo se il file è stato effettivamente scaricato
+            if os.path.isfile(v_destinazione):                
+                message_info('Download finished!')
+            else:
+                message_error('Error to download ' + self.ui.e_source.displayText() + '!')
+        except:
+            message_error('Error to download ' + self.ui.e_source.displayText() + '!')
+            return None
                                                                                 
 # ----------------------------------------
 # TEST APPLICAZIONE

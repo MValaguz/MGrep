@@ -15,7 +15,7 @@
  
  Note..........: Il layout è stato creato utilizzando qtdesigner e il file MGrep_ui.py è ricavato partendo da MGrep_ui.ui 
  
- Note!!!!!!!!!!! Il programma quando si avvia reindirizza output verso i file di testo! Quindi se non lanciato da Wings-Editor, gli errori potrebbero non vedersi!
+ Note!!!!!!!!!!! Il programma quando si avvia reindirizza output verso i file di testo! Quindi se non lanciato da Wing-Editor, gli errori potrebbero non vedersi!
 """
 
 #Librerie sistema
@@ -37,7 +37,7 @@ class MGrep_class(QtWidgets.QMainWindow):
     def __init__(self):
         super(MGrep_class, self).__init__()
         self.ui = Ui_MGrepWindow()
-        self.ui.setupUi(self)
+        self.ui.setupUi(self)        
         
         # carico le preferenze
         self.o_preferenze = preferenze()
@@ -339,5 +339,7 @@ class MGrep_class(QtWidgets.QMainWindow):
 if __name__ == "__main__":    
     app = QtWidgets.QApplication([])
     application = MGrep_class()
+    # titolo dell'applicazione!
+    application.setWindowTitle('MGrep 1.0')
     application.show()
     sys.exit(app.exec())        
