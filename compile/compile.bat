@@ -1,3 +1,6 @@
+rem La path sottostante serve solo per non far uscire i messaggi (durante la compilazione) di librerie non trovate in Windows10
+set PATH=%PATH%;C:\Windows\System32\downlevel
+rem Pulizia della directory di destinazione
 rmdir o:\Install\MGrep\MGrep10 /S /Q
 pyinstaller --windowed MGrep.spec
 rem pyinstaller MGrep.spec
