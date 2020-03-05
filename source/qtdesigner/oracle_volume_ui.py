@@ -86,6 +86,9 @@ class Ui_oracle_volume_window(object):
         self.retranslateUi(oracle_volume_window)
         self.b_start_search.clicked.connect(oracle_volume_window.slot_start_search)
         QtCore.QMetaObject.connectSlotsByName(oracle_volume_window)
+        oracle_volume_window.setTabOrder(self.e_server_name, self.e_table_name)
+        oracle_volume_window.setTabOrder(self.e_table_name, self.b_start_search)
+        oracle_volume_window.setTabOrder(self.b_start_search, self.o_lst1)
 
     def retranslateUi(self, oracle_volume_window):
         _translate = QtCore.QCoreApplication.translate

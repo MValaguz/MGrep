@@ -85,6 +85,8 @@
  </widget>
  <tabstops>
   <tabstop>e_ricerca</tabstop>
+  <tabstop>b_ricerca</tabstop>
+  <tabstop>o_lst1</tabstop>
  </tabstops>
  <resources>
   <include location="resource.qrc"/>

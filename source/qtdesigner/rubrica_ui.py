@@ -56,6 +56,8 @@ class Ui_rubrica_window(object):
         self.b_ricerca.clicked.connect(rubrica_window.slot_b_ricerca)
         self.e_ricerca.returnPressed.connect(rubrica_window.slot_b_ricerca)
         QtCore.QMetaObject.connectSlotsByName(rubrica_window)
+        rubrica_window.setTabOrder(self.e_ricerca, self.b_ricerca)
+        rubrica_window.setTabOrder(self.b_ricerca, self.o_lst1)
 
     def retranslateUi(self, rubrica_window):
         _translate = QtCore.QCoreApplication.translate

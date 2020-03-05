@@ -80,6 +80,7 @@
  </widget>
  <tabstops>
   <tabstop>e_url</tabstop>
+  <tabstop>b_url</tabstop>
   <tabstop>o_lst1</tabstop>
  </tabstops>
  <resources>

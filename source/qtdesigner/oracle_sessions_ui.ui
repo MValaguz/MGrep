@@ -174,7 +174,14 @@
   </widget>
  </widget>
  <tabstops>
+  <tabstop>e_server_name</tabstop>
+  <tabstop>e_user_name</tabstop>
+  <tabstop>e_program_name</tabstop>
+  <tabstop>e_terminal</tabstop>
+  <tabstop>b_start_search</tabstop>
   <tabstop>o_lst1</tabstop>
+  <tabstop>b_session_information</tabstop>
+  <tabstop>b_kill_session</tabstop>
  </tabstops>
  <resources>
   <include location="resource.qrc"/>

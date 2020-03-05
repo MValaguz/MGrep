@@ -209,8 +209,13 @@
  <tabstops>
   <tabstop>e_filesearch</tabstop>
   <tabstop>e_pathname</tabstop>
+  <tabstop>b_pathname</tabstop>
   <tabstop>e_filter</tabstop>
   <tabstop>e_excludepath</tabstop>
+  <tabstop>b_excludepath</tabstop>
+  <tabstop>c_cache_file_system</tabstop>
+  <tabstop>b_save_pref</tabstop>
+  <tabstop>b_add_line</tabstop>
   <tabstop>b_search</tabstop>
   <tabstop>o_lst1</tabstop>
  </tabstops>

@@ -55,7 +55,8 @@ class Ui_Ricerca_elementi_in_pagina_web_window(object):
         self.retranslateUi(Ricerca_elementi_in_pagina_web_window)
         self.b_url.clicked.connect(Ricerca_elementi_in_pagina_web_window.b_search_slot)
         QtCore.QMetaObject.connectSlotsByName(Ricerca_elementi_in_pagina_web_window)
-        Ricerca_elementi_in_pagina_web_window.setTabOrder(self.e_url, self.o_lst1)
+        Ricerca_elementi_in_pagina_web_window.setTabOrder(self.e_url, self.b_url)
+        Ricerca_elementi_in_pagina_web_window.setTabOrder(self.b_url, self.o_lst1)
 
     def retranslateUi(self, Ricerca_elementi_in_pagina_web_window):
         _translate = QtCore.QCoreApplication.translate

@@ -78,6 +78,8 @@
   </widget>
  </widget>
  <tabstops>
+  <tabstop>e_server_name</tabstop>
+  <tabstop>b_start_search</tabstop>
   <tabstop>o_lst1</tabstop>
  </tabstops>
  <resources>

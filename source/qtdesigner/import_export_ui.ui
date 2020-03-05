@@ -483,8 +483,10 @@
   <tabstop>b_start_excel</tabstop>
   <tabstop>e_table_to_oracle</tabstop>
   <tabstop>b_table_to_oracle</tabstop>
+  <tabstop>b_copy_to_oracle</tabstop>
   <tabstop>e_import_excel</tabstop>
   <tabstop>b_import_excel</tabstop>
+  <tabstop>b_start_import_excel</tabstop>
   <tabstop>e_oracle_table</tabstop>
   <tabstop>b_oracle_table</tabstop>
   <tabstop>e_csv_file</tabstop>

@@ -116,9 +116,14 @@ class Ui_Ricerca_file_window(object):
         self.b_search.clicked.connect(Ricerca_file_window.b_search_slot)
         QtCore.QMetaObject.connectSlotsByName(Ricerca_file_window)
         Ricerca_file_window.setTabOrder(self.e_filesearch, self.e_pathname)
-        Ricerca_file_window.setTabOrder(self.e_pathname, self.e_filter)
+        Ricerca_file_window.setTabOrder(self.e_pathname, self.b_pathname)
+        Ricerca_file_window.setTabOrder(self.b_pathname, self.e_filter)
         Ricerca_file_window.setTabOrder(self.e_filter, self.e_excludepath)
-        Ricerca_file_window.setTabOrder(self.e_excludepath, self.b_search)
+        Ricerca_file_window.setTabOrder(self.e_excludepath, self.b_excludepath)
+        Ricerca_file_window.setTabOrder(self.b_excludepath, self.c_cache_file_system)
+        Ricerca_file_window.setTabOrder(self.c_cache_file_system, self.b_save_pref)
+        Ricerca_file_window.setTabOrder(self.b_save_pref, self.b_add_line)
+        Ricerca_file_window.setTabOrder(self.b_add_line, self.b_search)
         Ricerca_file_window.setTabOrder(self.b_search, self.o_lst1)
 
     def retranslateUi(self, Ricerca_file_window):

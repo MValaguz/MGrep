@@ -53,6 +53,8 @@ class Ui_oracle_jobs_window(object):
         self.retranslateUi(oracle_jobs_window)
         self.b_start_search.clicked.connect(oracle_jobs_window.slot_startSearch)
         QtCore.QMetaObject.connectSlotsByName(oracle_jobs_window)
+        oracle_jobs_window.setTabOrder(self.e_server_name, self.b_start_search)
+        oracle_jobs_window.setTabOrder(self.b_start_search, self.o_lst1)
 
     def retranslateUi(self, oracle_jobs_window):
         _translate = QtCore.QCoreApplication.translate

@@ -105,6 +105,13 @@ class Ui_oracle_sessions_window(object):
         self.b_kill_session.clicked.connect(oracle_sessions_window.slot_kill_session)
         self.b_session_information.clicked.connect(oracle_sessions_window.slot_log_session)
         QtCore.QMetaObject.connectSlotsByName(oracle_sessions_window)
+        oracle_sessions_window.setTabOrder(self.e_server_name, self.e_user_name)
+        oracle_sessions_window.setTabOrder(self.e_user_name, self.e_program_name)
+        oracle_sessions_window.setTabOrder(self.e_program_name, self.e_terminal)
+        oracle_sessions_window.setTabOrder(self.e_terminal, self.b_start_search)
+        oracle_sessions_window.setTabOrder(self.b_start_search, self.o_lst1)
+        oracle_sessions_window.setTabOrder(self.o_lst1, self.b_session_information)
+        oracle_sessions_window.setTabOrder(self.b_session_information, self.b_kill_session)
 
     def retranslateUi(self, oracle_sessions_window):
         _translate = QtCore.QCoreApplication.translate
