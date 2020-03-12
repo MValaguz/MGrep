@@ -731,6 +731,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             '''
             
             # richiama la ricerca nel file system se presente file system            
+            v_ko = False
             if self.ui.c_flsearch.isChecked():
                 v_ko = self.ricerca_stringa_in_file(self.ui.e_pathname.displayText(),
                                                     self.ui.e_stringa1.displayText(),
