@@ -63,7 +63,17 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="3">
+    <item row="5" column="0">
+     <widget class="QLabel" name="l_search1">
+      <property name="text">
+       <string>Search by name or comment:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="e_search1"/>
+    </item>
+    <item row="5" column="2">
      <widget class="QPushButton" name="b_start_search">
       <property name="text">
        <string>Start search</string>
@@ -79,7 +89,6 @@
  </widget>
  <tabstops>
   <tabstop>e_server_name</tabstop>
-  <tabstop>b_start_search</tabstop>
   <tabstop>o_lst1</tabstop>
  </tabstops>
  <resources>

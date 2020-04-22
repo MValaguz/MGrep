@@ -74,7 +74,7 @@ class oracle_sessions_class(QtWidgets.QMainWindow):
         if self.ui.e_terminal.displayText() != '':
             v_user += " AND Upper(TERMINAL) LIKE '%" + self.ui.e_terminal.displayText().upper() + "%' "
         
-        # select per la ricerca degli oggetti invalidi
+        # select per la ricerca
         v_select = "SELECT SID,       \n\
                            SERIAL#,   \n\
                            TERMINAL,  \n\
@@ -103,7 +103,61 @@ class oracle_sessions_class(QtWidgets.QMainWindow):
         
         # restituisco tupla delle righe
         return v_row
-                               
+    
+    def get_totale_sessioni_per_utente(self):
+        """
+            Restituisce totale delle sessioni aperte raggruppate per username
+        """
+        try:
+            # connessione al DB come amministratore
+            v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
+                                             password=self.o_preferenze.v_oracle_password_sys,
+                                             dsn=self.ui.e_server_name.currentText(),
+                                             mode=cx_Oracle.SYSDBA)            
+        except:
+            message_error('Connection to oracle rejected. Please control login information.')
+            return []
+
+        # apro cursori
+        v_cursor = v_connection.cursor()
+
+        v_user = ""
+
+        # ricerca parziale su nome utente
+        if self.ui.e_user_name.displayText() != '':
+            v_user += " AND Upper(USERNAME) LIKE '%" + self.ui.e_user_name.displayText().upper() + "%' "            
+                        
+        # ricerca parziale su nome programma
+        if self.ui.e_program_name.displayText() != '':
+            v_user += " AND Upper(MODULE) LIKE '%" + self.ui.e_program_name.displayText().upper() + "%' "
+                                            
+        # ricerca parziale su nome terminale
+        if self.ui.e_terminal.displayText() != '':
+            v_user += " AND Upper(TERMINAL) LIKE '%" + self.ui.e_terminal.displayText().upper() + "%' "
+        
+        # select per il conteggio delle sessioni aperte per utente. Se il modulo è ICOM viene preso il campo terminale
+        v_select = "SELECT COUNT(*) \n\
+                    FROM (SELECT DECODE(MODULE,'UNIFACE.EXE',TERMINAL,USERNAME) \n\
+                          FROM   V$SESSION,(SELECT PROG_CO, PROG_DE FROM ML_PROG WHERE LNG_CO = 'I') ML_PROG \n\
+                          WHERE  USERNAME NOT IN ('SYS','SYSTEM','DBSNMP') AND MODULE = PROG_CO(+) \n\
+                                 " + v_user + "GROUP BY DECODE(MODULE,'UNIFACE.EXE',TERMINAL,USERNAME) \n\
+                          )" 
+        
+        v_cursor.execute(v_select)        
+        
+        # integro i risultati della prima select con altri dati e li carico in una tupla
+        v_totale = 0
+        for result in v_cursor:
+            # carico la riga nella tupla (notare le doppie parentesi iniziali che servono per inserire nella tupla una lista :-))
+            v_totale = result[0]            
+                  
+        # chiudo sessione
+        v_cursor.close()
+        v_connection.close()
+        
+        # restituisco totale
+        return v_totale                    
+    
     def slot_search_session(self):            
         """
             Ricerca le sessioni 
@@ -132,6 +186,9 @@ class oracle_sessions_class(QtWidgets.QMainWindow):
         self.ui.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
         self.ui.o_lst1.resizeColumnsToContents()
+        
+        # calcolo totale 
+        self.ui.l_total_sessions.setText( str( self.get_totale_sessioni_per_utente() ) )
     
     def slot_kill_session(self):
         """

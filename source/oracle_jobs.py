@@ -57,13 +57,19 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
 
         # apro cursori
         v_cursor = v_connection.cursor()
-
+        
+        # eventuale stringa di ricerca per nome o commento del job
+        v_where = ''
+        if self.ui.e_search1.displayText() != '':
+            v_where = " AND (JOB_NAME LIKE '%" + self.ui.e_search1.displayText() + "%' OR COMMENTS LIKE '%" + self.ui.e_search1.displayText() + "')" 
+            
         # select per la ricerca degli oggetti invalidi
         v_select = """SELECT JOB_NAME, 
                              COMMENTS,                                
                              JOB_ACTION, 
                              TO_CHAR(LAST_START_DATE,'DD/MM/YYYY HH24:MI:SS') LAST_START_DATE,
-                             TO_CHAR(NEXT_RUN_DATE,'DD/MM/YYYY HH24:MI:SS') NEXT_RUN_DATE, 
+                             TO_CHAR(LAST_START_DATE+LAST_RUN_DURATION,'DD/MM/YYYY HH24:MI:SS') LAST_END_DATE,                                                      
+                             to_char(extract(HOUR FROM LAST_RUN_DURATION), 'fm00') || ':' || to_char(extract(MINUTE FROM LAST_RUN_DURATION), 'fm00') || ':' || to_char(extract(SECOND FROM LAST_RUN_DURATION), 'fm00') LAST_RUN_DURATION,      
                              (SELECT STATUS
                               FROM   ALL_SCHEDULER_JOB_RUN_DETAILS 
                               WHERE  ALL_SCHEDULER_JOB_RUN_DETAILS.JOB_NAME=ALL_SCHEDULER_JOBS.JOB_NAME
@@ -77,9 +83,10 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
                                  AND ALL_SCHEDULER_JOB_RUN_DETAILS.LOG_DATE=(SELECT Max(LOG_DATE)
                                                                              FROM   ALL_SCHEDULER_JOB_RUN_DETAILS
                                                                              WHERE  ALL_SCHEDULER_JOB_RUN_DETAILS.JOB_NAME=ALL_SCHEDULER_JOBS.JOB_NAME)
-                             ) ADDITIONAL_INFO
+                             ) ADDITIONAL_INFO,
+                             TO_CHAR(NEXT_RUN_DATE,'DD/MM/YYYY HH24:MI:SS') NEXT_RUN_DATE
                       FROM   ALL_SCHEDULER_JOBS 
-                      WHERE  ENABLED='TRUE'
+                      WHERE  ENABLED='TRUE' """ + v_where.upper() + """
                       ORDER BY JOB_NAME"""        
                 
         v_cursor.execute(v_select)        
@@ -88,7 +95,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         v_row = []
         for result in v_cursor:
             # carico la riga nella tupla (notare le doppie parentesi iniziali che servono per inserire nella tupla una lista :-))
-            v_row.append( ( str(result[0]), str(result[1]), str(result[2]), str(result[3]), str(result[4]), str(result[5]), str(result[6]) ) )            
+            v_row.append( ( str(result[0]), str(result[1]), str(result[2]), str(result[3]), str(result[4]), str(result[5]), str(result[6]), str(result[7]), str(result[8]) ) )            
                   
         # chiudo sessione
         v_cursor.close()
@@ -106,7 +113,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         QtWidgets.QApplication.restoreOverrideCursor()
         
         # lista contenente le intestazioni
-        intestazioni = ['Job name','Comments','Job action','Last start date','Next run date','Last status','Additional info']                        
+        intestazioni = ['Job name','Comments','Job action','Last start date','Last end date','Last run duration','Last status','Additional info','Next run date']                        
         # creo un oggetto modello-matrice che va ad agganciarsi all'oggetto grafico lista        
         self.lista_risultati = QtGui.QStandardItemModel()
         # carico nel modello la lista delle intestazioni

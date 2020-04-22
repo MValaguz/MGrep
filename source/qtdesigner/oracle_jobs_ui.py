@@ -41,25 +41,31 @@ class Ui_oracle_jobs_window(object):
         self.l_server_name = QtWidgets.QLabel(self.centralwidget)
         self.l_server_name.setObjectName("l_server_name")
         self.gridLayout.addWidget(self.l_server_name, 4, 0, 1, 1)
+        self.l_search1 = QtWidgets.QLabel(self.centralwidget)
+        self.l_search1.setObjectName("l_search1")
+        self.gridLayout.addWidget(self.l_search1, 5, 0, 1, 1)
+        self.e_search1 = QtWidgets.QLineEdit(self.centralwidget)
+        self.e_search1.setObjectName("e_search1")
+        self.gridLayout.addWidget(self.e_search1, 5, 1, 1, 1)
         self.b_start_search = QtWidgets.QPushButton(self.centralwidget)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/icons/go.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.b_start_search.setIcon(icon1)
         self.b_start_search.setObjectName("b_start_search")
-        self.gridLayout.addWidget(self.b_start_search, 4, 3, 1, 1)
+        self.gridLayout.addWidget(self.b_start_search, 5, 2, 1, 1)
         oracle_jobs_window.setCentralWidget(self.centralwidget)
         self.l_server_name.setBuddy(self.e_server_name)
 
         self.retranslateUi(oracle_jobs_window)
         self.b_start_search.clicked.connect(oracle_jobs_window.slot_startSearch)
         QtCore.QMetaObject.connectSlotsByName(oracle_jobs_window)
-        oracle_jobs_window.setTabOrder(self.e_server_name, self.b_start_search)
-        oracle_jobs_window.setTabOrder(self.b_start_search, self.o_lst1)
+        oracle_jobs_window.setTabOrder(self.e_server_name, self.o_lst1)
 
     def retranslateUi(self, oracle_jobs_window):
         _translate = QtCore.QCoreApplication.translate
         oracle_jobs_window.setWindowTitle(_translate("oracle_jobs_window", "Oracle jobs"))
         self.l_server_name.setText(_translate("oracle_jobs_window", "Oracle name server:"))
+        self.l_search1.setText(_translate("oracle_jobs_window", "Search by name or comment:"))
         self.b_start_search.setText(_translate("oracle_jobs_window", "Start search"))
 import resource_rc
 
