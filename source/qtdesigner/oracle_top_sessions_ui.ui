@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>oracle_top_sessions_window</class>
+ <widget class="QMainWindow" name="oracle_top_sessions_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1000</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Oracle top sessions</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/speedometer.gif</normaloff>:/icons/icons/speedometer.gif</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="e_server_name"/>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="l_server_name">
+      <property name="text">
+       <string>Oracle name server:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_server_name</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0" colspan="5">
+     <widget class="QTableView" name="o_lst1">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustIgnored</enum>
+      </property>
+      <property name="autoScroll">
+       <bool>true</bool>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectItems</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QComboBox" name="e_parameter"/>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="l_parameter">
+      <property name="text">
+       <string>Parameter:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_parameter</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="4">
+     <widget class="QPushButton" name="b_calculate">
+      <property name="text">
+       <string>Compute</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/gears.gif</normaloff>:/icons/icons/gears.gif</iconset>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>e_server_name</tabstop>
+  <tabstop>o_lst1</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>b_calculate</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_top_sessions_window</receiver>
+   <slot>slot_calculate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>688</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>430</x>
+     <y>13</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>e_server_name</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>oracle_top_sessions_window</receiver>
+   <slot>slot_change_server()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>260</x>
+     <y>29</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>373</x>
+     <y>23</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>e_parameter</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>oracle_top_sessions_window</receiver>
+   <slot>slot_change_server()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>201</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>346</x>
+     <y>51</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_calculate()</slot>
+  <slot>slot_change_server()</slot>
+ </slots>
+</ui>

@@ -227,6 +227,24 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/table.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
         my_sub_window.setWindowIcon(my_icon)                                                        
         my_app.show()           
+                
+    def slot_actionTop_sessions(self):
+        """
+           Richiamo form di elenco dei processi-sessioni (questa finestra ho deciso di non incorporarla insieme alle altre)
+        """                
+        from oracle_top_sessions import oracle_top_sessions_class                
+        # Controllo che l'app non sia già in esecuzione perchè non committando i dati, una seconda istanza manderebbe in blocco il DB sqlite
+        v_error = False
+        try:
+            if self.top_sessions != None and self.top_sessions.v_app_top_session_open:
+                message_error('Top sessions is already execute')
+                v_error = True
+        except:
+            v_error = False
+        
+        if not v_error:
+            self.top_sessions = oracle_top_sessions_class()
+            self.top_sessions.show()
         
     def slot_actionJobs_status(self):
         """
@@ -340,6 +358,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     application = MGrep_class()
     # titolo dell'applicazione!
-    application.setWindowTitle('MGrep 1.1')
+    application.setWindowTitle('MGrep 1.2')
     application.show()
     sys.exit(app.exec())        

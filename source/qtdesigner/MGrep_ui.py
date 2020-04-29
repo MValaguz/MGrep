@@ -184,6 +184,11 @@ class Ui_MGrepWindow(object):
         icon24.addPixmap(QtGui.QPixmap(":/icons/icons/translate.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionTranslate.setIcon(icon24)
         self.actionTranslate.setObjectName("actionTranslate")
+        self.actionTop_sessions = QtWidgets.QAction(MGrepWindow)
+        icon25 = QtGui.QIcon()
+        icon25.addPixmap(QtGui.QPixmap(":/icons/icons/speedometer.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionTop_sessions.setIcon(icon25)
+        self.actionTop_sessions.setObjectName("actionTop_sessions")
         self.menuFile.addAction(self.actionSave_the_windows_position)
         self.menuFile.addAction(self.actionReset_main_window_position)
         self.menuFile.addAction(self.actionFactory_reset)
@@ -198,6 +203,7 @@ class Ui_MGrepWindow(object):
         self.menuOracle.addAction(self.actionRecompiler)
         self.menuOracle.addAction(self.actionLooks)
         self.menuOracle.addAction(self.actionSessions)
+        self.menuOracle.addAction(self.actionTop_sessions)
         self.menuOracle.addAction(self.actionJobs_status)
         self.menuOracle.addAction(self.actionVolume)
         self.menuFavorites.addAction(self.actionFiles)
@@ -239,6 +245,7 @@ class Ui_MGrepWindow(object):
         self.actionAscii_Graphics_generator.triggered.connect(MGrepWindow.slot_actionAscii_graphics)
         self.actionImport_Export.triggered.connect(MGrepWindow.slot_actionImport_Export)
         self.actionDownload_an_object_from_server.triggered.connect(MGrepWindow.slot_actionDownload)
+        self.actionTop_sessions.triggered.connect(MGrepWindow.slot_actionTop_sessions)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):
@@ -278,6 +285,7 @@ class Ui_MGrepWindow(object):
         self.actionTile_horizontaly.setText(_translate("MGrepWindow", "Tile horizontally"))
         self.actionTile_vertically.setText(_translate("MGrepWindow", "Tile vertically"))
         self.actionTranslate.setText(_translate("MGrepWindow", "Translate"))
+        self.actionTop_sessions.setText(_translate("MGrepWindow", "Top sessions"))
 import resource_rc
 
 

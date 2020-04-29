@@ -9,6 +9,8 @@
 
 # Libreria sqlite
 import sqlite3
+# Libreria delle date
+import datetime
 # Libreria oracle
 import cx_Oracle
 #Librerie interne MGrep
@@ -286,9 +288,123 @@ def estrae_elenco_tabelle_sqlite(p_type,
     #Restituisco la lista
     return v_lista
 
+class ut_report_class():
+    """
+       Classe per la gestione di ut_repor in database sqlite 
+    """    
+    def __init__(self, p_db_name):
+        """
+           Creo se non presente la tabella ut_repor nel db p_db_name
+        """
+        self.conn = sqlite3.connect(database=p_db_name)
+        self.curs = self.conn.cursor()
+        self.curs.execute("""CREATE TABLE IF NOT EXISTS 
+                             UT_REPORT (PAGE_NU  NUMBER NOT NULL,
+                                        POSIZ_NU NUMBER NOT NULL,
+                                        CREAZ_DA DATETIME,
+                                        CAMPO1   TEXT, 
+                                        CAMPO2   TEXT,
+                                        CAMPO3   TEXT,
+                                        CAMPO4   TEXT,
+                                        CAMPO5   TEXT,
+                                        CAMPO6   TEXT,
+                                        CAMPO7   TEXT,
+                                        CAMPO8   TEXT,
+                                        CAMPO9   TEXT,
+                                        CAMPO10  TEXT,
+                                        CAMPO11  TEXT,
+                                        CAMPO12  TEXT,
+                                        CAMPO13  TEXT,
+                                        CAMPO14  TEXT,
+                                        CAMPO15  TEXT,
+                                        CAMPO16  TEXT,
+                                        CAMPO17  TEXT,
+                                        CAMPO18  TEXT,
+                                        CAMPO19  TEXT,
+                                        CAMPO20  TEXT,
+                                        CAMPO21  REAL,
+                                        CAMPO22  REAL,
+                                        CAMPO23  REAL,
+                                        CAMPO24  REAL,
+                                        CAMPO25  REAL,
+                                        CAMPO26  REAL,
+                                        CAMPO27  REAL,
+                                        CAMPO28  REAL,
+                                        CAMPO29  REAL,
+                                        CAMPO30  REAL,
+                                        
+                                        PRIMARY KEY(PAGE_NU, POSIZ_NU)
+                          )""")
+        
+    def new_page(self):
+        """
+           Crea e restituisce id di una nuova pagna
+        """
+        self.curs.execute('SELECT IFNULL(MAX(PAGE_NU),0) + 1 FROM UT_REPORT')
+        v_new_page = self.curs.fetchone()[0]
+        v_data_sistema = datetime.datetime.now()
+        self.curs.execute('INSERT INTO UT_REPORT(PAGE_NU, POSIZ_NU, CREAZ_DA) VALUES(?, ?, ?)', (v_new_page, 0, v_data_sistema) )
+        return v_new_page
+    
+    def delete_page(self, p_page_nu):
+        """
+           Cancella una pagina
+        """
+        self.curs.execute('DELETE FROM UT_REPORT WHERE PAGE_NU=?', [p_page_nu] )
+        
+    def insert(self, p_page_nu, p_campo1=None, p_campo2=None, p_campo3=None, p_campo4=None, p_campo5=None, p_campo6=None, p_campo7=None, p_campo8=None, p_campo9=None,p_campo10=None,
+                                p_campo11=None,p_campo12=None,p_campo13=None,p_campo14=None,p_campo15=None,p_campo16=None,p_campo17=None,p_campo18=None,p_campo19=None,p_campo20=None,
+                                p_campo21=None,p_campo22=None,p_campo23=None,p_campo24=None,p_campo25=None,p_campo26=None,p_campo27=None,p_campo28=None,p_campo29=None,p_campo30=None):
+        """
+           Inserisce nuova riga nel report
+        """
+        self.curs.execute('SELECT IFNULL(MAX(POSIZ_NU),0) + 1 FROM UT_REPORT WHERE PAGE_NU=?', [p_page_nu])
+        v_new_posiz = self.curs.fetchone()[0]
+        v_data_sistema = datetime.datetime.now()
+        self.curs.execute("""INSERT INTO UT_REPORT(PAGE_NU, POSIZ_NU, CREAZ_DA,
+                                                   CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO5, CAMPO6, CAMPO7, CAMPO8, CAMPO9, CAMPO10,
+                                                   CAMPO11,CAMPO12,CAMPO13,CAMPO14,CAMPO15,CAMPO16,CAMPO17,CAMPO18,CAMPO19,CAMPO20,
+                                                   CAMPO21,CAMPO22,CAMPO23,CAMPO24,CAMPO25,CAMPO26,CAMPO27,CAMPO28,CAMPO29,CAMPO30)
+                                            VALUES(?, ?, ?,
+                                                   ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                                                   ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
+                                                   ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)       
+                          """, (p_page_nu, v_new_posiz, v_data_sistema, 
+                                p_campo1, p_campo2, p_campo3, p_campo4, p_campo5, p_campo6, p_campo7, p_campo8, p_campo9,p_campo10,
+                                p_campo11,p_campo12,p_campo13,p_campo14,p_campo15,p_campo16,p_campo17,p_campo18,p_campo19,p_campo20,
+                                p_campo21,p_campo22,p_campo23,p_campo24,p_campo25,p_campo26,p_campo27,p_campo28,p_campo29,p_campo30 ) ) 
+        
+    def drop(self):
+        """
+           Droppo ut_report dal database
+        """
+        self.curs.execute('DROP TABLE UT_REPORT');
+        
+    def close(self, p_commit):
+        """
+           Chiudo cursore e connessione. Se p_commit=True --> esegue la commit
+        """
+        if p_commit:
+            self.curs.execute('COMMIT')
+            
+        self.curs.close()
+        self.conn.close()
+        
 
 #test per la funzione di estrazione ddl tabella
 if __name__ == "__main__":
+    #
+    # test ut_repor
+    #
+    ut_report = ut_report_class('C:\MGrep\MGrep.db')
+    #ut_report.drop()
+    #print(ut_report.new_page())
+    #ut_report.delete_page(2)
+    v_page = ut_report.new_page()
+    ut_report.insert(v_page, p_campo1='1', p_campo21=10)
+    ut_report.close(True)
+    
+    """
     #test funzione elenco tabelle oracle
     v_sqlite_conn = sqlite3.connect(database='C:\MGrep\MGrepTransfer.db')
     #Indico al db di funzionare in modalità byte altrimenti ci sono problemi nel gestire utf-8
@@ -298,3 +414,4 @@ if __name__ == "__main__":
     print('Istruzione insert con parametri da tabella SQLite ')
     print(estrae_struttura_tabella_sqlite('h', v_sqlite_cur, 'CANCELLAMI100'))
     v_sqlite_conn.close()
+    """

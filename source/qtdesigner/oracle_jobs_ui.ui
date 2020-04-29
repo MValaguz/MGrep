@@ -50,8 +50,19 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QComboBox" name="e_server_name"/>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="e_search1"/>
+    </item>
+    <item row="5" column="2">
+     <widget class="QPushButton" name="b_start_search">
+      <property name="text">
+       <string>Start search</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
+      </property>
+     </widget>
     </item>
     <item row="4" column="0">
      <widget class="QLabel" name="l_server_name">
@@ -68,19 +79,22 @@
       <property name="text">
        <string>Search by name or comment:</string>
       </property>
+      <property name="buddy">
+       <cstring>e_search1</cstring>
+      </property>
      </widget>
     </item>
-    <item row="5" column="1">
-     <widget class="QLineEdit" name="e_search1"/>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="e_server_name"/>
     </item>
-    <item row="5" column="2">
-     <widget class="QPushButton" name="b_start_search">
+    <item row="11" column="2">
+     <widget class="QPushButton" name="b_history">
       <property name="text">
-       <string>Start search</string>
+       <string>Job's history</string>
       </property>
       <property name="icon">
        <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
+        <normaloff>:/icons/icons/history.gif</normaloff>:/icons/icons/history.gif</iconset>
       </property>
      </widget>
     </item>
@@ -89,7 +103,10 @@
  </widget>
  <tabstops>
   <tabstop>e_server_name</tabstop>
+  <tabstop>e_search1</tabstop>
+  <tabstop>b_start_search</tabstop>
   <tabstop>o_lst1</tabstop>
+  <tabstop>b_history</tabstop>
  </tabstops>
  <resources>
   <include location="resource.qrc"/>
@@ -102,8 +119,8 @@
    <slot>slot_startSearch()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>688</x>
-     <y>39</y>
+     <x>684</x>
+     <y>60</y>
     </hint>
     <hint type="destinationlabel">
      <x>519</x>
@@ -111,8 +128,25 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>b_history</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_jobs_window</receiver>
+   <slot>slot_jobsHistory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>634</x>
+     <y>474</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>507</x>
+     <y>475</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_startSearch()</slot>
+  <slot>slot_jobsHistory()</slot>
  </slots>
 </ui>

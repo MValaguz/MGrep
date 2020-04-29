@@ -112,6 +112,7 @@
     <addaction name="actionRecompiler"/>
     <addaction name="actionLooks"/>
     <addaction name="actionSessions"/>
+    <addaction name="actionTop_sessions"/>
     <addaction name="actionJobs_status"/>
     <addaction name="actionVolume"/>
    </widget>
@@ -375,6 +376,15 @@
    </property>
    <property name="text">
     <string>Translate</string>
+   </property>
+  </action>
+  <action name="actionTop_sessions">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/speedometer.gif</normaloff>:/icons/icons/speedometer.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Top sessions</string>
    </property>
   </action>
  </widget>
@@ -734,6 +744,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionTop_sessions</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionTop_sessions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -758,5 +784,6 @@
   <slot>slot_actionTranslate()</slot>
   <slot>slot_actionImport_Export()</slot>
   <slot>slot_actionDownload()</slot>
+  <slot>slot_actionTop_sessions()</slot>
  </slots>
 </ui>
