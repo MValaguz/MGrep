@@ -374,6 +374,27 @@ class ut_report_class():
                                 p_campo11,p_campo12,p_campo13,p_campo14,p_campo15,p_campo16,p_campo17,p_campo18,p_campo19,p_campo20,
                                 p_campo21,p_campo22,p_campo23,p_campo24,p_campo25,p_campo26,p_campo27,p_campo28,p_campo29,p_campo30 ) ) 
         
+    def copy_page_to_new_page(self, p_from_page, p_to_page):
+        """
+           Copia una pagina di ut_report dentro un'altra. La pagina di arrivo deve avere il numero già staccato
+        """
+        self.curs.execute("""INSERT INTO UT_REPORT
+                             SELECT ?, POSIZ_NU, CREAZ_DA,
+                                    CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO5, CAMPO6, CAMPO7, CAMPO8, CAMPO9, CAMPO10,
+                                    CAMPO11,CAMPO12,CAMPO13,CAMPO14,CAMPO15,CAMPO16,CAMPO17,CAMPO18,CAMPO19,CAMPO20,
+                                    CAMPO21,CAMPO22,CAMPO23,CAMPO24,CAMPO25,CAMPO26,CAMPO27,CAMPO28,CAMPO29,CAMPO30                       
+                             FROM   UT_REPORT
+                             WHERE  PAGE_NU = ?
+                               AND  POSIZ_NU > 0
+                          """, (p_to_page, p_from_page) )    
+    
+    def count_row(self, p_page):
+        """
+           Restituisce il numero di righe valide (con posiz_nu > 0) presenti in una pagina 
+        """
+        self.curs.execute('SELECT COUNT(*) FROM UT_REPORT WHERE PAGE_NU=?', [p_page])
+        return self.curs.fetchone()[0]
+        
     def drop(self):
         """
            Droppo ut_report dal database

@@ -269,9 +269,52 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
         if not self.v_load_form:            
             self.starter() 
             
+    def slot_save_point(self):
+        """
+           Salva la pagina 2 come pagina a parte per poter essere usata in altre elaborazioni
+        """
+        # controllo che la pagina 2 abbia almeno un record
+        if self.ut_report.count_row(self.page2) == 0:
+            message_error('No differences to save! Launch a compute!')
+        else:
+            # creo una nuova pagina e copio la 2 dentro in questa pagina
+            v_new_page = self.ut_report.new_page()                    
+            self.ut_report.copy_page_to_new_page(self.page2, v_new_page)   
+            # ricarico la lista dei save point
+            self.ui.e_saved_time.clear()
+            self.ui.e_saved_time.addItem('')                        
+            # prendo tutti i primi record di UT_REPORT con pagina maggiore della 2 (così nell'elenco non compaiono le prime due pagine)
+            # e li carico nella combobox dei savepoint
+            self.ut_report.curs.execute('SELECT CREAZ_DA FROM UT_REPORT WHERE PAGE_NU > ? AND POSIZ_NU = 0', [self.page2])
+            v_matrice = self.ut_report.curs.fetchall()            
+            for row in v_matrice:
+                self.ui.e_saved_time.addItem(row[0])  
+            # messaggio di salvataggio
+            message_info('Save point created.')
+                
+    def slot_change_save_point(self):
+        """
+           Carica come pagina1 la pagina indicata nella lista di valori
+        """
+        # controllo che sia stata indicata una data (quindi una pagina)
+        if self.ui.e_saved_time.currentText() != '':
+            # cancello il contenuto della pagina2 tranne la testata
+            self.ut_report.curs.execute('DELETE FROM UT_REPORT WHERE PAGE_NU=? AND POSIZ_NU > 0', [self.page2])
+            # ricerco l'effettivo numero della pagina di savepoint 
+            self.ut_report.curs.execute('SELECT PAGE_NU FROM UT_REPORT WHERE CREAZ_DA = ?', [self.ui.e_saved_time.currentText()])                        
+            v_page = self.ut_report.curs.fetchone()[0]            
+            # copio nella pagina2 e visualizzo il risultato
+            self.ut_report.copy_page_to_new_page(v_page, self.page2)
+            self.load_screen(self.page2)            
+            # messaggio che spiega che il savepoint è stato caricato e da qui si può eseguire il ricalcolo con la situazione attuale
+            message_info('Save point restored. You may compute a new difference.')
+            # riporto selezione a 0 in modo si capisca che questo campo ha solo lo scopo 
+            # di creare un punto di partenza per il calcolo delle differenze
+            self.ui.e_saved_time.setCurrentIndex(0)
+            
     def closeEvent(self, event):
         """
-           Questo metodo si sovrappone al metoro interno della chiusura della finestra
+           Questo metodo si sovrappone al metodo interno della chiusura della finestra
         """        
         # indico tramite variabile globale che l'applicazione viene chiusa 
         # (questo perché se richiamata dall'esterno può girare solo un'istanza per volta)        
