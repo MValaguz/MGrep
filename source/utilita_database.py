@@ -288,7 +288,7 @@ def estrae_elenco_tabelle_sqlite(p_type,
     #Restituisco la lista
     return v_lista
 
-class ut_report_class():
+class t_report_class():
     """
        Classe per la gestione di ut_repor in database sqlite 
     """    
@@ -296,10 +296,14 @@ class ut_report_class():
         """
            Creo se non presente la tabella ut_repor nel db p_db_name
         """
-        self.conn = sqlite3.connect(database=p_db_name)
+        if p_db_name == 'MEMORY':
+            self.conn = sqlite3.connect(':memory:')
+        else:
+            self.conn = sqlite3.connect(database=p_db_name)
         self.curs = self.conn.cursor()
         self.curs.execute("""CREATE TABLE IF NOT EXISTS 
-                             UT_REPORT (PAGE_NU  NUMBER NOT NULL,
+                             t_report (FNAME_CO TEXT NOT NULL,
+                                        PAGE_NU  NUMBER NOT NULL,
                                         POSIZ_NU NUMBER NOT NULL,
                                         CREAZ_DA DATETIME,
                                         CAMPO1   TEXT, 
@@ -333,73 +337,116 @@ class ut_report_class():
                                         CAMPO29  REAL,
                                         CAMPO30  REAL,
                                         
-                                        PRIMARY KEY(PAGE_NU, POSIZ_NU)
+                                        PRIMARY KEY(FNAME_CO, PAGE_NU, POSIZ_NU)
                           )""")
         
-    def new_page(self):
+        # creo una lista con i nomi delle colonne di tabella. Essa mi servirà per costriure il dizionario
+        # contentente il record in formato mnemonico letto dalla tabella
+        self.struct = estrae_struttura_tabella_sqlite('1', self.curs, 't_report')
+        
+    def execute(self, p_sql_command):
+        """
+           Esegue un comando sql 
+        """
+        self.curs.execute(p_sql_command)
+        
+    def commit(self):
+        """
+           Esegue la commit
+        """
+        self.curs.execute('COMMIT')
+    
+    def read_rec(self):
+        """
+           Legge il prossimo record contenuto nel cursore aperto dalla classe e restituisce 
+           una struttura dizionario contenente come chiave il nome del campo di tabella e come valore
+           il contenuto del campo di database
+           Tale dizionario prende il nome di "rec"
+        """
+        row = self.curs.fetchone()
+        if row == None:
+            # ultimo record letto 
+            return False
+        
+        x = 0
+        # pulisco il dizionario
+        self.rec = {}
+        # carico il dizionario con il contenuto del record
+        for field in row:
+            self.rec[self.struct[x]] = field
+            x += 1
+        
+        # restituisco true che indica "record letto correttamente"
+        return True
+    
+    def new_page(self, p_fname_co):
         """
            Crea e restituisce id di una nuova pagna
         """
-        self.curs.execute('SELECT IFNULL(MAX(PAGE_NU),0) + 1 FROM UT_REPORT')
+        self.curs.execute('SELECT IFNULL(MAX(PAGE_NU),0) + 1 FROM t_report WHERE FNAME_CO = ?', [p_fname_co])
         v_new_page = self.curs.fetchone()[0]
         v_data_sistema = datetime.datetime.now()
-        self.curs.execute('INSERT INTO UT_REPORT(PAGE_NU, POSIZ_NU, CREAZ_DA) VALUES(?, ?, ?)', (v_new_page, 0, v_data_sistema) )
+        self.curs.execute('INSERT INTO t_report(FNAME_CO, PAGE_NU, POSIZ_NU, CREAZ_DA) VALUES(?, ?, ?, ?)', (p_fname_co, v_new_page, 0, v_data_sistema) )
         return v_new_page
     
-    def delete_page(self, p_page_nu):
+    def delete_page(self, p_fname_co, p_page_nu):
         """
            Cancella una pagina
         """
-        self.curs.execute('DELETE FROM UT_REPORT WHERE PAGE_NU=?', [p_page_nu] )
+        self.curs.execute('DELETE FROM t_report WHERE FNAME_CO = ? AND PAGE_NU=?', (p_fname_co, p_page_nu) )
         
-    def insert(self, p_page_nu, p_campo1=None, p_campo2=None, p_campo3=None, p_campo4=None, p_campo5=None, p_campo6=None, p_campo7=None, p_campo8=None, p_campo9=None,p_campo10=None,
-                                p_campo11=None,p_campo12=None,p_campo13=None,p_campo14=None,p_campo15=None,p_campo16=None,p_campo17=None,p_campo18=None,p_campo19=None,p_campo20=None,
-                                p_campo21=None,p_campo22=None,p_campo23=None,p_campo24=None,p_campo25=None,p_campo26=None,p_campo27=None,p_campo28=None,p_campo29=None,p_campo30=None):
+    def insert(self, p_commit, p_fname_co, p_page_nu, 
+                     p_campo1=None, p_campo2=None, p_campo3=None, p_campo4=None, p_campo5=None, p_campo6=None, p_campo7=None, p_campo8=None, p_campo9=None,p_campo10=None,
+                     p_campo11=None,p_campo12=None,p_campo13=None,p_campo14=None,p_campo15=None,p_campo16=None,p_campo17=None,p_campo18=None,p_campo19=None,p_campo20=None,
+                     p_campo21=None,p_campo22=None,p_campo23=None,p_campo24=None,p_campo25=None,p_campo26=None,p_campo27=None,p_campo28=None,p_campo29=None,p_campo30=None):
         """
            Inserisce nuova riga nel report
         """
-        self.curs.execute('SELECT IFNULL(MAX(POSIZ_NU),0) + 1 FROM UT_REPORT WHERE PAGE_NU=?', [p_page_nu])
+        self.curs.execute('SELECT IFNULL(MAX(POSIZ_NU),0) + 1 FROM t_report WHERE FNAME_CO = ? AND PAGE_NU=?', (p_fname_co,p_page_nu))
         v_new_posiz = self.curs.fetchone()[0]
         v_data_sistema = datetime.datetime.now()
-        self.curs.execute("""INSERT INTO UT_REPORT(PAGE_NU, POSIZ_NU, CREAZ_DA,
+        self.curs.execute("""INSERT INTO t_report(FNAME_CO, PAGE_NU, POSIZ_NU, CREAZ_DA,
                                                    CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO5, CAMPO6, CAMPO7, CAMPO8, CAMPO9, CAMPO10,
                                                    CAMPO11,CAMPO12,CAMPO13,CAMPO14,CAMPO15,CAMPO16,CAMPO17,CAMPO18,CAMPO19,CAMPO20,
                                                    CAMPO21,CAMPO22,CAMPO23,CAMPO24,CAMPO25,CAMPO26,CAMPO27,CAMPO28,CAMPO29,CAMPO30)
-                                            VALUES(?, ?, ?,
+                                            VALUES(?, ?, ?, ?,
                                                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                                                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,
                                                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)       
-                          """, (p_page_nu, v_new_posiz, v_data_sistema, 
+                          """, (p_fname_co, p_page_nu, v_new_posiz, v_data_sistema, 
                                 p_campo1, p_campo2, p_campo3, p_campo4, p_campo5, p_campo6, p_campo7, p_campo8, p_campo9,p_campo10,
                                 p_campo11,p_campo12,p_campo13,p_campo14,p_campo15,p_campo16,p_campo17,p_campo18,p_campo19,p_campo20,
                                 p_campo21,p_campo22,p_campo23,p_campo24,p_campo25,p_campo26,p_campo27,p_campo28,p_campo29,p_campo30 ) ) 
         
-    def copy_page_to_new_page(self, p_from_page, p_to_page):
+        if p_commit:
+            self.commit()
+        
+    def copy_page_to_new_page(self, p_fname_co, p_from_page, p_to_page):
         """
-           Copia una pagina di ut_report dentro un'altra. La pagina di arrivo deve avere il numero già staccato
+           Copia una pagina di t_report dentro un'altra. La pagina di arrivo deve avere il numero già staccato
         """
-        self.curs.execute("""INSERT INTO UT_REPORT
-                             SELECT ?, POSIZ_NU, CREAZ_DA,
+        self.curs.execute("""INSERT INTO t_report
+                             SELECT ?, ?, POSIZ_NU, CREAZ_DA,
                                     CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO5, CAMPO6, CAMPO7, CAMPO8, CAMPO9, CAMPO10,
                                     CAMPO11,CAMPO12,CAMPO13,CAMPO14,CAMPO15,CAMPO16,CAMPO17,CAMPO18,CAMPO19,CAMPO20,
                                     CAMPO21,CAMPO22,CAMPO23,CAMPO24,CAMPO25,CAMPO26,CAMPO27,CAMPO28,CAMPO29,CAMPO30                       
-                             FROM   UT_REPORT
+                             FROM   t_report
                              WHERE  PAGE_NU = ?
                                AND  POSIZ_NU > 0
-                          """, (p_to_page, p_from_page) )    
+                          """, (p_fname_co, p_to_page, p_from_page) )    
     
-    def count_row(self, p_page):
+    def count_row(self, p_fname_co, p_page):
         """
            Restituisce il numero di righe valide (con posiz_nu > 0) presenti in una pagina 
         """
-        self.curs.execute('SELECT COUNT(*) FROM UT_REPORT WHERE PAGE_NU=?', [p_page])
+        self.curs.execute('SELECT COUNT(*) FROM t_report WHERE FNAME_CO = ? AND PAGE_NU=?', (p_fname_co, p_page))
         return self.curs.fetchone()[0]
         
     def drop(self):
         """
-           Droppo ut_report dal database
+           Droppo t_report dal database
         """
-        self.curs.execute('DROP TABLE UT_REPORT');
+        self.curs.execute('DROP TABLE t_report');
         
     def close(self, p_commit):
         """
@@ -417,22 +464,30 @@ if __name__ == "__main__":
     #
     # test ut_repor
     #
-    ut_report = ut_report_class('C:\MGrep\MGrep.db')
-    #ut_report.drop()
-    #print(ut_report.new_page())
-    #ut_report.delete_page(2)
-    v_page = ut_report.new_page()
-    ut_report.insert(v_page, p_campo1='1', p_campo21=10)
-    ut_report.close(True)
-    
+    # droppo la tabella
+    #t_report = t_report_class('test.db')
+    #t_report.drop()
+    #del t_report
+    # apro t_report in memoria
+    #t_report = t_report_class("file::memory:?cache=shared")
+    t_report = t_report_class('MEMORY')
+    #print(t_report.new_page())
+    #t_report.delete_page(2)
+    # creo una nuova pagina della sezione 'prova'
+    v_page = t_report.new_page('prova')
+    # inserisco un record con relativa commit
+    t_report.insert(True, 'prova', v_page, p_campo1='1', p_campo21=10)
+    # leggo tutti i record caricati in t_report. Il dizionario "rec" contiene il record letto
+    t_report.execute('SELECT * FROM t_report')
+    while t_report.read_rec():
+        print(t_report.rec['FNAME_CO'] + ',' + str(t_report.rec['PAGE_NU']) + ',' + str(t_report.rec['POSIZ_NU']))
+        
+    # attendo la pressione del tasto "q"
     """
-    #test funzione elenco tabelle oracle
-    v_sqlite_conn = sqlite3.connect(database='C:\MGrep\MGrepTransfer.db')
-    #Indico al db di funzionare in modalità byte altrimenti ci sono problemi nel gestire utf-8
-    v_sqlite_conn.text_factory = str
-    v_sqlite_cur = v_sqlite_conn.cursor()
-    #Lettura del contenuto della tabella
-    print('Istruzione insert con parametri da tabella SQLite ')
-    print(estrae_struttura_tabella_sqlite('h', v_sqlite_cur, 'CANCELLAMI100'))
-    v_sqlite_conn.close()
+    while True:
+        a = input()
+        if a == 'q':
+            break
     """
+    # chiudo t_report senza commit    
+    t_report.close(False)
