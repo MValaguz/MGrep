@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Help MGrep</title>
+   <meta charset="UTF-8">   
+</head>
+<body>
+    <hr> <!-- Riga di separazione -->
+	
+	<h1> MGrep Top Sessions Help </h1>
+	
+	<h2> CPU used by this session </h2>	
+	<p> 
+	The CPU used by this session Oracle metric is the amount of CPU time (in 10s of milliseconds) used by a session between when a user call started and ended. Some user calls can complete within 10 milliseconds and as a result, the start and end user-call time can be the same. In this case, 0 milliseconds are added to the statistic. 
+	</p>   
+	
+	<h2> Physical reads </h2>	
+	<p>
+	Number of physical reads from the datafiles into the buffer cache
+	</p>   
+	
+	<h2> DB block gets </h2>	
+	<p>
+	DB block gets and consistent gets are the most important part of the output. They represent the Oracle Database - Buffer IO (Logical IO). The less we latch, the better. 
+    Total number of block read from the buffer cache in current mode
+	</p>   
+	
+	<h2> Recursive calls </h2>	
+	<p>
+	Number of SQL statements executed in order to execute your SQL statement  
+	</p>   
+	
+	<h2> Consistent gets </h2>	
+	<p>
+	Number of times, a consistent read was requested for a block in the buffer cache. Consistent reads may require read asides to the undo (rollback) information, and these reads to the undo will be counted here as well.
+	</p>   
+	
+	<h2> Redo size </h2>	
+	<p>
+	Total amount of redo generated in bytes during the execution of this statement 
+	</p>   
+	
+	<h2> Bytes sent via SQL*Net to client </h2>	
+	<p>
+	Total number of bytes sent to the client from the server
+	</p>   
+	
+	<h2> Bytes received via SQL*Net from client </h2>	
+	<p>
+	Total number of bytes received from the client
+	</p>   
+	
+	<h2> SQL*Net roundtrips to/from client </h2>	
+	<p>
+	Total number of SQL*Net mesages sent to and received from the client. This includes round-trips for fetches from a multiple-row result set.
+	</p>   
+	
+	<h2> Sorts (memory) </h2>	
+	<p>
+	Sort done in the user's session memory (sort area). Controlled via the sort_area_size database parameter.
+	</p>   
+	
+	<h2> Sorts (disk) </h2>	
+	<p>
+	Sorts that use the disk (temporary tablespace) because the sort exceeded the user's sort area size.
+	</p>   
+	
+	
+</body>
+</html>

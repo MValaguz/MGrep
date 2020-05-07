@@ -4,14 +4,20 @@
  Creato da.....: Marco Valaguzza
  Piattaforma...: Python3.6 con libreria pyqt5
  Data..........: 23/04/2020
- Descrizione...: Programma per visualizzare elenco delle percentuali sessioni occupate.
-                 Il funzionamento è il seguente:
-                 - Viene caricata nella tabella UT_REPORT del DB di formato SQLite la situazione iniziale delle sessioni attive
-                 - All'atto della richiesta di calcolo, viene caricato l'elenco delle sessioni attive in una nuova pagina
-                   e viene svolto un confronto con la precedente, calcolando la differenza in termini di tempo di CPU occupata 
-                   e traducendo questa differenza in percentuale. 
-                 - Ogni volta che viene richiesto un ricalcolo, la pagina di partenza viene sostituita dalla pagina precedente in modo
-                   che nella pagina1 ci sia sempre un punto di confronto.
+ Descrizione...: Programma per visualizzare il carico del DB Oracle in termini di CPU ecc.
+                 Contrariamente a quanto si possa immaginare, ottenere queste informazioni non è facile.
+                 Le metriche che Oracle rende disponibili tramite la vista v$sesstat sono comulative, nel senso
+                 che fanno riferimento al momento in cui vengono lette rispetto alla data-ora di accensione del sistema.
+                 Se ad esempio leggo la metrica relativa all'occupazione della CPU (da non intendersi come CPU fisica ma
+                 del motore di DB) della sessione MVALAGUZ in questo momento ottengo 10 come valore. Questo valore 
+                 indica l'occupazione da parte della sessione da quando si è collegata.
+                 Quindi il programma è stato impostato in questo modo:
+                 - Vengono utilizzare 2 pagine di UT_REPORT (nel DB locale SQLITE) dove:
+                   1a pagina - Alla prima esecuzione contiene la situazione di partenza (inizio monitoraggio)
+                   2a pagina - Contiene la situazione al momento del campionamento successivo
+                 - Dopo aver effettuato il campionamento nella pagina2, essa viene confrontata con la pagina1 e 
+                   la pagina1 viene aggiornata con i nuovi valori (sessioni sparite, sessioni nuove, valori nuovi).
+                   Sempre sulla pagina1 viene poi eseguito il calcolo della percentuale di valore
                  Attenzione! Non vengono estratte tutte le sessioni perché ci sono processi oracle che non interessano.
                   
  Note..........: Il layout è stato creato utilizzando qtdesigner e il file oracle_top_sessions_ui.py è ricavato partendo da oracle_top_sessions_ui.ui 
@@ -20,6 +26,7 @@
 #Librerie sistema
 import sys
 import os
+import datetime
 #Amplifico la pathname dell'applicazione in modo veda il contenuto della directory qtdesigner dove sono contenuti i layout
 sys.path.append('qtdesigner')
 #Librerie di data base
@@ -28,7 +35,7 @@ import cx_Oracle
 from PyQt5 import QtCore, QtGui, QtWidgets
 from oracle_top_sessions_ui import Ui_oracle_top_sessions_window
 #Librerie interne MGrep
-from utilita_database import ut_report_class
+from utilita_database import t_report_class
 from preferenze import preferenze
 from utilita import message_error, message_info
 
@@ -41,10 +48,11 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
         self.o_preferenze = preferenze()    
         self.o_preferenze.carica()
         
-        # apro ut_report (due pagine)
-        self.ut_report = ut_report_class(self.o_preferenze.name_file_for_db_cache)
-        self.page1 = self.ut_report.new_page()
-        self.page2 = self.ut_report.new_page()
+        # apro t_report (tre pagine) tutte in memoria RAM
+        self.fname = 'TOP_SESSIONS'
+        self.t_report = t_report_class('MEMORY')
+        self.page1 = self.t_report.new_page(self.fname)
+        self.page2 = self.t_report.new_page(self.fname)
         
         # incapsulo la classe grafica da qtdesigner        
         super(oracle_top_sessions_class, self).__init__()
@@ -86,51 +94,53 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
     def starter(self):
         """
            Caricamento della pagina iniziale
-        """    
-        # cancello per sicurezza le pagine
-        self.ut_report.delete_page(self.page1)
-        self.ut_report.delete_page(self.page2)
+        """
+        # connessione al DB come amministratore
+        try:
+            self.oracle_con = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
+                                                password=self.o_preferenze.v_oracle_password_sys,
+                                                dsn=self.ui.e_server_name.currentText(),
+                                                mode=cx_Oracle.SYSDBA)            
+        except:
+            message_error('Connection to oracle rejected. Please control login information.')
+            return None
+        
+        # cambio la label del pulsante di calcoloo in modo sia riportata l'ora di riferimento
+        self.ui.b_calculate.setText("Compute difference from " + str(datetime.datetime.now().strftime('%H:%M:%S') ) )
+        
+        # cancello il contenuto delle pagine di ut_report (tranne record posizione 0)
+        self.t_report.delete_page(self.fname, self.page1)
         
         # carico in pagina1 di ut_report, il punto di partenza della situazione sessioni         
         self.load_from_oracle_top_sessions(self.page1)
         
-        # visualizzo il contenuto della pagina1
+        # visualizzo il contenuto della pagina3
         self.load_screen(self.page1)
-        
-        # setto la variabile di primo ciclo
-        self.v_1a_volta = True        
                                                                 
     def load_from_oracle_top_sessions(self, p_page):
         """
-            Carica nella pagina di ut_report indicata da p_page la query delle sessioni 
+            Carica nella pagina di ut_report indicata da p_page la query delle sessioni Oracle
         """
-        try:
-            # connessione al DB come amministratore
-            v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
-                                             password=self.o_preferenze.v_oracle_password_sys,
-                                             dsn=self.ui.e_server_name.currentText(),
-                                             mode=cx_Oracle.SYSDBA)            
-        except:
-            message_error('Connection to oracle rejected. Please control login information.')
-            return []
-
-        # apro cursori
-        v_cursor = v_connection.cursor()
+        # pulisco la pagina
+        self.t_report.delete_page(self.fname, p_page)
+        
+        # apro cursore oracle
+        v_cursor = self.oracle_con.cursor()
         
         # select per la ricerca degli oggetti invalidi        
         v_select = """select se.sid,
                              username,
                              status,
                              logon_time,
-                             round ((sysdate-logon_time)*1440*60) logon_SECS,                             
-                             value,
+                             round ((sysdate-logon_time)*1440*60) logon_secs,                                                          
                              nvl(se.module, se.program) module_info,
                              se.sql_id,
-                             (SELECT Min(sql_text) from V$SQL WHERE sql_id=se.sql_id) sql_text
+                             (select min(sql_text) from V$SQL WHERE sql_id=se.sql_id) sql_text,
+                             value
                       from   v$session se,
                              v$sesstat ss,
                              v$statname sn
-                      where  username IS NOT NULL
+                      where  username is not null
                         and  se.sid=ss.sid
                         and  sn.statistic#=ss.statistic#
                         and  sn.name in ('""" + self.ui.e_parameter.currentText() + """')
@@ -138,38 +148,52 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
                 
         v_cursor.execute(v_select)        
         
-        # salvo in ut_report 
+        # salvo in t_report 
         v_row = []
         for result in v_cursor:
-            self.ut_report.insert(p_page_nu=p_page, 
-                                  p_campo1=result[0], 
-                                  p_campo2=result[1],
-                                  p_campo3=result[2], 
-                                  p_campo4=result[3], 
-                                  p_campo5=result[4], 
-                                  p_campo6=result[5], 
-                                  p_campo7=result[6], 
-                                  p_campo8=result[7], 
-                                  p_campo9=result[8]) 
+            self.t_report.insert(p_commit=True,
+                                 p_fname_co=self.fname, 
+                                 p_page_nu=p_page, 
+                                 p_campo25=result[0], 
+                                 p_campo2=result[1],
+                                 p_campo3=result[2], 
+                                 p_campo4=result[3], 
+                                 p_campo26=result[4],                                   
+                                 p_campo6=result[5], 
+                                 p_campo7=result[6], 
+                                 p_campo8=result[7],
+                                 p_campo21=result[8]) 
                   
-        # chiudo sessione
+        # chiudo cursore oracle
         v_cursor.close()
-        v_connection.close()
         
     def load_screen(self, p_page):            
         """
-            Carica a video la pagina di ut_report indicata 
+            Carica a video la pagina di ut_report indicata (dovrebbe essere la pagina3)
         """
         # carico in una tupla i dati
-        self.ut_report.curs.execute("""SELECT CAMPO22, CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO6, CAMPO10, ROUND(CAMPO21,1), CAMPO5, CAMPO7, CAMPO8, CAMPO9
-                                       FROM   UT_REPORT
-                                       WHERE  PAGE_NU = ?
-                                         AND  POSIZ_NU > 0
-                                       ORDER BY CAMPO22 DESC, CAMPO3""", 
-                                    [p_page])
-        matrice_dati = self.ut_report.curs.fetchall()
+        self.t_report.execute("""SELECT IFNULL(CAMPO24,''),
+                                        IFNULL(CAMPO25,''),
+                                        IFNULL(CAMPO2,''),
+                                        IFNULL(CAMPO3,''),
+                                        IFNULL(CAMPO4,''),
+                                        IFNULL(CAMPO22,''),
+                                        IFNULL(CAMPO21,''),
+                                        IFNULL(CAMPO23,''), 
+                                        IFNULL(CAMPO26,''),
+                                        IFNULL(CAMPO6,''),
+                                        IFNULL(CAMPO7,''),
+                                        IFNULL(CAMPO8,'')
+                                FROM   UT_REPORT
+                                WHERE  FNAME_CO = ?
+                                  AND  PAGE_NU = ?
+                                  AND  POSIZ_NU > 0
+                                ORDER BY CAMPO24 DESC, CAMPO3""", 
+                            (self.fname, p_page))
         
-        # lista contenente le intestazioni
+        matrice_dati = self.t_report.curs.fetchall()
+        
+        # lista contenente le intestazioni        
         intestazioni = ['%','Sid','User name','Status','Logon','Value Now','Value Old','Variance','Logon Time','Module','SQL Id','SQL Text']                        
         # creo un oggetto modello-matrice che va ad agganciarsi all'oggetto grafico lista        
         self.lista_risultati = QtGui.QStandardItemModel()
@@ -184,8 +208,18 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
         for row in matrice_dati:            
             x = 0                            
             for field in row:
-                q_item = QtGui.QStandardItem()
-                q_item.setText( str(field) )
+                q_item = QtGui.QStandardItem()                
+                # imposto il dato. E' stato usato il metodo setData perché in questo modo ho visto che i campi numerici 
+                # si riescono poi ad ordinare correttamente.                 
+                # Se il campo è numerico --> formatto e allineo a destra               
+                if isinstance(field, float) or isinstance(field, int):                    
+                    q_item.setData( '{:10.0f}'.format(field), QtCore.Qt.EditRole )                           
+                    q_item.setTextAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignVCenter)
+                # altrimenti formatto automaticamente (EditRole) e allineo a sinistra
+                else:
+                    q_item.setData( field, QtCore.Qt.EditRole )                           
+                    q_item.setTextAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)                    
+                # carico l'item nella matrice-modello    
                 self.lista_risultati.setItem(y, x, q_item )                
                 x += 1
             y += 1
@@ -193,74 +227,145 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
         self.ui.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
         self.ui.o_lst1.resizeColumnsToContents()   
+        # imposto la label con il numero totale di sessioni
+        self.ui.l_total_sessions.setText('Number of sessions : ' + str(y))
     
     def calc_differenze(self):
         """
-           Calcolo differenze tra pagina2 e pagina1
+           Questo è di fatto il cuore del programma!
+           Calcolo differenze tra pagina2 e pagina1 e il risultato lo metto nella pagina1
+           
+           Schema utilizzo dei campi di UT_REPORT 
+           CAMPO25 = SID
+           CAMPO2  = USERNAME
+           CAMPO3  = STATUS
+           CAMPO4  = LOGON_TIME (data e ora di logon della sessione)
+           CAMPO26 = LOGON_SECS (tempo di connessione in secondi)           
+           CAMPO6  = MODULE_INFO
+           CAMPO7  = SQL_ID
+           CAMPO8  = SQL_TEXT
+           CAMPO21 = VALORE OLD DELLA METRICA (es. cpu)
+           CAMPO22 = VALORE NOW DELLA METRICA (es. cpu)
+           CAMPO23 = DIFFERENZA TRA VALORE OLD E VALORE NOW
+           CAMPO24 = PERCENTUALE 
         """
-        v_totale = 0 
-        v_diffe = 0
-        # scorro tutti i record presenti nella pagina2 estraendo le colonne SID e SESS_CPU_SECS (numero di secondi occupati)
-        self.ut_report.curs.execute("""SELECT CAMPO1 VAL0, 
-                                              CAMPO2 VAL1, 
-                                              CAMPO6 VAL2, 
-                                              POSIZ_NU VAL3 
-                                        FROM  UT_REPORT 
-                                        WHERE PAGE_NU = ? 
-                                          AND POSIZ_NU> 0""", [self.page2])
-        tabella = self.ut_report.curs.fetchall()    
-        for row in tabella:
-            # ricerco se presente nella pagina1 (elaborazione precedente) la stessa sessione con lo stesso username 
-            self.ut_report.curs.execute("""SELECT POSIZ_NU VAL0, 
-                                                  CAMPO6 VAL1 
-                                           FROM   UT_REPORT 
-                                           WHERE  PAGE_NU= ? 
-                                             AND  CAMPO1 = ? 
-                                             AND  CAMPO2 = ?""", (self.page1, row[0], row[1]) )
-            rec = self.ut_report.curs.fetchone()
-            if rec != None:
-                # eseguo la differenza tra tempo attuale e tempo precedente
-                v_diffe  = float(row[2]) - float(rec[1]);
-                v_totale += v_diffe;
-            
-                # aggiorno la colonna10 della pagina2 che contiene il vecchio valore e la colonna21 che contiene la differenza
-                self.ut_report.curs.execute("""UPDATE UT_REPORT 
-                                               SET    CAMPO10 = ?, 
-                                                      CAMPO21 = ? 
-                                               WHERE  PAGE_NU = ? 
-                                                 AND  POSIZ_NU= ?""", (rec[1], v_diffe, self.page2, row[3]) )
-                
-        # calcolo le percentuali rispetto al totale
-        self.ut_report.curs.execute("""UPDATE UT_REPORT 
-                                       SET    CAMPO22 = ROUND(CAMPO21 * 100 / ?,1) 
-                                       WHERE  PAGE_NU = ?""", (v_totale, self.page2) )                                
-            
-    def slot_calculate(self):            
-        """
-            Eseguo il calcolo
-            Il calcolo consiste nello:
-               - spostare eventuale pagina2 dentro la pagina1, in modo da avere sempre nella pagina1 la situazione precedente
-               - caricare la pagina2
-               - confrontare la pagina2 con la pagina1, calcolando le differenze
-               - visualizzare la pagina2            
-        """
-        # cancello la pagina1 e rinomino la pagina2 come se fosse pagina1
-        if not self.v_1a_volta:            
-            self.ut_report.delete_page(self.page1)
-            self.ut_report.curs.execute('UPDATE UT_REPORT SET PAGE_NU=? WHERE PAGE_NU=?', (self.page1, self.page2) )
-        
         # carico la nuova situazione delle sessioni dentro la pagina2
         self.load_from_oracle_top_sessions(self.page2)
         
-        # calcolo la differenza tra la pagina2 e la pagina1
+        #--
+        # Attenzione! Essendoci un solo cursore aperto e dovendo fare una lettura di più tabelle incrociate, si caricano
+        # i dati in matrici
+        #-- 
+        
+        #--
+        # STEP1 - elimino dalla pagina1 tutte quelle sessioni che NON sono presenti nella2. Vuol dire che nel frattempo 
+        #         sono state chiuse
+        #--
+        self.t_report.execute("""SELECT * 
+                                 FROM  UT_REPORT 
+                                 WHERE FNAME_CO = ?
+                                   AND PAGE_NU  = ? 
+                                   AND POSIZ_NU > 0""", (self.fname, self.page1))
+        # leggo tutta la pagina1
+        tabella = self.t_report.curs.fetchall()
+        for riga_pag1 in tabella:
+            # decodifico la riga in modo sia un dizionario "parlante"
+            v_rec_pag1 = self.t_report.decode(riga_pag1)
+            # controllo se la sessione è ancora presente nella nuova situazione
+            self.t_report.execute("""SELECT COUNT(*)
+                                     FROM   UT_REPORT
+                                     WHERE  FNAME_CO = ?
+                                       AND  PAGE_NU  = ?
+                                       AND  CAMPO25   = ?
+                                       AND  CAMPO2   = ?""", (self.fname, self.page2, v_rec_pag1['CAMPO25'], v_rec_pag1['CAMPO2']) )
+            v_count = self.t_report.curs.fetchone()[0]
+            
+            #print(v_rec_pag1['CAMPO25'] + ' utente ' + v_rec_pag1['CAMPO2'] + ' ' + str(v_count))
+            # se la sessione non è presente --> la cancello dalla pagina1
+            if v_count == 0:
+                print('Sessione eliminata ' + str(v_rec_pag1['CAMPO25']) + ' utente ' + v_rec_pag1['CAMPO2'])
+                self.t_report.execute("""DELETE 
+                                         FROM   UT_REPORT
+                                         WHERE  FNAME_CO = ?
+                                           AND  PAGE_NU  = ?
+                                           AND  CAMPO25   = ?
+                                           AND  CAMPO2   = ?""", (self.fname, self.page1, v_rec_pag1['CAMPO25'], v_rec_pag1['CAMPO2']) )                
+            
+        #--
+        # STEP2 - Partendo dalla pagina2, carico nella pagina1 tutte le nuove sessioni, 
+        #--        
+        self.t_report.execute("""SELECT * 
+                                 FROM  UT_REPORT 
+                                 WHERE FNAME_CO = ?
+                                   AND PAGE_NU  = ? 
+                                   AND POSIZ_NU> 0""", (self.fname, self.page2))
+        tabella = self.t_report.curs.fetchall()    
+        for riga_pag2 in tabella:
+            # decodifico la riga in modo sia un dizionario "parlante"
+            v_rec_pag2 = self.t_report.decode(riga_pag2)
+            # ricerco se presente nella pagina1 (elaborazione precedente) la stessa sessione con lo stesso username 
+            self.t_report.execute("""SELECT * 
+                                     FROM   UT_REPORT 
+                                     WHERE  FNAME_CO = ?
+                                       AND  PAGE_NU= ? 
+                                       AND  CAMPO25 = ? 
+                                       AND  CAMPO2 = ?""", (self.fname, self.page1, v_rec_pag2['CAMPO25'], v_rec_pag2['CAMPO2']) )
+            riga_pag1 = self.t_report.curs.fetchone()
+            if riga_pag1 != None:
+                # decodifico la riga in modo sia un dizionario "parlante"
+                v_rec_pag1 = self.t_report.decode(riga_pag1)                
+                # aggiorno la colonna22 della pagina1 che contiene il NUOVO valore
+                self.t_report.execute("""UPDATE UT_REPORT 
+                                         SET    CAMPO22 = ? 
+                                         WHERE  FNAME_CO = ?
+                                           AND  PAGE_NU = ? 
+                                           AND  POSIZ_NU= ?""", (v_rec_pag2['CAMPO21'], v_rec_pag1['FNAME_CO'], v_rec_pag1['PAGE_NU'], v_rec_pag1['POSIZ_NU']) )
+            else:
+                # sessione non trovata, vuol dire che è stata aperta nel frattempo
+                print('Nuova sessione ' + str(v_rec_pag2['CAMPO25']) + ' utente ' + v_rec_pag2['CAMPO2'])
+                self.t_report.insert(p_commit  = True,
+                                     p_fname_co= self.fname, 
+                                     p_page_nu = self.page1, 
+                                     p_campo25 = v_rec_pag2['CAMPO25'], 
+                                     p_campo2  = v_rec_pag2['CAMPO2'],
+                                     p_campo3  = v_rec_pag2['CAMPO3'], 
+                                     p_campo4  = v_rec_pag2['CAMPO4'], 
+                                     p_campo26 = v_rec_pag2['CAMPO26'],                                 
+                                     p_campo6  = v_rec_pag2['CAMPO6'], 
+                                     p_campo7  = v_rec_pag2['CAMPO7'], 
+                                     p_campo8  = v_rec_pag2['CAMPO8'],
+                                     p_campo21 = v_rec_pag2['CAMPO21']) 
+        #--
+        # STEP3 - In pagina1 calcolo la differenza tra il nuovo e il vecchio valore
+        #--        
+        self.t_report.execute("""UPDATE UT_REPORT 
+                                 SET    CAMPO23 = ROUND(CAMPO22 - CAMPO21,0) 
+                                 WHERE  FNAME_CO = ? 
+                                   AND  PAGE_NU = ?""", (self.fname, self.page1) )  
+        
+        # calcolo il totale
+        self.t_report.execute("""SELECT SUM(CAMPO23)
+                                 FROM   UT_REPORT
+                                 WHERE  FNAME_CO = ?
+                                   AND  PAGE_NU  = ?""", (self.fname, self.page1) )
+        v_totale = self.t_report.curs.fetchone()[0]
+        
+        # calcolo le percentuali rispetto al totale 
+        self.t_report.execute("""UPDATE UT_REPORT 
+                                 SET    CAMPO24 = ROUND(CAMPO23 * 100 / ?,1) 
+                                 WHERE  FNAME_CO = ? 
+                                   AND  PAGE_NU = ?""", (v_totale, self.fname, self.page1) )                            
+            
+    def slot_calculate(self):            
+        """
+            Lancio il calcolo          
+        """        
+        # calcolo la differenza tra la pagina2 e la pagina1 e il risultato lo metto nella pagina 3
+        # la pagina1 viene constestualmente aggiornata togliendo le sessioni chiuse e inserendo quelle nuove
         self.calc_differenze()
         
-        # visualizzo il risultato della pagina2
-        self.load_screen(self.page2)
-        
-        # disattivo il flag di primo ciclo
-        if self.v_1a_volta:
-            self.v_1a_volta = False
+        # visualizzo il risultato della pagina1
+        self.load_screen(self.page1)
                         
     def slot_change_server(self):            
         """
@@ -269,58 +374,23 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
         if not self.v_load_form:            
             self.starter() 
             
-    def slot_save_point(self):
+    def slot_help(self):
         """
-           Salva la pagina 2 come pagina a parte per poter essere usata in altre elaborazioni
+           Visualizza help specifico per le metriche
         """
-        # controllo che la pagina 2 abbia almeno un record
-        if self.ut_report.count_row(self.page2) == 0:
-            message_error('No differences to save! Launch a compute!')
-        else:
-            # creo una nuova pagina e copio la 2 dentro in questa pagina
-            v_new_page = self.ut_report.new_page()                    
-            self.ut_report.copy_page_to_new_page(self.page2, v_new_page)   
-            # ricarico la lista dei save point
-            self.ui.e_saved_time.clear()
-            self.ui.e_saved_time.addItem('')                        
-            # prendo tutti i primi record di UT_REPORT con pagina maggiore della 2 (così nell'elenco non compaiono le prime due pagine)
-            # e li carico nella combobox dei savepoint
-            self.ut_report.curs.execute('SELECT CREAZ_DA FROM UT_REPORT WHERE PAGE_NU > ? AND POSIZ_NU = 0', [self.page2])
-            v_matrice = self.ut_report.curs.fetchall()            
-            for row in v_matrice:
-                self.ui.e_saved_time.addItem(row[0])  
-            # messaggio di salvataggio
-            message_info('Save point created.')
-                
-    def slot_change_save_point(self):
-        """
-           Carica come pagina1 la pagina indicata nella lista di valori
-        """
-        # controllo che sia stata indicata una data (quindi una pagina)
-        if self.ui.e_saved_time.currentText() != '':
-            # cancello il contenuto della pagina2 tranne la testata
-            self.ut_report.curs.execute('DELETE FROM UT_REPORT WHERE PAGE_NU=? AND POSIZ_NU > 0', [self.page2])
-            # ricerco l'effettivo numero della pagina di savepoint 
-            self.ut_report.curs.execute('SELECT PAGE_NU FROM UT_REPORT WHERE CREAZ_DA = ?', [self.ui.e_saved_time.currentText()])                        
-            v_page = self.ut_report.curs.fetchone()[0]            
-            # copio nella pagina2 e visualizzo il risultato
-            self.ut_report.copy_page_to_new_page(v_page, self.page2)
-            self.load_screen(self.page2)            
-            # messaggio che spiega che il savepoint è stato caricato e da qui si può eseguire il ricalcolo con la situazione attuale
-            message_info('Save point restored. You may compute a new difference.')
-            # riporto selezione a 0 in modo si capisca che questo campo ha solo lo scopo 
-            # di creare un punto di partenza per il calcolo delle differenze
-            self.ui.e_saved_time.setCurrentIndex(0)
-            
+        os.system("start help\\MGrep_top_sessions_help.html")
+                        
     def closeEvent(self, event):
         """
            Questo metodo si sovrappone al metodo interno della chiusura della finestra
         """        
+        # chiudo sessione Oracle
+        self.oracle_con.close()
         # indico tramite variabile globale che l'applicazione viene chiusa 
         # (questo perché se richiamata dall'esterno può girare solo un'istanza per volta)        
         self.v_app_top_session_open = False
         # chiudo il DB sqlite senza commit
-        self.ut_report.close(False)
+        self.t_report.close(False)
         # chiudo la finestra
         event.accept()
             
