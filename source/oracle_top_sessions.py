@@ -12,7 +12,7 @@
                  del motore di DB) della sessione MVALAGUZ in questo momento ottengo 10 come valore. Questo valore 
                  indica l'occupazione da parte della sessione da quando si è collegata.
                  Quindi il programma è stato impostato in questo modo:
-                 - Vengono utilizzare 2 pagine di UT_REPORT (nel DB locale SQLITE) dove:
+                 - Vengono utilizzate 2 pagine di UT_REPORT (nel DB locale SQLITE) dove:
                    1a pagina - Alla prima esecuzione contiene la situazione di partenza (inizio monitoraggio)
                    2a pagina - Contiene la situazione al momento del campionamento successivo
                  - Dopo aver effettuato il campionamento nella pagina2, essa viene confrontata con la pagina1 e 
@@ -32,7 +32,7 @@ sys.path.append('qtdesigner')
 #Librerie di data base
 import cx_Oracle
 #Librerie grafiche
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtChart
 from oracle_top_sessions_ui import Ui_oracle_top_sessions_window
 #Librerie interne MGrep
 from utilita_database import t_report_class
@@ -57,8 +57,19 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
         # incapsulo la classe grafica da qtdesigner        
         super(oracle_top_sessions_class, self).__init__()
         self.ui = Ui_oracle_top_sessions_window()
-        self.ui.setupUi(self)        
+        self.ui.setupUi(self)       
         
+        """
+        # aggiungo un'area grafica accanto alla lista che servirà alla visualizzazione del grafico
+        self.o_chart_view = QtChart.QChartView()
+        self.o_chart_view.setRenderHint(QtGui.QPainter.Antialiasing)
+        self.ui.gridLayout.addWidget(self.o_chart_view, 7, 0, 1, 4)        
+        
+        self.o_chart = QtChart.QChart()
+        self.o_chart_view.setChart(self.o_chart)        
+        self.o_chart.setTitle('TOP SESSIONS')        
+        """
+                
         # siccome il successivo carico delle poplist fa scattare l'evento di change con conseguente ricarico delle tabelle, 
         # la seguente variabile indica che siamo in fase di partenza del form
         self.v_load_form = True
@@ -169,7 +180,7 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
         
     def load_screen(self, p_page):            
         """
-            Carica a video la pagina di ut_report indicata (dovrebbe essere la pagina3)
+            Carica a video la pagina di ut_report indicata
         """
         # carico in una tupla i dati
         self.t_report.execute("""SELECT IFNULL(CAMPO24,''),
@@ -314,12 +325,21 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
             if riga_pag1 != None:
                 # decodifico la riga in modo sia un dizionario "parlante"
                 v_rec_pag1 = self.t_report.decode(riga_pag1)                
-                # aggiorno la colonna22 della pagina1 che contiene il NUOVO valore
+                # aggiorno la colonna22 della pagina1 che contiene il NUOVO valore. Inoltre aggiorno anche SQL_ID e SQL_Text 
+                # in quanto potrebbero essere cambiati
                 self.t_report.execute("""UPDATE UT_REPORT 
-                                         SET    CAMPO22 = ? 
+                                         SET    CAMPO22 = ?,
+                                                CAMPO7 = ?,
+                                                CAMPO8 = ?
                                          WHERE  FNAME_CO = ?
                                            AND  PAGE_NU = ? 
-                                           AND  POSIZ_NU= ?""", (v_rec_pag2['CAMPO21'], v_rec_pag1['FNAME_CO'], v_rec_pag1['PAGE_NU'], v_rec_pag1['POSIZ_NU']) )
+                                           AND  POSIZ_NU= ?""", 
+                                        (v_rec_pag2['CAMPO21'], 
+                                         v_rec_pag2['CAMPO7'], 
+                                         v_rec_pag2['CAMPO8'], 
+                                         v_rec_pag1['FNAME_CO'], 
+                                         v_rec_pag1['PAGE_NU'], 
+                                         v_rec_pag1['POSIZ_NU']) )
             else:
                 # sessione non trovata, vuol dire che è stata aperta nel frattempo
                 print('Nuova sessione ' + str(v_rec_pag2['CAMPO25']) + ' utente ' + v_rec_pag2['CAMPO2'])
