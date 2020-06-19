@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>oracle_table_space_window</class>
+ <widget class="QMainWindow" name="oracle_table_space_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Oracle table space</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <item row="4" column="0">
+     <widget class="QLabel" name="l_server_name">
+      <property name="text">
+       <string>Oracle name server:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_server_name</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="e_server_name"/>
+    </item>
+    <item row="12" column="0" colspan="3">
+     <widget class="QTableView" name="o_lst2">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>30</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0" colspan="3">
+     <widget class="QTableView" name="o_lst1">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>50</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="dragEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="1">
+     <widget class="QPushButton" name="pushButton">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1) Select a table space&lt;/p&gt;&lt;p&gt;2) Click this button&lt;/p&gt;&lt;p&gt;3) The script is composed in the text box below, with a new numeric part&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Create script for add space to a tablespace</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/sql.gif</normaloff>:/icons/icons/sql.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="14" column="0" colspan="3">
+     <widget class="QLineEdit" name="e_sql_script"/>
+    </item>
+    <item row="5" column="0" colspan="3">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>List of table spaces:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="0" colspan="3">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>DBfiles linked to tablespace:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <tabstops>
+  <tabstop>e_server_name</tabstop>
+  <tabstop>o_lst1</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>e_server_name</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>oracle_table_space_window</receiver>
+   <slot>slot_changed_server()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>335</x>
+     <y>19</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>550</x>
+     <y>21</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>o_lst1</sender>
+   <signal>clicked(QModelIndex)</signal>
+   <receiver>oracle_table_space_window</receiver>
+   <slot>slot_table_space_selected()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>324</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>411</x>
+     <y>251</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_table_space_window</receiver>
+   <slot>slot_create_script()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>401</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>549</x>
+     <y>391</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_changed_server()</slot>
+  <slot>slot_table_space_selected()</slot>
+  <slot>slot_create_script()</slot>
+ </slots>
+</ui>

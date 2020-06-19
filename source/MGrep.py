@@ -256,7 +256,19 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_icon = QtGui.QIcon()
         my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/oracle.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
         my_sub_window.setWindowIcon(my_icon)                                                                
-        my_app.show()           
+        my_app.show()   
+        
+    def slot_actionTable_space(self):
+        """
+           Richiamo form table space 
+        """                
+        from oracle_table_space import oracle_table_space_class
+        my_app = oracle_table_space_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/db.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                                
+        my_app.show()   
         
     def slot_actionVolume(self):
         """
@@ -358,6 +370,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     application = MGrep_class()
     # titolo dell'applicazione!
-    application.setWindowTitle('MGrep 1.2')
+    application.setWindowTitle('MGrep 1.3')
     application.show()
     sys.exit(app.exec())        

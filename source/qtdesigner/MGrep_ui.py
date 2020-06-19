@@ -41,7 +41,7 @@ class Ui_MGrepWindow(object):
         self.verticalLayout.addWidget(self.mdiArea)
         MGrepWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MGrepWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -189,6 +189,9 @@ class Ui_MGrepWindow(object):
         icon25.addPixmap(QtGui.QPixmap(":/icons/icons/speedometer.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionTop_sessions.setIcon(icon25)
         self.actionTop_sessions.setObjectName("actionTop_sessions")
+        self.actionTable_space = QtWidgets.QAction(MGrepWindow)
+        self.actionTable_space.setIcon(icon17)
+        self.actionTable_space.setObjectName("actionTable_space")
         self.menuFile.addAction(self.actionSave_the_windows_position)
         self.menuFile.addAction(self.actionReset_main_window_position)
         self.menuFile.addAction(self.actionFactory_reset)
@@ -205,6 +208,7 @@ class Ui_MGrepWindow(object):
         self.menuOracle.addAction(self.actionSessions)
         self.menuOracle.addAction(self.actionTop_sessions)
         self.menuOracle.addAction(self.actionJobs_status)
+        self.menuOracle.addAction(self.actionTable_space)
         self.menuOracle.addAction(self.actionVolume)
         self.menuFavorites.addAction(self.actionFiles)
         self.menuFavorites.addAction(self.actionDirectories)
@@ -246,6 +250,7 @@ class Ui_MGrepWindow(object):
         self.actionImport_Export.triggered.connect(MGrepWindow.slot_actionImport_Export)
         self.actionDownload_an_object_from_server.triggered.connect(MGrepWindow.slot_actionDownload)
         self.actionTop_sessions.triggered.connect(MGrepWindow.slot_actionTop_sessions)
+        self.actionTable_space.triggered.connect(MGrepWindow.slot_actionTable_space)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):
@@ -286,6 +291,7 @@ class Ui_MGrepWindow(object):
         self.actionTile_vertically.setText(_translate("MGrepWindow", "Tile vertically"))
         self.actionTranslate.setText(_translate("MGrepWindow", "Translate"))
         self.actionTop_sessions.setText(_translate("MGrepWindow", "Top sessions"))
+        self.actionTable_space.setText(_translate("MGrepWindow", "Table space"))
 import resource_rc
 
 
