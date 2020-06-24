@@ -16,6 +16,8 @@
  Note..........: Il layout è stato creato utilizzando qtdesigner e il file MGrep_ui.py è ricavato partendo da MGrep_ui.ui 
  
  Note!!!!!!!!!!! Il programma quando si avvia reindirizza output verso i file di testo! Quindi se non lanciato da Wing-Editor, gli errori potrebbero non vedersi!
+                 I files delle password sono contenuti nella cartella pwd. Se non presenti tutte le funzionalità di oracle non funzionano.
+                 Ovviamente questi file non vanno condivisi su GitHub!
 """
 
 #Librerie sistema
@@ -42,6 +44,10 @@ class MGrep_class(QtWidgets.QMainWindow):
         # carico le preferenze
         self.o_preferenze = preferenze()
         self.o_preferenze.carica()
+        
+        # se nelle preferenze non risultano caricate le password dei server --> avviso
+        if self.o_preferenze.v_oracle_password_sys == '' or self.o_preferenze.v_server_password_DB == '' or self.o_preferenze.v_server_password_iAS == '':
+            message_info('Password files not found! The Oracle functions will be not accessibled!')
     
         # se dalle preferenze emerge che vanno aperte delle window in una certa posizione, procedo con apertura
         self.apre_finestre_salvate()    
@@ -270,6 +276,18 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_sub_window.setWindowIcon(my_icon)                                                                
         my_app.show()   
         
+    def slot_actionServers_status(self):
+        """
+           Richiamo form di utilità sullo stato dei server linux
+        """                
+        from linux_server_utility import linux_server_class
+        my_app = linux_server_class()
+        my_sub_window = self.ui.mdiArea.addSubWindow(my_app)        
+        my_icon = QtGui.QIcon()
+        my_icon.addPixmap(QtGui.QPixmap(":/icons/icons/console.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)                
+        my_sub_window.setWindowIcon(my_icon)                                                                
+        my_app.show()   
+                       
     def slot_actionVolume(self):
         """
            Richiamo form occupazione volume
@@ -370,6 +388,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     application = MGrep_class()
     # titolo dell'applicazione!
-    application.setWindowTitle('MGrep 1.3')
+    application.setWindowTitle('MGrep 1.4')
     application.show()
     sys.exit(app.exec())        

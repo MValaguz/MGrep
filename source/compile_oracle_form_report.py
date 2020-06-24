@@ -17,6 +17,7 @@ import  subprocess
 from PyQt5 import QtCore, QtGui, QtWidgets
 #Librerie interne MGrep
 from utilita import message_error, message_info, message_question_yes_no
+from preferenze import preferenze
 
 class pubblica_form_report(QtWidgets.QWidget):
     """
@@ -29,6 +30,10 @@ class pubblica_form_report(QtWidgets.QWidget):
     def __init__(self, p_sorgente, p_work_dir, p_tipo):        
         # rendo la mia classe una superclasse
         super(pubblica_form_report, self).__init__()        
+          
+        # carico le preferenze
+        self.o_preferenze = preferenze()    
+        self.o_preferenze.carica()                
                         
         # creazione della wait window
         self.v_progress_step = 0
@@ -53,7 +58,7 @@ class pubblica_form_report(QtWidgets.QWidget):
         self.progress.setLabel(self.progress_label)                           
     
         #Compilazione su server 12g
-        if self.compilazione('10.0.4.14', 'fmw12Oracle_01', p_sorgente, p_work_dir, p_tipo) == 'ok':
+        if self.compilazione('10.0.4.14', self.o_preferenze.v_server_password_iAS, p_sorgente, p_work_dir, p_tipo) == 'ok':
             message_info('Pubblication completed successful!')    
             
         self.progress.close()

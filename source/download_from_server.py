@@ -73,7 +73,7 @@ class download_from_server_class(QtWidgets.QMainWindow):
         try:
             # scarico il file nella directory indicata            
             v_ip = '10.0.4.14'
-            v_pwd = 'fmw12Oracle_01'
+            v_pwd = self.o_preferenze.v_server_password_iAS
             v_command = 'echo y | utility_prog\\pscp -pw ' + v_pwd + ' oracle@' + v_ip + ':/appl/source/' + v_sorgente + ' ' + v_destinazione                    
             v_ssh = subprocess.Popen(v_command, shell=True, stdin=subprocess.PIPE, stdout=v_sshoutput, stderr=v_sshoutputerror)
             v_ssh.communicate(v_sshinput)

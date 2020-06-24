@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>linux_server_window</class>
+ <widget class="QMainWindow" name="linux_server_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>801</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Linux server utility</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/console.gif</normaloff>:/icons/icons/console.gif</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="l_icom_815">
+      <property name="text">
+       <string>ICOM_815 DB</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_icom_815</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="l_backup_815">
+      <property name="text">
+       <string>BACKUP_815 DB</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_backup_815</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QTextEdit" name="e_backup_815">
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="l_backup_2_815">
+      <property name="text">
+       <string>BACKUP_2_815 DB</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_backup_2_815</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QTextEdit" name="e_backup_2_815">
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QTextEdit" name="e_icom_815">
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QTextEdit" name="e_ias_smile_reale">
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="l_ias_smile_reale">
+      <property name="text">
+       <string>iAS SMILE REALE</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_ias_smile_reale</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="l_ias_smile_backup">
+      <property name="text">
+       <string>iAS SMILE BACKUP</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_ias_smile_backup</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QTextEdit" name="e_ias_smile_backup">
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLabel" name="l_ias_smile_backup2">
+      <property name="text">
+       <string>iAS SMILE BACKUP2</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_ias_smile_backup2</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QTextEdit" name="e_ias_smile_backup2">
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>25</width>
+     <height>25</height>
+    </size>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_disc_usage"/>
+   <addaction name="actionTop_sessions"/>
+   <addaction name="actionShow_folder_ora02"/>
+  </widget>
+  <action name="action_disc_usage">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/pie.gif</normaloff>:/icons/icons/pie.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Disc Usage</string>
+   </property>
+   <property name="toolTip">
+    <string>Show disc usage for all server</string>
+   </property>
+  </action>
+  <action name="actionTop_sessions">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/speedometer.gif</normaloff>:/icons/icons/speedometer.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Top sessions</string>
+   </property>
+   <property name="toolTip">
+    <string>Show the output of &quot;top&quot; command</string>
+   </property>
+  </action>
+  <action name="actionShow_folder_ora02">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/zip.gif</normaloff>:/icons/icons/zip.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Show folder ora02</string>
+   </property>
+   <property name="toolTip">
+    <string>Show folder ora02</string>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>e_icom_815</tabstop>
+  <tabstop>e_ias_smile_reale</tabstop>
+  <tabstop>e_backup_815</tabstop>
+  <tabstop>e_ias_smile_backup</tabstop>
+  <tabstop>e_backup_2_815</tabstop>
+  <tabstop>e_ias_smile_backup2</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>action_disc_usage</sender>
+   <signal>triggered()</signal>
+   <receiver>linux_server_window</receiver>
+   <slot>slot_action_disc_usage()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionTop_sessions</sender>
+   <signal>triggered()</signal>
+   <receiver>linux_server_window</receiver>
+   <slot>slot_action_top_sessions()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShow_folder_ora02</sender>
+   <signal>triggered()</signal>
+   <receiver>linux_server_window</receiver>
+   <slot>slot_show_folder_ora02()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>400</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_action_disc_usage()</slot>
+  <slot>slot_action_top_sessions()</slot>
+  <slot>slot_show_folder_ora02()</slot>
+ </slots>
+</ui>

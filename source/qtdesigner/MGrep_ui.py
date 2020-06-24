@@ -41,7 +41,7 @@ class Ui_MGrepWindow(object):
         self.verticalLayout.addWidget(self.mdiArea)
         MGrepWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MGrepWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 26))
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
@@ -192,6 +192,9 @@ class Ui_MGrepWindow(object):
         self.actionTable_space = QtWidgets.QAction(MGrepWindow)
         self.actionTable_space.setIcon(icon17)
         self.actionTable_space.setObjectName("actionTable_space")
+        self.actionServers_Status = QtWidgets.QAction(MGrepWindow)
+        self.actionServers_Status.setIcon(icon22)
+        self.actionServers_Status.setObjectName("actionServers_Status")
         self.menuFile.addAction(self.actionSave_the_windows_position)
         self.menuFile.addAction(self.actionReset_main_window_position)
         self.menuFile.addAction(self.actionFactory_reset)
@@ -209,6 +212,7 @@ class Ui_MGrepWindow(object):
         self.menuOracle.addAction(self.actionTop_sessions)
         self.menuOracle.addAction(self.actionJobs_status)
         self.menuOracle.addAction(self.actionTable_space)
+        self.menuOracle.addAction(self.actionServers_Status)
         self.menuOracle.addAction(self.actionVolume)
         self.menuFavorites.addAction(self.actionFiles)
         self.menuFavorites.addAction(self.actionDirectories)
@@ -251,6 +255,7 @@ class Ui_MGrepWindow(object):
         self.actionDownload_an_object_from_server.triggered.connect(MGrepWindow.slot_actionDownload)
         self.actionTop_sessions.triggered.connect(MGrepWindow.slot_actionTop_sessions)
         self.actionTable_space.triggered.connect(MGrepWindow.slot_actionTable_space)
+        self.actionServers_Status.triggered.connect(MGrepWindow.slot_actionServers_status)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):
@@ -292,6 +297,7 @@ class Ui_MGrepWindow(object):
         self.actionTranslate.setText(_translate("MGrepWindow", "Translate"))
         self.actionTop_sessions.setText(_translate("MGrepWindow", "Top sessions"))
         self.actionTable_space.setText(_translate("MGrepWindow", "Table space"))
+        self.actionServers_Status.setText(_translate("MGrepWindow", "Servers Status"))
 import resource_rc
 
 

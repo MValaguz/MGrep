@@ -9,6 +9,7 @@ a = Analysis(['..\\source\\MGrep.py'],
              datas=[					
 					('..\\source\\help\\*.*','help'),
 					('..\\source\\utility_prog\\*.*','utility_prog'),
+					('..\\source\\pwd\\*.*','pwd'),
 					('..\\source\\qtdesigner\\*.py','qtdesigner')
 			       ],
              hiddenimports=[],             

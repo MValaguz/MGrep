@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/pie.gif</file>
     <file>icons/speedometer.gif</file>
     <file>icons/translate.png</file>
     <file>icons/MGrep.ico</file>

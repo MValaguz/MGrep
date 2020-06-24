@@ -76,7 +76,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -115,6 +115,7 @@
     <addaction name="actionTop_sessions"/>
     <addaction name="actionJobs_status"/>
     <addaction name="actionTable_space"/>
+    <addaction name="actionServers_Status"/>
     <addaction name="actionVolume"/>
    </widget>
    <widget class="QMenu" name="menuFavorites">
@@ -395,6 +396,15 @@
    </property>
    <property name="text">
     <string>Table space</string>
+   </property>
+  </action>
+  <action name="actionServers_Status">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/console.gif</normaloff>:/icons/icons/console.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Servers Status</string>
    </property>
   </action>
  </widget>
@@ -786,6 +796,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionServers_Status</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionServers_status()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -812,5 +838,6 @@
   <slot>slot_actionDownload()</slot>
   <slot>slot_actionTop_sessions()</slot>
   <slot>slot_actionTable_space()</slot>
+  <slot>slot_actionServers_status()</slot>
  </slots>
 </ui>
