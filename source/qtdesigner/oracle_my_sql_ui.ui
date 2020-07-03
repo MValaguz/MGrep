@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>oracle_my_sql_window</class>
+ <widget class="QMainWindow" name="oracle_my_sql_window">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Oracle My Sql</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resource.qrc">
+    <normaloff>:/icons/icons/MGrep.ico</normaloff>:/icons/icons/MGrep.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>10</number>
+    </property>
+    <item row="5" column="0">
+     <widget class="QLabel" name="l_search1">
+      <property name="text">
+       <string>Sql statement:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_sql</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="l_server_name">
+      <property name="text">
+       <string>Oracle name server:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_server_name</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0" colspan="3">
+     <widget class="QTextEdit" name="e_sql">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>20</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>Courier</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0">
+     <widget class="QLabel" name="l_result">
+      <property name="text">
+       <string>Result:</string>
+      </property>
+      <property name="buddy">
+       <cstring>o_table</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0" colspan="3">
+     <widget class="QTableWidget" name="o_table">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>80</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="e_server_name"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionLoad_sql"/>
+   <addaction name="actionSave_sql"/>
+   <addaction name="separator"/>
+   <addaction name="actionExecute_sql"/>
+   <addaction name="separator"/>
+   <addaction name="actionCommit"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionLoad_sql">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/folder.gif</normaloff>:/icons/icons/folder.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Load sql</string>
+   </property>
+   <property name="toolTip">
+    <string>Load a file sql</string>
+   </property>
+  </action>
+  <action name="actionSave_sql">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/disk.gif</normaloff>:/icons/icons/disk.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Save sql</string>
+   </property>
+   <property name="toolTip">
+    <string>Save sql into a file</string>
+   </property>
+  </action>
+  <action name="actionExecute_sql">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Execute sql</string>
+   </property>
+   <property name="toolTip">
+    <string>Execute de sql statement</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionCommit">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/confirm.gif</normaloff>:/icons/icons/confirm.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Commit changes</string>
+   </property>
+   <property name="toolTip">
+    <string>Commit the changes on the sql results</string>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>e_sql</tabstop>
+  <tabstop>o_table</tabstop>
+ </tabstops>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionLoad_sql</sender>
+   <signal>triggered()</signal>
+   <receiver>oracle_my_sql_window</receiver>
+   <slot>slot_load()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSave_sql</sender>
+   <signal>triggered()</signal>
+   <receiver>oracle_my_sql_window</receiver>
+   <slot>slot_save()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionExecute_sql</sender>
+   <signal>triggered()</signal>
+   <receiver>oracle_my_sql_window</receiver>
+   <slot>slot_execute()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCommit</sender>
+   <signal>triggered()</signal>
+   <receiver>oracle_my_sql_window</receiver>
+   <slot>slot_commit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>e_server_name</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>oracle_my_sql_window</receiver>
+   <slot>slot_connect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>349</x>
+     <y>61</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>249</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>slot_load()</slot>
+  <slot>slot_save()</slot>
+  <slot>slot_execute()</slot>
+  <slot>slot_commit()</slot>
+  <slot>slot_connect()</slot>
+ </slots>
+</ui>

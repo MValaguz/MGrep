@@ -15,8 +15,8 @@
  
  Note..........: Il layout è stato creato utilizzando qtdesigner e il file MGrep_ui.py è ricavato partendo da MGrep_ui.ui 
  
- Note!!!!!!!!!!! Il programma quando si avvia reindirizza output verso i file di testo! Quindi se non lanciato da Wing-Editor, gli errori potrebbero non vedersi!
-                 I files delle password sono contenuti nella cartella pwd. Se non presenti tutte le funzionalità di oracle non funzionano.
+ Note!!!!!!!!!!! Il programma quando si avvia reindirizza output verso file di testo! Quindi se non lanciato da Wing-Editor, gli errori potrebbero non vedersi!
+                 I files delle password sono contenuti nella cartella pwd. Se non presenti, tutte le funzionalità di oracle non funzionano.
                  Ovviamente questi file non vanno condivisi su GitHub!
 """
 
@@ -388,6 +388,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     application = MGrep_class()
     # titolo dell'applicazione!
-    application.setWindowTitle('MGrep 1.4')
+    application.setWindowTitle('MGrep 1.4a')
     application.show()
     sys.exit(app.exec())        

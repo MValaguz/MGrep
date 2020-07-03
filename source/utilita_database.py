@@ -16,6 +16,17 @@ import cx_Oracle
 #Librerie interne MGrep
 from utilita import message_error, message_question_yes_no, message_info
 
+def nomi_colonne_istruzione_sql(p_db_cursor):
+    """
+        Restituisce elenco delle colonne di una qualsiasi query sql
+        p_db_cursor = cursore aperto ad un db             
+    """
+    v_tab = []
+    for i in range(0, len(p_db_cursor.description)):
+        v_tab.append(p_db_cursor.description[i][0])    
+        
+    return v_tab
+
 def estrae_struttura_tabella_oracle(p_type,
                                     p_db_cursor,
                                     p_user_db,
@@ -28,6 +39,7 @@ def estrae_struttura_tabella_oracle(p_type,
                    = 'b' --> restituisce una lista con i riferimenti posizionali alle colonne blob
                    = 'e' --> restituisce il riferimento alla colonna che contiene l'estensione dei file
             p_db_cursor = cursore aperto ad un db oracle
+            p_user_db    = schema di riferimento (es. SMILE)
             p_table_name = nome della tabella da analizzare
     """
     def estrae_struttura():
