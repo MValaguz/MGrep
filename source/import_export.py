@@ -48,6 +48,10 @@ class import_export_class(QtWidgets.QMainWindow):
         for nome in self.o_preferenze.elenco_server:
             self.ui.e_dboracle.addItem(nome)
             
+        # carico elenco degli user (al momento fisso)        
+        self.ui.e_oracle_user.addItem('SMILE')        
+        self.ui.e_oracle_user.addItem('SMI')        
+            
         # carico il resto delle preferenze
         self.ui.e_dboracle.setCurrentText( self.o_preferenze.dboracle )
         self.ui.e_sqlite_db.setText( self.o_preferenze.sqlite_db )
@@ -86,8 +90,8 @@ class import_export_class(QtWidgets.QMainWindow):
 
         # Richiamo copia della tabella
         if v_ok:            
-            app = copy_from_oracle_to_sqlite('SMILE',
-                                             'SMILE',
+            app = copy_from_oracle_to_sqlite(self.ui.e_oracle_user.currentText(),
+                                             self.ui.e_oracle_user.currentText(),
                                              self.ui.e_dboracle.currentText(),
                                              self.ui.e_table_name.currentText(),
                                              self.ui.e_where_cond.toPlainText(), 
@@ -148,8 +152,8 @@ class import_export_class(QtWidgets.QMainWindow):
         app = copy_from_sqlite_to_oracle(self.ui.e_table_to_oracle.currentText(),  
                                          self.ui.e_sqlite_db.displayText(),
                                          self.o_preferenze.work_dir,                               
-                                         "SMILE",
-                                         "SMILE",
+                                         self.ui.e_oracle_user.currentText(),
+                                         self.ui.e_oracle_user.currentText(),
                                          self.ui.e_dboracle.currentText(),
                                          self.ui.e_oracle_table.currentText(),
                                          False)      
@@ -159,8 +163,8 @@ class import_export_class(QtWidgets.QMainWindow):
            copia un foglio di excel dentro una tabella oracle
         """
         app = import_excel_into_oracle(False,
-                                       "SMILE",
-                                       "SMILE",
+                                       self.ui.e_oracle_user.currentText(),
+                                       self.ui.e_oracle_user.currentText(),
                                        self.ui.e_dboracle.currentText(),
                                        self.ui.e_oracle_table.currentText(),
                                        self.ui.e_import_excel.displayText(),
@@ -195,14 +199,14 @@ class import_export_class(QtWidgets.QMainWindow):
             carica la combobox delle tabelle di oracle SMILE
         """
         self.ui.e_table_name.clear()        
-        self.ui.e_table_name.addItems( utilita_database.estrae_elenco_tabelle_oracle( '1', 'SMILE', 'SMILE', self.ui.e_dboracle.currentText() ) )            
+        self.ui.e_table_name.addItems( utilita_database.estrae_elenco_tabelle_oracle( '1', self.ui.e_oracle_user.currentText(), self.ui.e_oracle_user.currentText(), self.ui.e_dboracle.currentText() ) )            
     
     def slot_b_oracle_table(self):
         """
             carica la combobox delle tabelle di oracle SMILE
         """
         self.ui.e_oracle_table.clear()        
-        self.ui.e_oracle_table.addItems( utilita_database.estrae_elenco_tabelle_oracle( '1', 'SMILE', 'SMILE', self.ui.e_dboracle.currentText() ) )            
+        self.ui.e_oracle_table.addItems( utilita_database.estrae_elenco_tabelle_oracle( '1', self.ui.e_oracle_user.currentText(), self.ui.e_oracle_user.currentText(), self.ui.e_dboracle.currentText() ) )            
         
     def slot_b_table_excel(self):
         """

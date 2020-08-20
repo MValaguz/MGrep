@@ -388,6 +388,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     application = MGrep_class()
     # titolo dell'applicazione!
-    application.setWindowTitle('MGrep 1.4a')
+    application.setWindowTitle('MGrep 1.4b')
     application.show()
     sys.exit(app.exec())        
