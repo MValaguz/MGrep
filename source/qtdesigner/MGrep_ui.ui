@@ -138,6 +138,7 @@
     <addaction name="actionImport_Export"/>
     <addaction name="actionAscii_Graphics_generator"/>
     <addaction name="actionDownload_an_object_from_server"/>
+    <addaction name="actionOracleMySQL"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -411,6 +412,15 @@
    </property>
    <property name="text">
     <string>Servers Status</string>
+   </property>
+  </action>
+  <action name="actionOracleMySQL">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/dbase.gif</normaloff>:/icons/icons/dbase.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Oracle My SQL</string>
    </property>
   </action>
  </widget>
@@ -818,6 +828,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionOracleMySQL</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionOracleMySQL()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -845,5 +871,6 @@
   <slot>slot_actionTop_sessions()</slot>
   <slot>slot_actionTable_space()</slot>
   <slot>slot_actionServers_status()</slot>
+  <slot>slot_actionOracleMySQL()</slot>
  </slots>
 </ui>

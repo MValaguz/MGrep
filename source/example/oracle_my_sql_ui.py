@@ -1,0 +1,212 @@
+# -*- coding: utf-8 -*-
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_oracle_my_sql_window(object):
+    def setupUi(self, oracle_my_sql_window):
+        #oracle_my_sql_window.setObjectName("oracle_my_sql_window")
+        oracle_my_sql_window.resize(830, 610)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        oracle_my_sql_window.setWindowIcon(icon)
+        
+        # Status bar
+        self.statusBar = QtWidgets.QStatusBar(oracle_my_sql_window)        
+        oracle_my_sql_window.setStatusBar(self.statusBar)
+        
+        # Toolbar                        
+        self.toolBar = QtWidgets.QToolBar(oracle_my_sql_window)        
+        oracle_my_sql_window.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)        
+        
+        # Pulsante loadfile
+        self.actionLoad_sql = QtWidgets.QAction(oracle_my_sql_window)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/icons/icons/folder.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionLoad_sql.setIcon(icon1)
+        self.actionLoad_sql.setText("Load sql")
+        self.actionLoad_sql.setToolTip("Load a file sql")
+        
+        # Pulsante salva
+        self.actionSave_sql = QtWidgets.QAction(oracle_my_sql_window)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/icons/icons/disk.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSave_sql.setIcon(icon2)
+        self.actionSave_sql.setText("Save sql")
+        self.actionSave_sql.setToolTip("Save sql into a file")
+        
+        # Pulsante esegui
+        self.actionExecute_sql = QtWidgets.QAction(oracle_my_sql_window)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/icons/icons/go.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionExecute_sql.setIcon(icon3)
+        self.actionExecute_sql.setText("Execute sql")
+        self.actionExecute_sql.setToolTip("Execute de sql statement")
+        self.actionExecute_sql.setShortcut("F5")
+        
+        # Pulsante commit
+        self.actionCommit = QtWidgets.QAction(oracle_my_sql_window)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icons/confirm.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionCommit.setIcon(icon4)
+        self.actionCommit.setText("Commit changes")
+        self.actionCommit.setToolTip("Commit the changes on the sql results")
+        
+        # Fissa i pulsanti nella toolbar
+        self.toolBar.addAction(self.actionLoad_sql)
+        self.toolBar.addAction(self.actionSave_sql)
+        self.toolBar.addSeparator()
+        self.toolBar.addAction(self.actionExecute_sql)
+        self.toolBar.addSeparator()
+        self.toolBar.addAction(self.actionCommit)   
+        
+        """
+        hbox = QtWidgets.QHBoxLayout(oracle_my_sql_window)
+
+        topleft = QtWidgets.QFrame()
+        topleft.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        bottom = QtWidgets.QFrame()
+        bottom.setFrameShape(QtWidgets.QFrame.StyledPanel)
+
+        splitter1 = QtWidgets.QSplitter(QtCore.Qt.Horizontal)
+        textedit = QtWidgets.QTextEdit()
+        splitter1.addWidget(topleft)
+        splitter1.addWidget(textedit)
+        splitter1.setSizes([100,200])
+
+        splitter2 = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        splitter2.addWidget(splitter1)
+        splitter2.addWidget(bottom)
+
+        hbox.addWidget(splitter2)
+
+        oracle_my_sql_window.setLayout(hbox)
+        QtWidgets.QApplication.setStyle(QtWidgets.QStyleFactory.create('Cleanlooks'))
+        """
+        
+        
+        """
+        self.centralwidget = QtWidgets.QWidget(oracle_my_sql_window)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
+        self.centralwidget.setSizePolicy(sizePolicy)
+        self.centralwidget.setObjectName("centralwidget")
+        oracle_my_sql_window.setCentralWidget(self.centralwidget)
+        self.toolBar = QtWidgets.QToolBar(oracle_my_sql_window)
+        self.toolBar.setObjectName("toolBar")
+        oracle_my_sql_window.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
+        self.statusBar = QtWidgets.QStatusBar(oracle_my_sql_window)
+        self.statusBar.setObjectName("statusBar")
+        oracle_my_sql_window.setStatusBar(self.statusBar)
+        self.dockWidget = QtWidgets.QDockWidget(oracle_my_sql_window)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.dockWidget.sizePolicy().hasHeightForWidth())
+        self.dockWidget.setSizePolicy(sizePolicy)
+        self.dockWidget.setObjectName("dockWidget")
+        self.dockWidgetContents = QtWidgets.QWidget()
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.dockWidgetContents.sizePolicy().hasHeightForWidth())
+        self.dockWidgetContents.setSizePolicy(sizePolicy)
+        self.dockWidgetContents.setObjectName("dockWidgetContents")
+        self.formLayout = QtWidgets.QFormLayout(self.dockWidgetContents)
+        self.formLayout.setObjectName("formLayout")
+        self.l_server_name = QtWidgets.QLabel(self.dockWidgetContents)
+        self.l_server_name.setObjectName("l_server_name")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.l_server_name)
+        self.e_server_name = QtWidgets.QComboBox(self.dockWidgetContents)
+        self.e_server_name.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.e_server_name.setObjectName("e_server_name")
+        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.e_server_name)
+        self.e_sql = QtWidgets.QTextEdit(self.dockWidgetContents)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.e_sql.sizePolicy().hasHeightForWidth())
+        self.e_sql.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Courier")
+        font.setPointSize(10)
+        self.e_sql.setFont(font)
+        self.e_sql.setObjectName("e_sql")
+        self.formLayout.setWidget(2, QtWidgets.QFormLayout.SpanningRole, self.e_sql)
+        self.dockWidget.setWidget(self.dockWidgetContents)
+        oracle_my_sql_window.addDockWidget(QtCore.Qt.DockWidgetArea(4), self.dockWidget)
+        self.dockWidget_2 = QtWidgets.QDockWidget(oracle_my_sql_window)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.dockWidget_2.sizePolicy().hasHeightForWidth())
+        self.dockWidget_2.setSizePolicy(sizePolicy)
+        self.dockWidget_2.setObjectName("dockWidget_2")
+        self.dockWidgetContents_2 = QtWidgets.QWidget()
+        self.dockWidgetContents_2.setObjectName("dockWidgetContents_2")
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.dockWidgetContents_2)
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.o_table = QtWidgets.QTableWidget(self.dockWidgetContents_2)
+        self.o_table.setObjectName("o_table")
+        self.o_table.setColumnCount(0)
+        self.o_table.setRowCount(0)
+        self.verticalLayout.addWidget(self.o_table)
+        self.dockWidget_2.setWidget(self.dockWidgetContents_2)
+        oracle_my_sql_window.addDockWidget(QtCore.Qt.DockWidgetArea(8), self.dockWidget_2)
+        ---
+        self.actionLoad_sql = QtWidgets.QAction(oracle_my_sql_window)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/icons/icons/folder.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionLoad_sql.setIcon(icon1)
+        self.actionLoad_sql.setObjectName("actionLoad_sql")
+        self.actionSave_sql = QtWidgets.QAction(oracle_my_sql_window)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/icons/icons/disk.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionSave_sql.setIcon(icon2)
+        self.actionSave_sql.setObjectName("actionSave_sql")
+        self.actionExecute_sql = QtWidgets.QAction(oracle_my_sql_window)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/icons/icons/go.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionExecute_sql.setIcon(icon3)
+        self.actionExecute_sql.setObjectName("actionExecute_sql")
+        self.actionCommit = QtWidgets.QAction(oracle_my_sql_window)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/icons/icons/confirm.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionCommit.setIcon(icon4)
+        self.actionCommit.setObjectName("actionCommit")
+        self.toolBar.addAction(self.actionLoad_sql)
+        self.toolBar.addAction(self.actionSave_sql)
+        self.toolBar.addSeparator()
+        self.toolBar.addAction(self.actionExecute_sql)
+        self.toolBar.addSeparator()
+        self.toolBar.addAction(self.actionCommit)
+        self.l_server_name.setBuddy(self.e_server_name)
+        """
+        #self.retranslateUi(oracle_my_sql_window)
+        #self.actionLoad_sql.triggered.connect(oracle_my_sql_window.slot_load)
+        #self.actionSave_sql.triggered.connect(oracle_my_sql_window.slot_save)
+        #self.actionExecute_sql.triggered.connect(oracle_my_sql_window.slot_execute)
+        #self.actionCommit.triggered.connect(oracle_my_sql_window.slot_commit)
+        #self.e_server_name.currentIndexChanged['int'].connect(oracle_my_sql_window.slot_connect)
+        #QtCore.QMetaObject.connectSlotsByName(oracle_my_sql_window)
+
+    def retranslateUi(self, oracle_my_sql_window):
+        _translate = QtCore.QCoreApplication.translate
+        oracle_my_sql_window.setWindowTitle(_translate("oracle_my_sql_window", "Oracle My Sql"))
+        self.toolBar.setWindowTitle(_translate("oracle_my_sql_window", "toolBar"))
+        self.dockWidget.setWindowTitle(_translate("oracle_my_sql_window", "SQL statement"))
+        self.l_server_name.setText(_translate("oracle_my_sql_window", "Oracle name server:"))
+        self.dockWidget_2.setWindowTitle(_translate("oracle_my_sql_window", "Result"))
+import resource_rc
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    oracle_my_sql_window = QtWidgets.QMainWindow()
+    oracle_my_sql_window.setWindowTitle('Oracle My Sql')
+    ui = Ui_oracle_my_sql_window()
+    ui.setupUi(oracle_my_sql_window)
+    oracle_my_sql_window.show()
+    sys.exit(app.exec_())

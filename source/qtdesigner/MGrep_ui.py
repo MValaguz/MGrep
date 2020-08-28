@@ -197,6 +197,11 @@ class Ui_MGrepWindow(object):
         self.actionServers_Status = QtWidgets.QAction(MGrepWindow)
         self.actionServers_Status.setIcon(icon22)
         self.actionServers_Status.setObjectName("actionServers_Status")
+        self.actionOracleMySQL = QtWidgets.QAction(MGrepWindow)
+        icon26 = QtGui.QIcon()
+        icon26.addPixmap(QtGui.QPixmap(":/icons/icons/dbase.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionOracleMySQL.setIcon(icon26)
+        self.actionOracleMySQL.setObjectName("actionOracleMySQL")
         self.menuFile.addAction(self.actionSave_the_windows_position)
         self.menuFile.addAction(self.actionReset_main_window_position)
         self.menuFile.addAction(self.actionFactory_reset)
@@ -221,6 +226,7 @@ class Ui_MGrepWindow(object):
         self.menuTools.addAction(self.actionImport_Export)
         self.menuTools.addAction(self.actionAscii_Graphics_generator)
         self.menuTools.addAction(self.actionDownload_an_object_from_server)
+        self.menuTools.addAction(self.actionOracleMySQL)
         self.menuHelp.addAction(self.actionHelp)
         self.menuHelp.addAction(self.actionProgram_info)
         self.menuHelp.addAction(self.actionChange_log)
@@ -258,6 +264,7 @@ class Ui_MGrepWindow(object):
         self.actionTop_sessions.triggered.connect(MGrepWindow.slot_actionTop_sessions)
         self.actionTable_space.triggered.connect(MGrepWindow.slot_actionTable_space)
         self.actionServers_Status.triggered.connect(MGrepWindow.slot_actionServers_status)
+        self.actionOracleMySQL.triggered.connect(MGrepWindow.slot_actionOracleMySQL)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):
@@ -300,6 +307,7 @@ class Ui_MGrepWindow(object):
         self.actionTop_sessions.setText(_translate("MGrepWindow", "Top sessions"))
         self.actionTable_space.setText(_translate("MGrepWindow", "Table space"))
         self.actionServers_Status.setText(_translate("MGrepWindow", "Servers Status"))
+        self.actionOracleMySQL.setText(_translate("MGrepWindow", "Oracle My SQL"))
 import resource_rc
 
 

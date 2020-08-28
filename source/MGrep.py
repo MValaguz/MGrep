@@ -360,6 +360,12 @@ class MGrep_class(QtWidgets.QMainWindow):
         my_sub_window.setWindowIcon(my_icon)                                                                                                
         my_app.show()             
         
+    def slot_actionOracleMySQL(self):
+        """
+           Richiamo form per gestione My SQL
+        """                
+        pass
+        
     def slot_actionHelp(self):
         """
             visualizza help del programma
@@ -388,6 +394,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication([])
     application = MGrep_class()
     # titolo dell'applicazione!
-    application.setWindowTitle('MGrep 1.4b')
+    application.setWindowTitle('MGrep 1.5')
     application.show()
     sys.exit(app.exec())        
