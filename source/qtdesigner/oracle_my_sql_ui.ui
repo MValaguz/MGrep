@@ -31,6 +31,18 @@
        <enum>Qt::Vertical</enum>
       </property>
       <widget class="QTextEdit" name="e_sql">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>1</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>100</height>
+        </size>
+       </property>
        <property name="font">
         <font>
          <family>Courier</family>
@@ -42,7 +54,7 @@
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>0</horstretch>
-         <verstretch>20</verstretch>
+         <verstretch>2</verstretch>
         </sizepolicy>
        </property>
        <property name="alternatingRowColors">

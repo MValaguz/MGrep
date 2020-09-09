@@ -3,10 +3,11 @@
 """
  Creato da.....: Marco Valaguzza
  Piattaforma...: Python3.6 con libreria pyqt5
- Data..........: 25/06/2020
+ Data..........: 01/09/2020
  Descrizione...: Mini programma che simula in parte il funzionamento di sql tools
                   
- Note..........: Il layout è stato creato utilizzando qtdesigner e il file oracle_my_sql_ui.py è ricavato partendo da oracle_my_sql_ui.ui 
+ Note..........: Il layout è tutto creato manualmente in quanto è la composizione di un editor e poi c'è la gestione dello splitter tra 
+                 editor di testo e gestione risultati che non si riusciva a gestire tramite qtdesigner
 """
 
 #Librerie sistema
@@ -27,7 +28,7 @@ from utilita import message_error, message_info
 from utilita_database import nomi_colonne_istruzione_sql
 
 lineBarColor = QtGui.QColor("lightGray")
-lineHighlightColor  = QtGui.QColor("white")
+lineHighlightColor  = QtGui.QColor("red")
 
 # classe per gestire i numeri di riga sull'editor
 class NumberBar(QtWidgets.QWidget):
@@ -95,91 +96,81 @@ class oracle_my_sql_class(object):
     """       
     # Definizione interfaccia
     def setupUi(self, oracle_my_sql_window):        
+        # Dimensioni della window e icona di riferimento
         oracle_my_sql_window.resize(748, 635)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         oracle_my_sql_window.setWindowIcon(icon)
-        """
-        self.centralwidget = QtWidgets.QWidget(oracle_my_sql_window)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
-        self.centralwidget.setSizePolicy(sizePolicy)        
-        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)        
-        self.splitter = QtWidgets.QSplitter(self.centralwidget)
-        self.splitter.setOrientation(QtCore.Qt.Vertical)        
-        """
         
-        # zona editor
+        # Status bar (dove escono messaggi di errore sql)
+        self.statusBar = QtWidgets.QStatusBar(oracle_my_sql_window)
+        self.statusBar.setEnabled(True)
+        self.statusBar.setSizeGripEnabled(True)        
+        oracle_my_sql_window.setStatusBar(self.statusBar)
+                
+        # Editor sql (definizione dell'oggetto con tipo di font, ecc)
         self.e_sql = QtWidgets.QPlainTextEdit()
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(10)
         self.e_sql.setFont(font)
-        self.e_sql.setObjectName("e_sql")
-        # Line Numbers ...
+        
+        # Editor --> definizione dell'oggetto che riporta i numeri di riga lateralmente
         self.e_sql_num_riga = NumberBar(self.e_sql)
-        layoutH = QtWidgets.QHBoxLayout()
-        layoutH.setSpacing(1.5)
-        layoutH.addWidget(self.e_sql_num_riga)
-        layoutH.addWidget(self.e_sql)
-        
-        #self.splitter.addWidget(self.e_sql_num_riga)
-        #self.splitter.addWidget(self.e_sql)
-        
-        #self.gridLayout.addLayout(layoutH)
+        #layoutH = QtWidgets.QHBoxLayout()
+        #layoutH.setSpacing(1.5)
+        #layoutH.addWidget(self.e_sql_num_riga)
+        #layoutH.addWidget(self.e_sql)
                 
+        # Oggetto dove escono i risultati dell'sql
         self.o_table = QtWidgets.QTableWidget()
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(20)
-        sizePolicy.setHeightForWidth(self.o_table.sizePolicy().hasHeightForWidth())
-        self.o_table.setSizePolicy(sizePolicy)
+        #sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        #sizePolicy.setHorizontalStretch(0)
+        #sizePolicy.setVerticalStretch(20)
+        #sizePolicy.setHeightForWidth(self.o_table.sizePolicy().hasHeightForWidth())
+        #self.o_table.setSizePolicy(sizePolicy)
         self.o_table.setAlternatingRowColors(True)
-        self.o_table.setGridStyle(QtCore.Qt.SolidLine)
-        self.o_table.setObjectName("o_table")
+        self.o_table.setGridStyle(QtCore.Qt.SolidLine)        
         self.o_table.setColumnCount(0)
         self.o_table.setRowCount(0)
         self.o_table.horizontalHeader().setSortIndicatorShown(True)
-        #self.gridLayout.addWidget(self.splitter, 0, 0, 1, 1)
-        #oracle_my_sql_window.setCentralWidget(self.centralwidget)
-        self.toolBar = QtWidgets.QToolBar(oracle_my_sql_window)
-        self.toolBar.setObjectName("toolBar")
-        oracle_my_sql_window.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
-        self.statusBar = QtWidgets.QStatusBar(oracle_my_sql_window)
-        self.statusBar.setEnabled(True)
-        self.statusBar.setSizeGripEnabled(True)
-        self.statusBar.setObjectName("statusBar")
-        oracle_my_sql_window.setStatusBar(self.statusBar)
+        self.o_table.setSortingEnabled(True)
+        
+        # Definizione della toolbar per caricamento e salvataggio
+        self.toolBar = QtWidgets.QToolBar(oracle_my_sql_window)        
+        oracle_my_sql_window.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)        
         self.actionLoad_sql = QtWidgets.QAction(oracle_my_sql_window)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(":/icons/icons/folder.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionLoad_sql.setIcon(icon1)
-        self.actionLoad_sql.setObjectName("actionLoad_sql")
+        self.actionLoad_sql.setText("Load sql")
+        self.actionLoad_sql.setToolTip("Load a file sql")
         self.actionSave_sql = QtWidgets.QAction(oracle_my_sql_window)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(":/icons/icons/disk.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionSave_sql.setIcon(icon2)
-        self.actionSave_sql.setObjectName("actionSave_sql")
+        self.actionSave_sql.setText("Save sql")
+        self.actionSave_sql.setToolTip("Save sql into a file")
         self.actionExecute_sql = QtWidgets.QAction(oracle_my_sql_window)
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(":/icons/icons/go.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionExecute_sql.setIcon(icon3)
-        self.actionExecute_sql.setObjectName("actionExecute_sql")
+        self.actionExecute_sql.setText("Execute sql")
+        self.actionExecute_sql.setToolTip("Execute de sql statement")
+        self.actionExecute_sql.setShortcut("F5")
         self.actionCommit = QtWidgets.QAction(oracle_my_sql_window)
         icon4 = QtGui.QIcon()
         icon4.addPixmap(QtGui.QPixmap(":/icons/icons/confirm.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionCommit.setIcon(icon4)
-        self.actionCommit.setObjectName("actionCommit")
+        self.actionCommit.setText("Commit changes")
+        self.actionCommit.setToolTip("Commit the changes on the sql results")        
         self.toolBar.addAction(self.actionLoad_sql)
         self.toolBar.addAction(self.actionSave_sql)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionExecute_sql)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionCommit)
-
-        self.retranslateUi(oracle_my_sql_window)
+        
         self.actionLoad_sql.triggered.connect(self.openFile)
         self.actionSave_sql.triggered.connect(self.fileSave)
         self.actionExecute_sql.triggered.connect(self.slot_execute)
@@ -213,29 +204,75 @@ class oracle_my_sql_class(object):
         self.e_server_name.currentIndexChanged['int'].connect(self.slot_connect)
         # eseguo la connessione 
         self.slot_connect()        
-            
+        
+        # Definizio della toolbar di trova e sostituisci
+        self.tbf = QtWidgets.QToolBar(oracle_my_sql_window)
+        oracle_my_sql_window.addToolBar(QtCore.Qt.TopToolBarArea, self.tbf)
+        self.tbf.setWindowTitle("Find Toolbar")   
+        self.findfield = QtWidgets.QLineEdit()
+        self.findfield.addAction(QtGui.QIcon.fromTheme("edit-find"), QtWidgets.QLineEdit.LeadingPosition)
+        self.findfield.setClearButtonEnabled(True)
+        self.findfield.setFixedWidth(150)
+        self.findfield.setPlaceholderText("find")
+        self.findfield.setToolTip("press RETURN to find")
+        self.findfield.setText("")
+        ft = self.findfield.text()
+        self.findfield.returnPressed.connect(self.findText)
+        self.tbf.addWidget(self.findfield)
+        self.replacefield = QtWidgets.QLineEdit()
+        self.replacefield.addAction(QtGui.QIcon.fromTheme("edit-find-and-replace"), QtWidgets.QLineEdit.LeadingPosition)
+        self.replacefield.setClearButtonEnabled(True)
+        self.replacefield.setFixedWidth(150)
+        self.replacefield.setPlaceholderText("replace with")
+        self.replacefield.setToolTip("press RETURN to replace the first")
+        self.replacefield.returnPressed.connect(self.replaceOne)
+        self.tbf.addSeparator() 
+        self.tbf.addWidget(self.replacefield)
+        self.tbf.addSeparator()        
+                
+        #----------------------------------------
+        # Inizio Impaginazione di tutti gli oggetti
+        # In pratica creo un primo layout dove inserisco l'oggetto che visualizza il numero di riga
+        # e l'editor sql. Questo layout lo inserisco in un frame (questo perché lo splitter può essere solo
+        # tra due widget e non tra due layout)
+        # Creo un secondo layout dove inserisco il risultato sql, lo inserisco in un altro frame
+        # Inserisco i due frame dentro uno splitter indicando che deve essere visualizzato in verticale
+        # con una proporzione 1-2 
+        layoutH = QtWidgets.QHBoxLayout()
+        layoutH.setSpacing(1.5)
+        layoutH.addWidget(self.e_sql_num_riga)
+        layoutH.addWidget(self.e_sql)
+        
+        my_frame = QtWidgets.QFrame()
+        my_frame.setLayout(layoutH)
+        
+        layoutV = QtWidgets.QVBoxLayout()
+        layoutV.addWidget(self.o_table)
+        
+        my_frame1 = QtWidgets.QFrame()
+        my_frame1.setLayout(layoutV)
+        
+        sizePolicy = QtWidgets.QSizePolicy()
+        sizePolicy.setVerticalStretch(1)
+        
+        my_frame.setSizePolicy(sizePolicy)
+        
+        sizePolicy.setVerticalStretch(2)
+        my_frame1.setSizePolicy(sizePolicy)
+        
+        splitter = QtWidgets.QSplitter(QtCore.Qt.Vertical)
+        splitter.addWidget(my_frame)
+        splitter.addWidget(my_frame1)
+
+        oracle_my_sql_window.setCentralWidget(splitter)                
+        # Fine Impaginazione di tutti gli oggetti
+        #----------------------------------------
+                            
         # sql di prova        
         self.e_sql.setPlainText("SELECT * FROM TA_AZIEN")
         
         self.o_table.itemChanged.connect(self.log_change)
-        
-        #####
-        layoutH = QtWidgets.QHBoxLayout()
-        layoutH.setSpacing(1.5)
-        layoutH.addWidget(self.e_sql_num_riga)
-        layoutH.addWidget(self.e_sql)        
-        
-        layoutV = QtWidgets.QVBoxLayout()
-        
-        layoutV.addWidget(self.toolBar)      
-        #layoutV.addWidget(self.tbf)
-        layoutV.addLayout(layoutH)        
-        
-        mq = QtWidgets.QWidget(oracle_my_sql_window)
-        mq.setLayout(layoutV)
-        oracle_my_sql_window.setCentralWidget(mq)
-        
-        
+                        
         # Contiene il nome del file in elaborazione
         self.filename = ''
                 
@@ -361,21 +398,6 @@ class oracle_my_sql_class(object):
         self.left_selected_bracket  = QTextEdit.ExtraSelection()
         self.right_selected_bracket = QTextEdit.ExtraSelection()
         """
-
-    def retranslateUi(self, oracle_my_sql_window):
-        _translate = QtCore.QCoreApplication.translate
-        oracle_my_sql_window.setWindowTitle(_translate("oracle_my_sql_window", "Oracle My Sql"))
-        self.o_table.setSortingEnabled(True)
-        self.toolBar.setWindowTitle(_translate("oracle_my_sql_window", "toolBar"))
-        self.actionLoad_sql.setText(_translate("oracle_my_sql_window", "Load sql"))
-        self.actionLoad_sql.setToolTip(_translate("oracle_my_sql_window", "Load a file sql"))
-        self.actionSave_sql.setText(_translate("oracle_my_sql_window", "Save sql"))
-        self.actionSave_sql.setToolTip(_translate("oracle_my_sql_window", "Save sql into a file"))
-        self.actionExecute_sql.setText(_translate("oracle_my_sql_window", "Execute sql"))
-        self.actionExecute_sql.setToolTip(_translate("oracle_my_sql_window", "Execute de sql statement"))
-        self.actionExecute_sql.setShortcut(_translate("oracle_my_sql_window", "F5"))
-        self.actionCommit.setText(_translate("oracle_my_sql_window", "Commit changes"))
-        self.actionCommit.setToolTip(_translate("oracle_my_sql_window", "Commit the changes on the sql results"))        
         
     def log_change(self, item):
         print(item)
@@ -402,30 +424,30 @@ class oracle_my_sql_class(object):
            Esegue statement sql
         """
         if self.v_connesso:
-            self.ui.o_table.clear()
+            self.o_table.clear()
             # sostituisce la freccia del mouse con icona "clessidra"
             QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))        
             
             # esecuzione dell'sql contenuto nel campo a video            
             v_ok = True
             try:
-                self.v_cursor.execute( self.ui.e_sql.toPlainText() )                            
+                self.v_cursor.execute( self.e_sql.toPlainText() )                            
             # se riscontrato errore --> emetto sia codice che messaggio
             except cx_Oracle.Error as e:                
                 v_ok = False
                 errorObj, = e.args                
-                #self.ui.statusBar.showMessage("Error Code: " + str(errorObj.code) + "Error Message: " + errorObj.message)                 
-                self.ui.statusBar.showMessage("Error: " + errorObj.message)                 
+                #self.statusBar.showMessage("Error Code: " + str(errorObj.code) + "Error Message: " + errorObj.message)                 
+                self.statusBar.showMessage("Error: " + errorObj.message)                 
             
             if v_ok:
                 # lista contenente le intestazioni (tramite apposita funzione si ricavano i nomi delle colonne dall'sql che si intende eseguire)
                 intestazioni = nomi_colonne_istruzione_sql(self.v_cursor)                        
                 # carico i dati in una matrice e identifico il numero di righe e di colonne della tabella
                 matrice_dati = self.v_cursor.fetchall()
-                self.ui.o_table.setColumnCount(len(intestazioni))            
-                self.ui.o_table.setRowCount(len(matrice_dati))                        
+                self.o_table.setColumnCount(len(intestazioni))            
+                self.o_table.setRowCount(len(matrice_dati))                        
                 # setto le intestazioni....va fatta dopo che sono state indicate le righe e colonne altrimenti non funziona
-                self.ui.o_table.setHorizontalHeaderLabels(intestazioni)
+                self.o_table.setHorizontalHeaderLabels(intestazioni)
                 y =0
                 # carico i dati presi dal db dentro il modello
                 for row in matrice_dati:            
@@ -433,10 +455,10 @@ class oracle_my_sql_class(object):
                     for field in row:                                        
                         # campo numerico (se non funziona provare con i cx_Oracle type
                         if isinstance(field, float) or isinstance(field, int):                           
-                            self.ui.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( '{:10.0f}'.format(field) ) )
+                            self.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( '{:10.0f}'.format(field) ) )
                         # campo nullo
                         elif field == None:                                                
-                            self.ui.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( "" ) )                
+                            self.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( "" ) )                
                         # se il contenuto è un clob...utilizzo il metodo read sul campo field, poi lo inserisco in una immagine
                         # che poi carico una label e finisce dentro la cella a video
                         elif self.v_cursor.description[x][1] == cx_Oracle.BLOB:                                                                            
@@ -444,17 +466,17 @@ class oracle_my_sql_class(object):
                             pixmap = QtGui.QPixmap.fromImage(qimg)   
                             label = QtWidgets.QLabel()
                             label.setPixmap(pixmap)                        
-                            self.ui.o_table.setCellWidget(y, x, label )                
+                            self.o_table.setCellWidget(y, x, label )                
                         # campo data
                         elif self.v_cursor.description[x][1] == cx_Oracle.DATETIME:                                                                            
-                            self.ui.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( str(field) ) )       
+                            self.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( str(field) ) )       
                         # campo stringa
                         else:                                                 
-                            self.ui.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( field ) )                
+                            self.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( field ) )                
                         x += 1
                     y += 1
                 # indico di calcolare automaticamente la larghezza delle colonne
-                self.ui.o_table.resizeColumnsToContents()
+                self.o_table.resizeColumnsToContents()
                 
             # Ripristino icona freccia del mouse
             QtWidgets.QApplication.restoreOverrideCursor()                        
@@ -467,48 +489,48 @@ class oracle_my_sql_class(object):
     ###
     # CODICE GESTIONE EDITOR
     ###
-    def createActions(self):
-        for i in range(self.MaxRecentFiles):
-            self.recentFileActs.append(
-                QAction(self, visible=False,
-                           triggered=self.openRecentFile))
+    #def createActions(self):
+        #for i in range(self.MaxRecentFiles):
+            #self.recentFileActs.append(
+                #QAction(self, visible=False,
+                           #triggered=self.openRecentFile))
 
 
-    def openRecentFile(self):
-        action = self.sender()
-        if action:
-            if (self.maybeSave()):
-                self.openFileOnStart(action.data())
+    #def openRecentFile(self):
+        #action = self.sender()
+        #if action:
+            #if (self.maybeSave()):
+                #self.openFileOnStart(action.data())
 
-        ### New File
-    def newFile(self):
-        if self.maybeSave():
-            self.editor.clear()
-            self.editor.setPlainText("")
-            self.filename = ""
-            self.setModified(False)
-            self.editor.moveCursor(self.cursor.End)
+        #### New File
+    #def newFile(self):
+        #if self.maybeSave():
+            #self.editor.clear()
+            #self.editor.setPlainText("")
+            #self.filename = ""
+            #self.setModified(False)
+            #self.editor.moveCursor(self.cursor.End)
 
         ### open File
-    def openFileOnStart(self, path=None):
-        if path:
-            inFile = QFile(path)
-            if inFile.open(QFile.ReadWrite | QFile.Text):
-                text = inFile.readAll()
+    #def openFileOnStart(self, path=None):
+        #if path:
+            #inFile = QFile(path)
+            #if inFile.open(QFile.ReadWrite | QFile.Text):
+                #text = inFile.readAll()
 
-                try:
-                        # Python v3.
-                    text = str(text, encoding = 'utf8')
-                except TypeError:
-                        # Python v2.
-                    text = str(text)
-                self.editor.setPlainText(text)
-                self.filename = path
-                self.setModified(False)
-                self.fname = QFileInfo(path).fileName() 
-                self.setWindowTitle(self.fname + "[*]")
-                self.document = self.editor.document()
-                self.setCurrentFile(self.filename)
+                #try:
+                        ## Python v3.
+                    #text = str(text, encoding = 'utf8')
+                #except TypeError:
+                        ## Python v2.
+                    #text = str(text)
+                #self.editor.setPlainText(text)
+                #self.filename = path
+                #self.setModified(False)
+                #self.fname = QFileInfo(path).fileName() 
+                #self.setWindowTitle(self.fname + "[*]")
+                #self.document = self.editor.document()
+                #self.setCurrentFile(self.filename)
 
         ### open File
     def openFile(self):
@@ -567,7 +589,7 @@ class oracle_my_sql_class(object):
         else:
             e.ignore()
 
-        ### ask to save
+    ### ask to save
     def maybeSave(self):
         if not self.isModified():
             return True
@@ -595,19 +617,19 @@ class oracle_my_sql_class(object):
 
     def findText(self):
         ft = self.findfield.text()
-        if self.editor.find(ft):
+        if self.e_sql.find(ft):
             return
         else:
-            self.editor.moveCursor(1)
-            if self.editor.find(ft):
-                self.editor.moveCursor(QTextCursor.Start, QTextCursor.MoveAnchor)
+            self.e_sql.moveCursor(1)
+            if self.e_sql.find(ft):
+                self.e_sql.moveCursor(QtGui.QTextCursor.Start, QtGui.QTextCursor.MoveAnchor)
 
-    def handleQuit(self):
-        print("Goodbye ...")
-        app.quit()
+    #def handleQuit(self):
+        #print("Goodbye ...")
+        #app.quit()
 
-    def set_numbers_visible(self, value = True):
-        self.numbers.setVisible(False)
+    #def set_numbers_visible(self, value = True):
+        #self.numbers.setVisible(False)
 
     def match_left(self, block, character, start, found):
         map = {'{': '}', '(': ')', '[': ']'}
@@ -729,11 +751,11 @@ class oracle_my_sql_class(object):
     def setPlainText(self, *args, **kwargs):
         self.editor.setPlainText(*args, **kwargs)
 
-    def setDocumentTitle(self, *args, **kwargs):
-        self.editor.setDocumentTitle(*args, **kwargs)
+    #def setDocumentTitle(self, *args, **kwargs):
+    #    self.editor.setDocumentTitle(*args, **kwargs)
 
-    def set_number_bar_visible(self, value):
-        self.numbers.setVisible(value)
+    #def set_number_bar_visible(self, value):
+    #    self.numbers.setVisible(value)
 
     def replaceAll(self):
         print("replacing all")
@@ -755,7 +777,8 @@ class oracle_my_sql_class(object):
 if __name__ == "__main__":    
     app = QtWidgets.QApplication([])    
     oracle_my_sql_window = QtWidgets.QMainWindow()
+    oracle_my_sql_window.setWindowTitle("Oracle My Sql")
     application = oracle_my_sql_class()
     application.setupUi(oracle_my_sql_window)
-    oracle_my_sql_window.show()
+    oracle_my_sql_window.showMaximized()
     sys.exit(app.exec())   

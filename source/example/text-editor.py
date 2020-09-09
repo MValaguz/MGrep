@@ -8,7 +8,7 @@ from PyQt5.QtCore import Qt, QVariant, QRect, QDir, QFile, QFileInfo, QTextStrea
 import sys, os
 
 lineBarColor = QColor("lightGray")
-lineHighlightColor  = QColor("white")
+lineHighlightColor  = QColor("red")
 
 class NumberBar(QWidget):
     def __init__(self, parent = None):
