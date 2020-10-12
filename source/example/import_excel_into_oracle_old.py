@@ -10,19 +10,6 @@
                  Il programma per ogni colonna ricerca la lunghezza massima del campo.
                  Ricerca per ogni colonna il tipo predominante. Nel caso in cui i valori non predominanti risulteranno
                  incopatibili con i valori dominanti, ci potrebbero essere degli errori.
-                 
- Modifiche 2020: Ho constatato che l'utilizzo della libreria openpyxl era molto impegnativo dal punto di vista dei moduli caricati a memoria.
-                 Inoltre alcuni fogli non venivano letti correttamente; laddove ad esempio c'erano dei valori, la libreria caricava celle vuote.
-                 Sono quindi passato alla libreria xlrd che poi è quella utilizzata anche da Pandas che è di fatto un must delle librerie python.                 
- Note..........: Di seguito un estratto dalla documentazione xlrd riguardo al tipo di dato contenuto nelle celle; nel codice non ho usato la costante ma il numero
-                 Type symbol 	Type number 	Python value
-                 XL_CELL_EMPTY 	     0 	        empty string ''
-                 XL_CELL_TEXT 	     1 	        a Unicode string
-                 XL_CELL_NUMBER      2 	        float
-                 XL_CELL_DATE 	     3 	        float
-                 XL_CELL_BOOLEAN     4 	        int; 1 means TRUE, 0 means FALSE
-                 XL_CELL_ERROR 	     5 	        int representing internal Excel codes; for a text representation, refer to the supplied dictionary error_text_from_code
-                 XL_CELL_BLANK 	     6 	        empty string ''. Note: this type will appear only when open_workbook(..., formatting_info=True) is used.
 """
 
 #Librerie di data base
@@ -33,8 +20,7 @@ import sys
 #Librerie grafiche
 from PyQt5 import QtCore, QtGui, QtWidgets
 #Libreria per la lettura e scrittura file di excel
-from xlrd import open_workbook
-from xlrd import xldate
+from    openpyxl import load_workbook
 #Liberia regular expression
 import  re
 #Moduli di progetto
@@ -100,19 +86,21 @@ class import_excel_into_oracle(QtWidgets.QWidget):
         self.avanza_progress("Analizing excel file...")
         self.avanza_progress("Analizing excel file...")
         
-        #Apro il file di excel                
+        #Apro il file di excel
         try:
-            wb = open_workbook(filename=p_excel_file)
+            wb = load_workbook(filename = p_excel_file)
         except:
             message_error('Format file invalid. Only xlsx file format!')
             #esco
-            return None        
+            return None
+        #Leggo tutti i nomi dei fogli in esso contenuti
+        v_nomi_fogli = wb.sheetnames
         #Se il file contiene più fogli, avverto che verrà preso solo il primo
-        if len( wb.sheets() ) > 1:            
-            message_info('This file contains more than one sheet. It will be taken the first ' + wb.sheet_by_index(0).name + '!')            
+        if len(v_nomi_fogli) > 1:
+            message_info('This file contains more than one sheet. It will be taken the first ' + v_nomi_fogli[0] + '!')            
         
         #Mi posiziono sul primo foglio 
-        v_foglio = wb.sheet_by_index(0)
+        v_foglio = wb[v_nomi_fogli[0]]
         
         #Estraggo la struttura del foglio
         self.v_numero_totale_righe = 0
@@ -147,7 +135,7 @@ class import_excel_into_oracle(QtWidgets.QWidget):
         v_definizione_colonne = []  
         self.v_numero_totale_righe = 0      
         v_numero_colonna = 0
-        for col_idx in range(0,p_foglio.ncols):    
+        for col in p_foglio.iter_cols():    
             v_1a_riga = True
             v_numero_colonna += 1
             v_nome_colonna = ''
@@ -162,8 +150,7 @@ class import_excel_into_oracle(QtWidgets.QWidget):
             v_larghezza_colonna = 1
             v_larghezza_decimali = 0            
             v_numero_righe_per_colonna = 0
-            for row_idx in range(0,p_foglio.nrows):
-                cell = p_foglio.cell(row_idx, col_idx)                
+            for cell in col:
                 #la prima riga contiene per standard il nome della colonna
                 if v_1a_riga:
                     v_1a_riga = False
@@ -180,14 +167,17 @@ class import_excel_into_oracle(QtWidgets.QWidget):
                 #il tipo di dato dipende dal primo valore che incontra....dovrà essere eventualmente perfezionata questa cosa 
                 else:
                     #considero solo celle che contengono un valore (escludo anche quelle con una specie di spazio all'interno)
-                    if cell.value is not None:                        
+                    if cell.value is not None and str(cell.value) != chr(160) and cell.data_type != 'f':                        
+                        #for i in range(1,255):
+                        #    if str(cell.value) == chr(i):
+                        #        print('-' + str(cell.value) + '-' + str(i))                        
                         #la cella è di tipo testo (VARCHAR2)                        
-                        if p_foglio.cell_type(row_idx, col_idx) == 1:                                                        
+                        if cell.data_type == 's':                                                        
                             v_varchar2 += 1
                             if len(cell.value) > v_larghezza_colonna:
                                 v_larghezza_colonna = len(cell.value)
                         #la cella è numerica (NUMBER)
-                        elif p_foglio.cell_type(row_idx, col_idx) == 2:                            
+                        elif cell.data_type == 'n':                            
                             v_number += 1
                             v_stringa = str(cell.value)                            
                             #normalizzo virgola con punto
@@ -202,7 +192,7 @@ class import_excel_into_oracle(QtWidgets.QWidget):
                             elif len(v_stringa) > v_larghezza_colonna:
                                 v_larghezza_colonna = len(v_stringa)                            
                         #la cella è una data (DATE)
-                        elif p_foglio.cell_type(row_idx, col_idx) == 3:
+                        elif cell.data_type == 'd':
                             v_date += 1
                             v_larghezza_colonna = 20
                         #la cella non è riconoscibile (OTHER)
@@ -296,20 +286,19 @@ class import_excel_into_oracle(QtWidgets.QWidget):
         #Leggo il foglio per righe        
         v_1a_riga = True
         v_progress = 0
-        for row_idx in range(0,p_foglio.nrows):      
+        for row in p_foglio.iter_rows():    
             if not v_1a_riga:
                 v_1a_volta = True
                 v_insert = "INSERT INTO " + p_table_name + " VALUES("
                 v_i = 0
                 #Per ogni riga creo la relativa insert, tenendo conto del tipo di dato definito
-                for col_idx in range(0,p_foglio.ncols):
+                for cell in row:
                     if v_1a_volta:
                         v_1a_volta = False
                     else:
                         v_insert += ","
                     #se la cella è vuota o ti tipo formula --> null
-                    cell = p_foglio.cell(row_idx, col_idx) 
-                    if p_foglio.cell_value(row_idx, col_idx) == None or p_foglio.cell_type(row_idx, col_idx) > 4:
+                    if cell.value == None or cell.data_type == 'f':
                         v_insert += "null"
                     elif p_definizione_colonne[v_i][1] == 'VARCHAR2':
                         v_valore_stringa = str(cell.value)
@@ -326,9 +315,10 @@ class import_excel_into_oracle(QtWidgets.QWidget):
                         else:
                             v_insert += v_str_number
                     elif p_definizione_colonne[v_i][1] == 'DATE':
-                        #v_date è di tipo datetime
-                        v_date = xldate.xldate_as_datetime(cell.value,0)                                                  
-                        v_insert += "TO_DATE('" + str(v_date) + "','RRRR-MM-DD HH24:MI:SS')"
+                        v_data = str(cell.value)
+                        #normalizzo la data con le / a -
+                        v_data = v_data.replace('/','-')
+                        v_insert += "TO_DATE('" + v_data + "','RRRR-MM-DD HH24:MI:SS')"
                     v_i += 1
                 v_insert += ")"        
                 #eseguo la insert
@@ -367,5 +357,5 @@ if __name__ == "__main__":
                              "SMILE",
                              "BACKUP_815",
                              "CANCELLAMI_114",                                         
-                             "C:\\Users\\MValaguz\\Desktop\\TEST_IMPORT.xlsx",
+                             "C:\\Users\\MValaguz\\Desktop\\EXCEL_CHE_NO_CARICA_MGREP.xlsx",
                              True)      

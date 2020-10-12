@@ -8,6 +8,10 @@
                   
  Note..........: Il layout è tutto creato manualmente in quanto è la composizione di un editor e poi c'è la gestione dello splitter tra 
                  editor di testo e gestione risultati che non si riusciva a gestire tramite qtdesigner
+                 
+ Da sviluppare.: Manca il caricamento dei risultati tramite paginazione; stavo lavorando sull'esempio "qtable pagination"
+                 L'obiettivo del programma sarebbe comunque quello di permettere all'utente, fatta una select, modificare i dati di tabella, direttamente
+                 sulla tabella e poi permettere il salvataggio.
 """
 
 #Librerie sistema
@@ -98,6 +102,8 @@ class oracle_my_sql_class(object):
     def setupUi(self, oracle_my_sql_window):        
         # Dimensioni della window e icona di riferimento
         oracle_my_sql_window.resize(748, 635)
+        self.titolo_window = "Oracle My Sql"
+        oracle_my_sql_window.setWindowTitle(self.titolo_window)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         oracle_my_sql_window.setWindowIcon(icon)
@@ -228,7 +234,8 @@ class oracle_my_sql_class(object):
         self.replacefield.returnPressed.connect(self.replaceOne)
         self.tbf.addSeparator() 
         self.tbf.addWidget(self.replacefield)
-        self.tbf.addSeparator()        
+        self.tbf.addAction("replace all", self.replaceAll)
+        self.tbf.addSeparator()
                 
         #----------------------------------------
         # Inizio Impaginazione di tutti gli oggetti
@@ -269,135 +276,12 @@ class oracle_my_sql_class(object):
         #----------------------------------------
                             
         # sql di prova        
-        self.e_sql.setPlainText("SELECT * FROM TA_AZIEN")
+        self.e_sql.setPlainText("WARNING! THIS IS A BETA VERSION!!!")
         
-        self.o_table.itemChanged.connect(self.log_change)
+        #self.o_table.itemChanged.connect(self.log_change)
                         
         # Contiene il nome del file in elaborazione
         self.filename = ''
-                
-        """
-        ###
-        # IMPORT DELL'EDITOR
-        ###
-        # Editor Widget ...
-        QIcon.setThemeName('Faenza-Dark')
-        self.editor = QPlainTextEdit() 
-        # imposto il font 
-        font = QFont()
-        font.setFamily("Courier")
-        font.setPointSize(10)
-        self.editor.setFont(font)        
-        #self.editor.setStyleSheet(stylesheet2(self))
-        self.editor.setFrameStyle(QFrame.NoFrame)
-        self.editor.setTabStopWidth(14)
-        self.extra_selections = []
-        self.fname = ""
-        self.filename = ""
-        # Line Numbers ...
-        self.numbers = NumberBar(self.editor)
-
-        self.createActions()
-        # Laying out...
-        layoutH = QHBoxLayout()
-        layoutH.setSpacing(1.5)
-        layoutH.addWidget(self.numbers)
-        layoutH.addWidget(self.editor)
-
-        ### begin toolbar
-        self.newAct = QAction("&New", self, shortcut=QKeySequence.New,
-                              statusTip="Create a new file", triggered=self.newFile)
-        self.newAct.setIcon(QIcon.fromTheme("document-new"))
-
-        self.openAct = QAction("&Open", self, shortcut=QKeySequence.Open,
-                               statusTip="open file", triggered=self.openFile)
-        self.openAct.setIcon(QIcon.fromTheme("document-open"))
-
-        self.saveAct = QAction("&Save", self, shortcut=QKeySequence.Save,
-                               statusTip="save file", triggered=self.fileSave)
-        self.saveAct.setIcon(QIcon.fromTheme("document-save"))
-
-        self.saveAsAct = QAction("&Save as ...", self, shortcut=QKeySequence.SaveAs,
-                                 statusTip="save file as ...", triggered=self.fileSaveAs)
-        self.saveAsAct.setIcon(QIcon.fromTheme("document-save-as"))
-
-        self.exitAct = QAction("Exit", self, shortcut=QKeySequence.Quit,
-                               toolTip="Exit", triggered=self.handleQuit)
-        self.exitAct.setIcon(QIcon.fromTheme("application-exit"))
-        
-        ### find / replace toolbar
-        self.tbf = QToolBar(self)
-        self.tbf.setWindowTitle("Find Toolbar")   
-        self.findfield = QLineEdit()
-        self.findfield.addAction(QIcon.fromTheme("edit-find"), QLineEdit.LeadingPosition)
-        self.findfield.setClearButtonEnabled(True)
-        self.findfield.setFixedWidth(150)
-        self.findfield.setPlaceholderText("find")
-        self.findfield.setToolTip("press RETURN to find")
-        self.findfield.setText("")
-        ft = self.findfield.text()
-        self.findfield.returnPressed.connect(self.findText)
-        self.tbf.addWidget(self.findfield)
-        self.replacefield = QLineEdit()
-        self.replacefield.addAction(QIcon.fromTheme("edit-find-and-replace"), QLineEdit.LeadingPosition)
-        self.replacefield.setClearButtonEnabled(True)
-        self.replacefield.setFixedWidth(150)
-        self.replacefield.setPlaceholderText("replace with")
-        self.replacefield.setToolTip("press RETURN to replace the first")
-        self.replacefield.returnPressed.connect(self.replaceOne)
-        self.tbf.addSeparator() 
-        self.tbf.addWidget(self.replacefield)
-        self.tbf.addSeparator()
-
-        self.tbf.addAction("replace all", self.replaceAll)
-        self.tbf.addSeparator()
-
-        layoutV = QVBoxLayout()
-
-        bar=self.menuBar()
-
-        self.filemenu=bar.addMenu("File")
-        self.separatorAct = self.filemenu.addSeparator()
-        self.filemenu.addAction(self.newAct)
-        self.filemenu.addAction(self.openAct)
-        self.filemenu.addAction(self.saveAct)
-        self.filemenu.addAction(self.saveAsAct)
-        self.filemenu.addSeparator()
-        for i in range(self.MaxRecentFiles):
-            self.filemenu.addAction(self.recentFileActs[i])
-        #self.updateRecentFileActions()
-        self.filemenu.addSeparator()
-        self.filemenu.addAction(self.exitAct)
-        #bar.setStyleSheet(stylesheet2(self))
-        editmenu = bar.addMenu("Edit")
-        editmenu.addAction(QAction(QIcon.fromTheme('edit-copy'), "Copy", self, triggered = self.editor.copy, shortcut = QKeySequence.Copy))
-        editmenu.addAction(QAction(QIcon.fromTheme('edit-cut'), "Cut", self, triggered = self.editor.cut, shortcut = QKeySequence.Cut))
-        editmenu.addAction(QAction(QIcon.fromTheme('edit-paste'), "Paste", self, triggered = self.editor.paste, shortcut = QKeySequence.Paste))
-        editmenu.addAction(QAction(QIcon.fromTheme('edit-delete'), "Delete", self, triggered = self.editor.cut, shortcut = QKeySequence.Delete))
-        editmenu.addSeparator()
-        editmenu.addAction(QAction(QIcon.fromTheme('edit-select-all'), "Select All", self, triggered = self.editor.selectAll, shortcut = QKeySequence.SelectAll))
-
-        layoutV.addWidget(bar)      
-        layoutV.addWidget(self.tbf)
-        layoutV.addLayout(layoutH)
-
-        ### main window
-        mq = QWidget(self)
-        mq.setLayout(layoutV)
-        self.setCentralWidget(mq)
-
-        # Event Filter ...
-        self.installEventFilter(self)
-        self.editor.setFocus()
-        self.cursor = QTextCursor()
-        self.editor.setPlainText("hello")
-        self.editor.moveCursor(self.cursor.End)
-        self.editor.document().modificationChanged.connect(self.setWindowModified)
-
-        # Brackets ExtraSelection ...
-        self.left_selected_bracket  = QTextEdit.ExtraSelection()
-        self.right_selected_bracket = QTextEdit.ExtraSelection()
-        """
         
     def log_change(self, item):
         print(item)
@@ -472,7 +356,7 @@ class oracle_my_sql_class(object):
                             self.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( str(field) ) )       
                         # campo stringa
                         else:                                                 
-                            self.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( field ) )                
+                            self.o_table.setItem(y, x, QtWidgets.QTableWidgetItem( field ) )                                            
                         x += 1
                     y += 1
                 # indico di calcolare automaticamente la larghezza delle colonne
@@ -485,55 +369,11 @@ class oracle_my_sql_class(object):
         """
            Salva eventuali modifiche di tabella
         """
-        
-    ###
-    # CODICE GESTIONE EDITOR
-    ###
-    #def createActions(self):
-        #for i in range(self.MaxRecentFiles):
-            #self.recentFileActs.append(
-                #QAction(self, visible=False,
-                           #triggered=self.openRecentFile))
-
-
-    #def openRecentFile(self):
-        #action = self.sender()
-        #if action:
-            #if (self.maybeSave()):
-                #self.openFileOnStart(action.data())
-
-        #### New File
-    #def newFile(self):
-        #if self.maybeSave():
-            #self.editor.clear()
-            #self.editor.setPlainText("")
-            #self.filename = ""
-            #self.setModified(False)
-            #self.editor.moveCursor(self.cursor.End)
-
-        ### open File
-    #def openFileOnStart(self, path=None):
-        #if path:
-            #inFile = QFile(path)
-            #if inFile.open(QFile.ReadWrite | QFile.Text):
-                #text = inFile.readAll()
-
-                #try:
-                        ## Python v3.
-                    #text = str(text, encoding = 'utf8')
-                #except TypeError:
-                        ## Python v2.
-                    #text = str(text)
-                #self.editor.setPlainText(text)
-                #self.filename = path
-                #self.setModified(False)
-                #self.fname = QFileInfo(path).fileName() 
-                #self.setWindowTitle(self.fname + "[*]")
-                #self.document = self.editor.document()
-                #self.setCurrentFile(self.filename)
-
-        ### open File
+            
     def openFile(self):
+        """
+           Apertura di un file
+        """
         if self.maybeSave():            
             fileName = QtWidgets.QFileDialog.getOpenFileName(oracle_my_sql_window, "Open File", QtCore.QDir.homePath() + "/Documents/","SQL Files (*.sql);;All Files (*.*)")                
             if fileName[0] != "":
@@ -542,16 +382,15 @@ class oracle_my_sql_class(object):
                     self.e_sql.clear()                        
                     self.e_sql.setPlainText( v_file.read() )
                     self.filename = fileName
-                    self.setModified(False)
-                    self.fname = QtCore.QFileInfo(fileName[0]).fileName() 
-                    oracle_my_sql_window.setWindowTitle(self.fname + "[*]")
+                    self.setModified(False)                    
+                    oracle_my_sql_window.setWindowTitle(self.titolo_window + ': ' + fileName[0])
                     self.document = self.e_sql.document()                        
                 except:
                     message_error('Error to opened the file')
 
     def fileSave(self):
-        if (self.filename != ""):
-            file = QtCore.QFile(self.filename)            
+        if (self.filename != ""):            
+            file = QtCore.QFile(self.filename[0])            
             if not file.open( QtCore.QFile.WriteOnly | QtCore.QFile.Text):
                 message_error("Cannot write file %s:\n%s." % (self.filename, file.errorString()))
                 return
@@ -561,7 +400,7 @@ class oracle_my_sql_class(object):
             outstr << self.e_sql.toPlainText()
             QtWidgets.QApplication.restoreOverrideCursor()                
             self.setModified(False)
-            self.fname = QtCore.QFileInfo(self.filename).fileName() 
+            self.fname = QtCore.QFileInfo(self.filename[0]).fileName() 
             oracle_my_sql_window.setWindowTitle(self.fname + "[*]")            
 
         else:
@@ -623,13 +462,6 @@ class oracle_my_sql_class(object):
             self.e_sql.moveCursor(1)
             if self.e_sql.find(ft):
                 self.e_sql.moveCursor(QtGui.QTextCursor.Start, QtGui.QTextCursor.MoveAnchor)
-
-    #def handleQuit(self):
-        #print("Goodbye ...")
-        #app.quit()
-
-    #def set_numbers_visible(self, value = True):
-        #self.numbers.setVisible(False)
 
     def match_left(self, block, character, start, found):
         map = {'{': '}', '(': ')', '[': ']'}
@@ -757,18 +589,16 @@ class oracle_my_sql_class(object):
     #def set_number_bar_visible(self, value):
     #    self.numbers.setVisible(value)
 
-    def replaceAll(self):
-        print("replacing all")
-        oldtext = self.editor.document().toPlainText()
+    def replaceAll(self):        
+        oldtext = self.e_sql.document().toPlainText()
         newtext = oldtext.replace(self.findfield.text(), self.replacefield.text())
-        self.editor.setPlainText(newtext)
+        self.e_sql.setPlainText(newtext)
         self.setModified(True)
 
-    def replaceOne(self):
-        print("replacing all")
-        oldtext = self.editor.document().toPlainText()
+    def replaceOne(self):        
+        oldtext = self.e_sql.document().toPlainText()
         newtext = oldtext.replace(self.findfield.text(), self.replacefield.text(), 1)
-        self.editor.setPlainText(newtext)
+        self.e_sql.setPlainText(newtext)
         self.setModified(True)    
 
 # ----------------------------------------
@@ -776,8 +606,7 @@ class oracle_my_sql_class(object):
 # ----------------------------------------
 if __name__ == "__main__":    
     app = QtWidgets.QApplication([])    
-    oracle_my_sql_window = QtWidgets.QMainWindow()
-    oracle_my_sql_window.setWindowTitle("Oracle My Sql")
+    oracle_my_sql_window = QtWidgets.QMainWindow()    
     application = oracle_my_sql_class()
     application.setupUi(oracle_my_sql_window)
     oracle_my_sql_window.showMaximized()

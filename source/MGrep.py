@@ -364,7 +364,11 @@ class MGrep_class(QtWidgets.QMainWindow):
         """
            Richiamo form per gestione My SQL
         """                
-        pass
+        from oracle_my_sql import oracle_my_sql_class
+        self.oracle_my_sql_window = QtWidgets.QMainWindow()    
+        self.app = oracle_my_sql_class()
+        self.app.setupUi(self.oracle_my_sql_window)
+        self.oracle_my_sql_window.showMaximized()
         
     def slot_actionHelp(self):
         """
