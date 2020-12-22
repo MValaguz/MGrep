@@ -307,7 +307,7 @@ class Ui_MGrepWindow(object):
         self.actionTop_sessions.setText(_translate("MGrepWindow", "Top sessions"))
         self.actionTable_space.setText(_translate("MGrepWindow", "Table space"))
         self.actionServers_Status.setText(_translate("MGrepWindow", "Servers Status"))
-        self.actionOracleMySQL.setText(_translate("MGrepWindow", "Oracle My SQL"))
+        self.actionOracleMySQL.setText(_translate("MGrepWindow", "Oracle My SQL Editor"))
 import resource_rc
 
 

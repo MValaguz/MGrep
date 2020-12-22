@@ -22,7 +22,7 @@ from oracle_jobs_ui import Ui_oracle_jobs_window
 from oracle_jobs_history_ui import Ui_oracle_jobs_history_window
 #Librerie interne MGrep
 from preferenze import preferenze
-from utilita import message_error, message_info
+from utilita import message_error, message_info, message_question_yes_no
 
 # classe della storia dei job
 class oracle_jobs_history_class(QtWidgets.QMainWindow):
@@ -233,24 +233,105 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         self.ui.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
         self.ui.o_lst1.resizeColumnsToContents()
+    
+    def slot_stopjob(self):
+        """
+            Interrompe un job
+        """        
+        if hasattr(self, 'lista_risultati'):
+            # ottengo un oggetto index-qt della riga selezionata
+            index = self.ui.o_lst1.currentIndex()                
+            # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
+            v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
+            if v_item_0 != None:            
+                v_job_name = v_item_0.text()
+                if message_question_yes_no('Do you want stop ' + v_job_name + ' job?') == 'Yes':                                    
+                    try:
+                        # connessione al DB come amministratore
+                        v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
+                                                         password=self.o_preferenze.v_oracle_password_sys,
+                                                         dsn=self.ui.e_server_name.currentText(),
+                                                         mode=cx_Oracle.SYSDBA)            
+                    except:
+                        message_error('Connection to oracle rejected. Please control login information.')
+                        return []
+            
+                    # apro cursore
+                    v_cursor = v_connection.cursor()
+                    # imposto l'istruzione
+                    v_istruzione = "BEGIN DBMS_SCHEDULER.STOP_JOB (job_name => 'SMILE."+v_job_name+"'); END;"                    
+                    # eseguo istruzione monitorando eventuali errori
+                    try:
+                        v_cursor.execute( v_istruzione )                            
+                    # se riscontrato errore --> emetto sia codice che messaggio
+                    except cx_Oracle.Error as e:                                        
+                        errorObj, = e.args                
+                        message_error("Error: " + errorObj.message)                 
+                            
+                    # chiudo
+                    v_cursor.close()
+                    v_connection.close()
+                    
+    def slot_startjob(self):
+        """
+            Avvia un job
+        """
+        if hasattr(self, 'lista_risultati'):
+            # ottengo un oggetto index-qt della riga selezionata
+            index = self.ui.o_lst1.currentIndex()                
+            # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
+            v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
+            if v_item_0 != None:            
+                v_job_name = v_item_0.text()
+                if message_question_yes_no('Do you want start ' + v_job_name + ' job?\nNotice! MGrep will be waiting the end of job!') == 'Yes':                                    
+                    try:
+                        # connessione al DB come amministratore
+                        v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
+                                                         password=self.o_preferenze.v_oracle_password_sys,
+                                                         dsn=self.ui.e_server_name.currentText(),
+                                                         mode=cx_Oracle.SYSDBA)            
+                    except:
+                        message_error('Connection to oracle rejected. Please control login information.')
+                        return []
+            
+                    # apro cursore
+                    v_cursor = v_connection.cursor()
+                    # imposto l'istruzione
+                    v_istruzione = "BEGIN DBMS_SCHEDULER.RUN_JOB (job_name => 'SMILE."+v_job_name+"'); END;"                    
+                    # eseguo istruzione monitorando eventuali errori (attivo l'icona della clessidra)
+                    try:
+                        QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))                                                        
+                        v_cursor.execute( v_istruzione )                                  
+                        QtWidgets.QApplication.restoreOverrideCursor()
+                        message_info('Job finished :-)')
+                    # se riscontrato errore --> emetto sia codice che messaggio
+                    except cx_Oracle.Error as e:                                        
+                        errorObj, = e.args                
+                        message_error("Error: " + errorObj.message)                 
+                            
+                    # chiudo e disattivo icona della clessidra
+                    v_cursor.close()
+                    v_connection.close()            
+                    QtWidgets.QApplication.restoreOverrideCursor()
         
     def slot_jobsHistory(self):
         """
-            visualizza la storia del job selezionato
+            Visualizza la storia del job selezionato
         """
-        # ottengo un oggetto index-qt della riga selezionata
-        index = self.ui.o_lst1.currentIndex()                
-        # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
-        v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
-        if v_item_0 != None:            
-            v_job_name = v_item_0.text()
-            # apro la finestra con lo storico del job
-            self.jobs_history = oracle_jobs_history_class( v_job_name, 
-                                                           self.o_preferenze.v_oracle_user_sys, 
-                                                           self.o_preferenze.v_oracle_password_sys, 
-                                                           self.ui.e_server_name.currentText() ) 
-            self.jobs_history.show()
-            
+        if hasattr(self, 'lista_risultati'):
+            # ottengo un oggetto index-qt della riga selezionata
+            index = self.ui.o_lst1.currentIndex()                
+            # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
+            v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
+            if v_item_0 != None:            
+                v_job_name = v_item_0.text()
+                # apro la finestra con lo storico del job
+                self.jobs_history = oracle_jobs_history_class( v_job_name, 
+                                                               self.o_preferenze.v_oracle_user_sys, 
+                                                               self.o_preferenze.v_oracle_password_sys, 
+                                                               self.ui.e_server_name.currentText() ) 
+                self.jobs_history.show()
+                
 # ----------------------------------------
 # TEST APPLICAZIONE
 # ----------------------------------------

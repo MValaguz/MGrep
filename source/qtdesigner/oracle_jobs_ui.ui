@@ -28,7 +28,7 @@
     <property name="leftMargin">
      <number>10</number>
     </property>
-    <item row="10" column="0" colspan="4">
+    <item row="10" column="0" colspan="7">
      <widget class="QTableView" name="o_lst1">
       <property name="minimumSize">
        <size>
@@ -50,10 +50,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
-     <widget class="QLineEdit" name="e_search1"/>
-    </item>
-    <item row="5" column="2">
+    <item row="5" column="5">
      <widget class="QPushButton" name="b_start_search">
       <property name="text">
        <string>Start search</string>
@@ -84,10 +81,18 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QComboBox" name="e_server_name"/>
-    </item>
     <item row="11" column="2">
+     <widget class="QPushButton" name="b_start">
+      <property name="text">
+       <string>Start a job</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/Play.ico</normaloff>:/icons/icons/Play.ico</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="3">
      <widget class="QPushButton" name="b_history">
       <property name="text">
        <string>Job's history</string>
@@ -98,6 +103,23 @@
       </property>
      </widget>
     </item>
+    <item row="11" column="1">
+     <widget class="QPushButton" name="b_stop">
+      <property name="text">
+       <string>Stop a job</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/Stop.ico</normaloff>:/icons/icons/Stop.ico</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1" colspan="4">
+     <widget class="QLineEdit" name="e_search1"/>
+    </item>
+    <item row="4" column="1" colspan="2">
+     <widget class="QComboBox" name="e_server_name"/>
+    </item>
    </layout>
   </widget>
  </widget>
@@ -106,6 +128,8 @@
   <tabstop>e_search1</tabstop>
   <tabstop>b_start_search</tabstop>
   <tabstop>o_lst1</tabstop>
+  <tabstop>b_stop</tabstop>
+  <tabstop>b_start</tabstop>
   <tabstop>b_history</tabstop>
  </tabstops>
  <resources>
@@ -119,8 +143,8 @@
    <slot>slot_startSearch()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>684</x>
-     <y>60</y>
+     <x>645</x>
+     <y>68</y>
     </hint>
     <hint type="destinationlabel">
      <x>519</x>
@@ -135,8 +159,8 @@
    <slot>slot_jobsHistory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>634</x>
-     <y>474</y>
+     <x>491</x>
+     <y>488</y>
     </hint>
     <hint type="destinationlabel">
      <x>507</x>
@@ -144,9 +168,43 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>b_start</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_jobs_window</receiver>
+   <slot>slot_startjob()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>318</x>
+     <y>475</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>120</x>
+     <y>471</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_stop</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_jobs_window</receiver>
+   <slot>slot_stopjob()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>221</x>
+     <y>484</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>479</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_startSearch()</slot>
   <slot>slot_jobsHistory()</slot>
+  <slot>slot_startjob()</slot>
+  <slot>slot_stopjob()</slot>
  </slots>
 </ui>

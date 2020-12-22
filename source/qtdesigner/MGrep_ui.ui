@@ -420,7 +420,7 @@
      <normaloff>:/icons/icons/dbase.gif</normaloff>:/icons/icons/dbase.gif</iconset>
    </property>
    <property name="text">
-    <string>Oracle My SQL</string>
+    <string>Oracle My SQL Editor</string>
    </property>
   </action>
  </widget>
