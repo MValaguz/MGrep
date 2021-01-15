@@ -50,7 +50,8 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
         self.ui.c_flsearch.setChecked( self.o_preferenze.flsearch  )
         self.ui.e_dboracle1.setText( self.o_preferenze.dboracle1 )
         self.ui.e_dboracle2.setText( self.o_preferenze.dboracle2 )
-        self.ui.c_dbsearch.setChecked( self.o_preferenze.dbsearch )
+        self.ui.c_dbsearch.setChecked( self.o_preferenze.dbsearch )        
+        self.ui.c_icomsearch.setChecked( self.o_preferenze.icomsearch )
     
     def b_pathname_slot(self):
         """
@@ -94,6 +95,11 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             self.o_preferenze.dbsearch = True
         else:
             self.o_preferenze.dbsearch = False
+        if self.ui.c_icomsearch.isChecked():
+            self.o_preferenze.icomsearch = True
+        else:
+            self.o_preferenze.icomsearch = False
+            
         self.o_preferenze.salva()
         
         message_info('Search options saved!')
@@ -755,7 +761,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                                                   self.ui.e_outputfile.displayText())
 
             # eseguo la ricerca nei sorgenti di UNIFACE-ICOM (utente e password di collegamento sono fisse in procedura!)
-            if self.ui.c_dbsearch.isChecked() and not v_ko:
+            if self.ui.c_icomsearch.isChecked() and not v_ko:
                 v_ko = self.ricerca_stringa_in_icom(self.ui.e_stringa1.displayText(),
                                                     self.ui.e_stringa2.displayText(),
                                                     self.ui.e_outputfile.displayText())

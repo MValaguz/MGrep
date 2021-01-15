@@ -25,36 +25,23 @@
     </sizepolicy>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="5" column="7" colspan="3">
-     <widget class="QLineEdit" name="e_dboracle1"/>
+    <item row="0" column="7">
+     <widget class="QLineEdit" name="e_stringa2"/>
     </item>
-    <item row="6" column="7" colspan="3">
-     <widget class="QLineEdit" name="e_dboracle2"/>
-    </item>
-    <item row="1" column="7" colspan="2">
-     <widget class="QLineEdit" name="e_pathname"/>
-    </item>
-    <item row="2" column="7" rowspan="2" colspan="3">
-     <widget class="QLineEdit" name="e_filter"/>
-    </item>
-    <item row="4" column="4" colspan="3">
-     <widget class="QLabel" name="l_excludepath">
+    <item row="2" column="3">
+     <widget class="QLabel" name="l_filter">
       <property name="text">
-       <string>Exclude directories</string>
+       <string>File filter</string>
       </property>
       <property name="buddy">
-       <cstring>e_excludepath</cstring>
+       <cstring>e_filter</cstring>
       </property>
      </widget>
     </item>
-    <item row="12" column="0" colspan="11">
-     <widget class="QListView" name="o_lst1">
-      <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
-      </property>
-     </widget>
+    <item row="1" column="7">
+     <widget class="QLineEdit" name="e_pathname"/>
     </item>
-    <item row="1" column="9">
+    <item row="1" column="8">
      <widget class="QPushButton" name="b_pathname">
       <property name="text">
        <string/>
@@ -65,144 +52,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="4" colspan="2">
-     <widget class="QLabel" name="l_dboracle1">
-      <property name="text">
-       <string>Oracle connection1</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_dboracle1</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2">
-     <widget class="QCheckBox" name="c_flsearch">
-      <property name="text">
-       <string>Execute search in folder</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="4" colspan="2">
-     <widget class="QLabel" name="l_dboracle2">
-      <property name="text">
-       <string>Oracle connection2</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_dboracle2</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="7" column="3">
-     <spacer name="horizontalSpacer">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>40</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="4" column="7" colspan="2">
-     <widget class="QLineEdit" name="e_excludepath"/>
-    </item>
-    <item row="10" column="4">
-     <widget class="QPushButton" name="b_save_pref">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the search data in order to be retrieved at the next start of SmiGrep&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/disk.gif</normaloff>:/icons/icons/disk.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="5">
-     <widget class="QPushButton" name="b_add_line">
-      <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add the selected line to 'My favorites files&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/add.gif</normaloff>:/icons/icons/add.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="10">
-     <spacer name="horizontalSpacer_3">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeType">
-       <enum>QSizePolicy::Fixed</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="10" column="7" colspan="3">
-     <widget class="QPushButton" name="b_search">
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="statusTip">
-       <string/>
-      </property>
-      <property name="whatsThis">
-       <string/>
-      </property>
-      <property name="text">
-       <string>Start search</string>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="4" colspan="3">
-     <widget class="QLabel" name="l_stringa2">
-      <property name="text">
-       <string>and Search string2</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_stringa2</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="4">
-     <widget class="QLabel" name="l_filter">
-      <property name="text">
-       <string>File filter</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_filter</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="2">
-     <widget class="QCheckBox" name="c_dbsearch">
-      <property name="text">
-       <string>Execute search in OracleDB</string>
-      </property>
-     </widget>
-    </item>
-    <item row="10" column="2">
-     <widget class="QLineEdit" name="e_outputfile"/>
-    </item>
-    <item row="1" column="4" colspan="2">
+    <item row="1" column="3">
      <widget class="QLabel" name="l_pathname">
       <property name="text">
        <string>Folder name</string>
@@ -212,7 +62,80 @@
       </property>
      </widget>
     </item>
-    <item row="10" column="1">
+    <item row="2" column="7">
+     <widget class="QLineEdit" name="e_filter"/>
+    </item>
+    <item row="4" column="7">
+     <widget class="QLineEdit" name="e_excludepath"/>
+    </item>
+    <item row="4" column="3">
+     <widget class="QLabel" name="l_excludepath">
+      <property name="text">
+       <string>Exclude directories</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_excludepath</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="3">
+     <widget class="QLabel" name="l_dboracle2">
+      <property name="text">
+       <string>Oracle connection2</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_dboracle2</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="3">
+     <widget class="QLabel" name="l_dboracle1">
+      <property name="text">
+       <string>Oracle connection1</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_dboracle1</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="8">
+     <widget class="QPushButton" name="b_excludepath">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/folder.gif</normaloff>:/icons/icons/folder.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="7">
+     <widget class="QLineEdit" name="e_dboracle1"/>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLabel" name="l_stringa2">
+      <property name="text">
+       <string>and Search string2</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_stringa2</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="e_stringa1"/>
+    </item>
+    <item row="9" column="2">
+     <widget class="QCheckBox" name="c_icomsearch">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Execute search in ICOM sources&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Execute search in ICOM</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="1">
      <widget class="QLabel" name="l_outputfile">
       <property name="text">
        <string>Output file csv</string>
@@ -232,49 +155,107 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
-     <widget class="QLineEdit" name="e_stringa1"/>
+    <item row="6" column="7">
+     <widget class="QLineEdit" name="e_dboracle2"/>
     </item>
-    <item row="4" column="9">
-     <widget class="QPushButton" name="b_excludepath">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/folder.gif</normaloff>:/icons/icons/folder.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="7" colspan="3">
-     <widget class="QLineEdit" name="e_stringa2"/>
-    </item>
-    <item row="11" column="1">
+    <item row="13" column="1">
      <widget class="QLabel" name="l_risultati">
       <property name="text">
        <string>Result:</string>
       </property>
      </widget>
     </item>
+    <item row="14" column="0" colspan="14">
+     <widget class="QListView" name="o_lst1">
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QCheckBox" name="c_flsearch">
+      <property name="text">
+       <string>Execute search in folder</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="2">
+     <widget class="QLineEdit" name="e_outputfile"/>
+    </item>
+    <item row="5" column="2">
+     <widget class="QCheckBox" name="c_dbsearch">
+      <property name="text">
+       <string>Execute search in OracleDB</string>
+      </property>
+     </widget>
+    </item>
+    <item row="12" column="7" colspan="6">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetNoConstraint</enum>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QPushButton" name="b_save_pref">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save the search data in order to be retrieved at the next start of SmiGrep&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resource.qrc">
+            <normaloff>:/icons/icons/disk.gif</normaloff>:/icons/icons/disk.gif</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="b_add_line">
+          <property name="toolTip">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Add the selected line to 'My favorites files&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="resource.qrc">
+            <normaloff>:/icons/icons/add.gif</normaloff>:/icons/icons/add.gif</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QPushButton" name="b_search">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="statusTip">
+         <string/>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
+        <property name="text">
+         <string>Start search</string>
+        </property>
+        <property name="icon">
+         <iconset resource="resource.qrc">
+          <normaloff>:/icons/icons/go.gif</normaloff>:/icons/icons/go.gif</iconset>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
  </widget>
  <tabstops>
   <tabstop>e_stringa1</tabstop>
-  <tabstop>e_stringa2</tabstop>
   <tabstop>c_flsearch</tabstop>
-  <tabstop>e_pathname</tabstop>
-  <tabstop>b_pathname</tabstop>
-  <tabstop>e_filter</tabstop>
-  <tabstop>e_excludepath</tabstop>
-  <tabstop>b_excludepath</tabstop>
   <tabstop>c_dbsearch</tabstop>
-  <tabstop>e_dboracle1</tabstop>
-  <tabstop>e_dboracle2</tabstop>
   <tabstop>e_outputfile</tabstop>
-  <tabstop>b_save_pref</tabstop>
-  <tabstop>b_add_line</tabstop>
-  <tabstop>b_search</tabstop>
   <tabstop>o_lst1</tabstop>
  </tabstops>
  <resources>

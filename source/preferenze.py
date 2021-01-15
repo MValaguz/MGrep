@@ -86,6 +86,7 @@ class preferenze:
         self.dboracle1 = 'SMILE/SMILE@BACKUP_815'
         self.dboracle2 = 'SMI/SMI@BACKUP_815'
         self.dbsearch = True
+        self.icomsearch = True
         # imposto default campi ricerca files
         self.filesearch = ''
         self.pathname2 = 'W:/source'
@@ -207,7 +208,13 @@ class preferenze:
             self.csv_file = carica_riga_nel_campo()
             # csv separatore
             self.csv_separator = carica_riga_nel_campo()
-            
+            # check box per esecuzione ricerche in icom
+            v_check = carica_riga_nel_campo()
+            if v_check == '1':
+                self.icomsearch = True
+            else:
+                self.icomsearch = False
+                        
             # chiusura del file
             v_file.close()
         # --------------------------------
@@ -289,6 +296,12 @@ class preferenze:
 
         v_file.write(self.csv_file + '\n')
         v_file.write(self.csv_separator + '\n')        
+        
+        # execute icom search
+        if self.icomsearch:
+            v_file.write('1' + '\n')
+        else:
+            v_file.write('0' + '\n')        
 
         # Chiusura dei file
         v_file.close()

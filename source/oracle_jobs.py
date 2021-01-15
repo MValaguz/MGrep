@@ -149,11 +149,17 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         # apro cursori
         v_cursor = v_connection.cursor()
         
-        # eventuale stringa di ricerca per nome o commento del job
+        # job abilitati-disabilitati
         v_where = ''
+        if self.ui.e_job_disabled.isChecked():
+            v_where = "ENABLED='FALSE'"
+        else:
+            v_where = "ENABLED='TRUE'"        
+        
+        # eventuale stringa di ricerca per nome o commento del job        
         if self.ui.e_search1.displayText() != '':
-            v_where = " AND (JOB_NAME LIKE '%" + self.ui.e_search1.displayText() + "%' OR COMMENTS LIKE '%" + self.ui.e_search1.displayText() + "')" 
-            
+            v_where += " AND (JOB_NAME LIKE '%" + self.ui.e_search1.displayText() + "%' OR COMMENTS LIKE '%" + self.ui.e_search1.displayText() + "')" 
+                               
         # select per la ricerca degli oggetti invalidi
         v_select = """SELECT JOB_NAME, 
                              COMMENTS,                                
@@ -178,7 +184,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
                              ) ADDITIONAL_INFO,
                              TO_CHAR(NEXT_RUN_DATE,'DD/MM/YYYY HH24:MI:SS') NEXT_RUN_DATE
                       FROM   ALL_SCHEDULER_JOBS 
-                      WHERE  ENABLED='TRUE' """ + v_where.upper() + """
+                      WHERE  """ + v_where.upper() + """
                       ORDER BY JOB_NAME"""        
                 
         v_cursor.execute(v_select)        
@@ -313,6 +319,84 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
                     v_cursor.close()
                     v_connection.close()            
                     QtWidgets.QApplication.restoreOverrideCursor()
+        
+    def slot_disablejob(self):
+        """
+            Disattiva un job
+        """
+        if hasattr(self, 'lista_risultati'):
+            # ottengo un oggetto index-qt della riga selezionata
+            index = self.ui.o_lst1.currentIndex()                
+            # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
+            v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
+            if v_item_0 != None:            
+                v_job_name = v_item_0.text()
+                if message_question_yes_no('Do you want disable ' + v_job_name + ' job?') == 'Yes':                                    
+                    try:
+                        # connessione al DB come amministratore
+                        v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
+                                                         password=self.o_preferenze.v_oracle_password_sys,
+                                                         dsn=self.ui.e_server_name.currentText(),
+                                                         mode=cx_Oracle.SYSDBA)            
+                    except:
+                        message_error('Connection to oracle rejected. Please control login information.')
+                        return []
+            
+                    # apro cursore
+                    v_cursor = v_connection.cursor()
+                    # imposto l'istruzione
+                    v_istruzione = "BEGIN DBMS_SCHEDULER.DISABLE (name => 'SMILE."+v_job_name+"'); END;"                    
+                    # eseguo istruzione monitorando eventuali errori
+                    try:
+                        v_cursor.execute( v_istruzione )          
+                        message_info(v_job_name + ' was disabled!')
+                    # se riscontrato errore --> emetto sia codice che messaggio
+                    except cx_Oracle.Error as e:                                        
+                        errorObj, = e.args                
+                        message_error("Error: " + errorObj.message)                 
+                            
+                    # chiudo
+                    v_cursor.close()
+                    v_connection.close()        
+    
+    def slot_enablejob(self):
+        """
+            Riattiva un job
+        """    
+        if hasattr(self, 'lista_risultati'):
+            # ottengo un oggetto index-qt della riga selezionata
+            index = self.ui.o_lst1.currentIndex()                
+            # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
+            v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
+            if v_item_0 != None:            
+                v_job_name = v_item_0.text()
+                if message_question_yes_no('Do you want enable ' + v_job_name + ' job?') == 'Yes':                                    
+                    try:
+                        # connessione al DB come amministratore
+                        v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
+                                                         password=self.o_preferenze.v_oracle_password_sys,
+                                                         dsn=self.ui.e_server_name.currentText(),
+                                                         mode=cx_Oracle.SYSDBA)            
+                    except:
+                        message_error('Connection to oracle rejected. Please control login information.')
+                        return []
+            
+                    # apro cursore
+                    v_cursor = v_connection.cursor()
+                    # imposto l'istruzione
+                    v_istruzione = "BEGIN DBMS_SCHEDULER.ENABLE (name => 'SMILE."+v_job_name+"'); END;"                    
+                    # eseguo istruzione monitorando eventuali errori
+                    try:
+                        v_cursor.execute( v_istruzione )                            
+                        message_info(v_job_name + ' was enabled!')
+                    # se riscontrato errore --> emetto sia codice che messaggio
+                    except cx_Oracle.Error as e:                                        
+                        errorObj, = e.args                
+                        message_error("Error: " + errorObj.message)                 
+                            
+                    # chiudo
+                    v_cursor.close()
+                    v_connection.close()        
         
     def slot_jobsHistory(self):
         """

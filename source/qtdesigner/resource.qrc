@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="icons">
+    <file>icons/resume.gif</file>
+    <file>icons/pause.gif</file>
     <file>icons/Stop.ico</file>
     <file>icons/Play.ico</file>
     <file>icons/dbase.gif</file>

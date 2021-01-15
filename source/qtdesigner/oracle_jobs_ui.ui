@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>700</width>
+    <width>887</width>
     <height>500</height>
    </rect>
   </property>
@@ -28,6 +28,50 @@
     <property name="leftMargin">
      <number>10</number>
     </property>
+    <item row="5" column="0">
+     <widget class="QLabel" name="l_search1">
+      <property name="text">
+       <string>Search by name or comment:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_search1</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="l_server_name">
+      <property name="text">
+       <string>Oracle name server:</string>
+      </property>
+      <property name="buddy">
+       <cstring>e_server_name</cstring>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="6">
+     <widget class="QPushButton" name="b_history">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lists of past executions status&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Job's history</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/history.gif</normaloff>:/icons/icons/history.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="e_search1"/>
+    </item>
+    <item row="5" column="2">
+     <widget class="QCheckBox" name="e_job_disabled">
+      <property name="text">
+       <string>Only jobs disabled</string>
+      </property>
+     </widget>
+    </item>
     <item row="10" column="0" colspan="7">
      <widget class="QTableView" name="o_lst1">
       <property name="minimumSize">
@@ -50,7 +94,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="5">
+    <item row="5" column="6">
      <widget class="QPushButton" name="b_start_search">
       <property name="text">
        <string>Start search</string>
@@ -61,50 +105,11 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
-     <widget class="QLabel" name="l_server_name">
-      <property name="text">
-       <string>Oracle name server:</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_server_name</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="l_search1">
-      <property name="text">
-       <string>Search by name or comment:</string>
-      </property>
-      <property name="buddy">
-       <cstring>e_search1</cstring>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="2">
-     <widget class="QPushButton" name="b_start">
-      <property name="text">
-       <string>Start a job</string>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/Play.ico</normaloff>:/icons/icons/Play.ico</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="11" column="3">
-     <widget class="QPushButton" name="b_history">
-      <property name="text">
-       <string>Job's history</string>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/history.gif</normaloff>:/icons/icons/history.gif</iconset>
-      </property>
-     </widget>
-    </item>
     <item row="11" column="1">
      <widget class="QPushButton" name="b_stop">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Stop the execution job (only if job is in running status)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
       <property name="text">
        <string>Stop a job</string>
       </property>
@@ -114,23 +119,56 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="1" colspan="4">
-     <widget class="QLineEdit" name="e_search1"/>
-    </item>
-    <item row="4" column="1" colspan="2">
+    <item row="4" column="1">
      <widget class="QComboBox" name="e_server_name"/>
+    </item>
+    <item row="13" column="2">
+     <widget class="QPushButton" name="b_enable">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Restore the execution of the job&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Enable a job</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/resume.gif</normaloff>:/icons/icons/resume.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="2">
+     <widget class="QPushButton" name="b_disable">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Disable the execution of a job forever&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Disable a job</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/pause.gif</normaloff>:/icons/icons/pause.gif</iconset>
+      </property>
+     </widget>
+    </item>
+    <item row="13" column="1">
+     <widget class="QPushButton" name="b_start">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Start the job immediatly&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+      <property name="text">
+       <string>Start a job</string>
+      </property>
+      <property name="icon">
+       <iconset resource="resource.qrc">
+        <normaloff>:/icons/icons/Play.ico</normaloff>:/icons/icons/Play.ico</iconset>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
  </widget>
  <tabstops>
-  <tabstop>e_server_name</tabstop>
-  <tabstop>e_search1</tabstop>
-  <tabstop>b_start_search</tabstop>
   <tabstop>o_lst1</tabstop>
-  <tabstop>b_stop</tabstop>
-  <tabstop>b_start</tabstop>
-  <tabstop>b_history</tabstop>
  </tabstops>
  <resources>
   <include location="resource.qrc"/>
@@ -159,7 +197,7 @@
    <slot>slot_jobsHistory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>491</x>
+     <x>681</x>
      <y>488</y>
     </hint>
     <hint type="destinationlabel">
@@ -175,8 +213,8 @@
    <slot>slot_startjob()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>318</x>
-     <y>475</y>
+     <x>287</x>
+     <y>488</y>
     </hint>
     <hint type="destinationlabel">
      <x>120</x>
@@ -191,12 +229,44 @@
    <slot>slot_stopjob()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>221</x>
-     <y>484</y>
+     <x>192</x>
+     <y>488</y>
     </hint>
     <hint type="destinationlabel">
      <x>154</x>
      <y>479</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_disable</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_jobs_window</receiver>
+   <slot>slot_disablejob()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>325</x>
+     <y>477</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>563</x>
+     <y>480</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_enable</sender>
+   <signal>clicked()</signal>
+   <receiver>oracle_jobs_window</receiver>
+   <slot>slot_enablejob()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>398</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>555</x>
+     <y>456</y>
     </hint>
    </hints>
   </connection>
@@ -206,5 +276,7 @@
   <slot>slot_jobsHistory()</slot>
   <slot>slot_startjob()</slot>
   <slot>slot_stopjob()</slot>
+  <slot>slot_disablejob()</slot>
+  <slot>slot_enablejob()</slot>
  </slots>
 </ui>
