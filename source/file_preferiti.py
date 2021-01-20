@@ -25,14 +25,13 @@ from file_preferiti_ui import Ui_file_preferiti_window
 from preferenze import preferenze
 from utilita import message_error, message_info, message_question_yes_no
        
-class file_preferiti_class(QtWidgets.QMainWindow):
+class file_preferiti_class(QtWidgets.QMainWindow, Ui_file_preferiti_window):
     """
         Programma per la gestione dei file preferiti
     """                
     def __init__(self):
-        super(file_preferiti_class, self).__init__()
-        self.ui = Ui_file_preferiti_window()
-        self.ui.setupUi(self)
+        super(file_preferiti_class, self).__init__()        
+        self.setupUi(self)
         
         # carico le preferenze
         self.o_preferenze = preferenze()
@@ -40,7 +39,7 @@ class file_preferiti_class(QtWidgets.QMainWindow):
         
         # creo un oggetto modello che va ad agganciarsi all'oggetto grafico lista
         self.lista_risultati = QtGui.QStandardItemModel()        
-        self.ui.o_lst1.setModel(self.lista_risultati)            
+        self.o_lst1.setModel(self.lista_risultati)            
         
         # carica la lista dei preferiti
         self.carica_files_preferiti()
@@ -103,7 +102,7 @@ class file_preferiti_class(QtWidgets.QMainWindow):
             Inserisce una riga vuota all'interno della lista
         """        
         try:
-            v_index = self.ui.o_lst1.selectedIndexes()[0]        
+            v_index = self.o_lst1.selectedIndexes()[0]        
             v_row = v_index.row()
         except:
             v_row = 0
@@ -115,7 +114,7 @@ class file_preferiti_class(QtWidgets.QMainWindow):
             Sposta verso l'alto la riga selezionata
         """
         try:
-            v_index = self.ui.o_lst1.selectedIndexes()[0]        
+            v_index = self.o_lst1.selectedIndexes()[0]        
             v_row = v_index.row()
         except:
             return        
@@ -124,15 +123,15 @@ class file_preferiti_class(QtWidgets.QMainWindow):
             v_seltext = v_item.text()                                     
             self.lista_risultati.removeRow( v_index.row() )
             self.lista_risultati.insertRow( v_row - 1 , QtGui.QStandardItem(v_seltext) )            
-            v_new_index = self.ui.o_lst1.model().index(v_row - 1 , 0)            
-            self.ui.o_lst1.setCurrentIndex(v_new_index)        
+            v_new_index = self.o_lst1.model().index(v_row - 1 , 0)            
+            self.o_lst1.setCurrentIndex(v_new_index)        
         
     def slot_sposta_giu(self):
         """
             Sposta verso il basso la riga selezionata
         """
         try:
-            v_index = self.ui.o_lst1.selectedIndexes()[0]        
+            v_index = self.o_lst1.selectedIndexes()[0]        
             v_tot = self.lista_risultati.rowCount()
             v_row = v_index.row()
         except:
@@ -142,15 +141,15 @@ class file_preferiti_class(QtWidgets.QMainWindow):
             v_seltext = v_item.text()                                     
             self.lista_risultati.removeRow( v_index.row() )
             self.lista_risultati.insertRow( v_row + 1 , QtGui.QStandardItem(v_seltext) )            
-            v_new_index = self.ui.o_lst1.model().index(v_row + 1 , 0)            
-            self.ui.o_lst1.setCurrentIndex(v_new_index)        
+            v_new_index = self.o_lst1.model().index(v_row + 1 , 0)            
+            self.o_lst1.setCurrentIndex(v_new_index)        
         
     def slot_delete_line(self):
         """
             Cancella la riga selezionata
         """
         try:
-            v_index = self.ui.o_lst1.selectedIndexes()[0]                                
+            v_index = self.o_lst1.selectedIndexes()[0]                                
         except:
             return                
         
@@ -181,7 +180,7 @@ class file_preferiti_class(QtWidgets.QMainWindow):
         """
         try:
             # ricerco la posizione dell'indice selezionato e ne ricavo il contenuto 
-            v_index = self.ui.o_lst1.selectedIndexes()[0]                    
+            v_index = self.o_lst1.selectedIndexes()[0]                    
             v_item = self.lista_risultati.itemFromIndex(v_index)
             v_seltext = v_item.text()                                                     
             if v_seltext != '':
@@ -201,7 +200,7 @@ class file_preferiti_class(QtWidgets.QMainWindow):
         if message_question_yes_no("Do you want to backup file into old.zip?") == 'Yes':
             # ricerco la posizione dell'indice selezionato e ne ricavo il contenuto 
             try:
-                v_index = self.ui.o_lst1.selectedIndexes()[0]                    
+                v_index = self.o_lst1.selectedIndexes()[0]                    
             except:
                 return
             v_item = self.lista_risultati.itemFromIndex(v_index)
@@ -235,7 +234,7 @@ class file_preferiti_class(QtWidgets.QMainWindow):
         
         # ricerco la posizione dell'indice selezionato e ne ricavo il contenuto 
         try:
-            v_index = self.ui.o_lst1.selectedIndexes()[0]                    
+            v_index = self.o_lst1.selectedIndexes()[0]                    
         except:
             return        
         v_item = self.lista_risultati.itemFromIndex(v_index)
@@ -284,7 +283,7 @@ class file_preferiti_class(QtWidgets.QMainWindow):
             Compila l'oggetto selezionato icom backup1
         """
         # ricerco la posizione dell'indice selezionato e ne ricavo il contenuto 
-        v_index = self.ui.o_lst1.selectedIndexes()[0]                    
+        v_index = self.o_lst1.selectedIndexes()[0]                    
         v_item = self.lista_risultati.itemFromIndex(v_index)
         v_seltext = v_item.text()                                                     
         
@@ -296,7 +295,7 @@ class file_preferiti_class(QtWidgets.QMainWindow):
             Compila l'oggetto selezionato icom backup2
         """
         # ricerco la posizione dell'indice selezionato e ne ricavo il contenuto 
-        v_index = self.ui.o_lst1.selectedIndexes()[0]                    
+        v_index = self.o_lst1.selectedIndexes()[0]                    
         v_item = self.lista_risultati.itemFromIndex(v_index)
         v_seltext = v_item.text()                                                     
         
@@ -308,7 +307,7 @@ class file_preferiti_class(QtWidgets.QMainWindow):
             Compila l'oggetto selezionato smile backup1
         """
         # ricerco la posizione dell'indice selezionato e ne ricavo il contenuto 
-        v_index = self.ui.o_lst1.selectedIndexes()[0]                    
+        v_index = self.o_lst1.selectedIndexes()[0]                    
         v_item = self.lista_risultati.itemFromIndex(v_index)
         v_seltext = v_item.text()                                                     
         
@@ -320,7 +319,7 @@ class file_preferiti_class(QtWidgets.QMainWindow):
             Compila l'oggetto selezionato smile backup2
         """
         # ricerco la posizione dell'indice selezionato e ne ricavo il contenuto 
-        v_index = self.ui.o_lst1.selectedIndexes()[0]                    
+        v_index = self.o_lst1.selectedIndexes()[0]                    
         v_item = self.lista_risultati.itemFromIndex(v_index)
         v_seltext = v_item.text()                                                     
         

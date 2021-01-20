@@ -121,6 +121,7 @@
     <addaction name="actionTop_sessions"/>
     <addaction name="actionJobs_status"/>
     <addaction name="actionTable_space"/>
+    <addaction name="actionTable_wasted"/>
     <addaction name="actionServers_Status"/>
     <addaction name="actionVolume"/>
    </widget>
@@ -421,6 +422,15 @@
    </property>
    <property name="text">
     <string>Oracle My SQL Editor</string>
+   </property>
+  </action>
+  <action name="actionTable_wasted">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/icons/icons/trash.gif</normaloff>:/icons/icons/trash.gif</iconset>
+   </property>
+   <property name="text">
+    <string>Table wasted</string>
    </property>
   </action>
  </widget>
@@ -844,6 +854,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionTable_wasted</sender>
+   <signal>triggered()</signal>
+   <receiver>MGrepWindow</receiver>
+   <slot>slot_actionTableWasted()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>299</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>slot_actionSearch_string()</slot>
@@ -872,5 +898,6 @@
   <slot>slot_actionTable_space()</slot>
   <slot>slot_actionServers_status()</slot>
   <slot>slot_actionOracleMySQL()</slot>
+  <slot>slot_actionTableWasted()</slot>
  </slots>
 </ui>

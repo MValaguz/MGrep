@@ -21,7 +21,7 @@ from rubrica_ui import Ui_rubrica_window
 #Librerie interne MGrep
 from utilita import message_error, message_info
        
-class rubrica_class(QtWidgets.QMainWindow):
+class rubrica_class(QtWidgets.QMainWindow, Ui_rubrica_window):
     """
         Apre una finestra visualizzando la rubrica aziendale
         Va indicato attraverso l'instanziazione della classe:
@@ -32,9 +32,8 @@ class rubrica_class(QtWidgets.QMainWindow):
         self.tipo_rubrica = p_tipo_rubrica
         
         # incapsulo la classe grafica da qtdesigner
-        super(rubrica_class, self).__init__()
-        self.ui = Ui_rubrica_window()
-        self.ui.setupUi(self)
+        super(rubrica_class, self).__init__()        
+        self.setupUi(self)
         
         # carico e visualizzo il contenuto della tabella                 
         self.slot_b_ricerca()                   
@@ -54,8 +53,8 @@ class rubrica_class(QtWidgets.QMainWindow):
         v_cursor = v_connection.cursor()
 
         # select per la ricerca degli oggetti invalidi
-        if self.ui.e_ricerca.displayText() != '':
-            v_where_ricerca = "AND UPPER(AZIDP_DE || DIPEN_DE || CONTT_CO || REP_DE || EMAIL_DE || MANSIO_DE) LIKE UPPER('%" + self.ui.e_ricerca.displayText().replace(' ','%') + "%')"
+        if self.e_ricerca.displayText() != '':
+            v_where_ricerca = "AND UPPER(AZIDP_DE || DIPEN_DE || CONTT_CO || REP_DE || EMAIL_DE || MANSIO_DE) LIKE UPPER('%" + self.e_ricerca.displayText().replace(' ','%') + "%')"
         else:
             v_where_ricerca = ''
 
@@ -106,9 +105,9 @@ class rubrica_class(QtWidgets.QMainWindow):
                 x += 1
             y += 1
         # carico il modello nel widget        
-        self.ui.o_lst1.setModel(self.lista_risultati)                                   
+        self.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
-        self.ui.o_lst1.resizeColumnsToContents()
+        self.o_lst1.resizeColumnsToContents()
         
 # ----------------------------------------
 # TEST APPLICAZIONE

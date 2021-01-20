@@ -23,18 +23,17 @@ import pyfiglet
 from utilita import message_error, message_info
 from utilita import file_in_directory
        
-class ascii_graphics_class(QtWidgets.QMainWindow):
+class ascii_graphics_class(QtWidgets.QMainWindow, Ui_ascii_graphics_window):
     """
         Dato un testo, lo converte in big text
     """                
     def __init__(self):
-        super(ascii_graphics_class, self).__init__()
-        self.ui = Ui_ascii_graphics_window()
-        self.ui.setupUi(self)
+        super(ascii_graphics_class, self).__init__()        
+        self.setupUi(self)
         
         v_lista_fonts = self.carica_lista_fonts()
         for font in v_lista_fonts:
-            self.ui.e_fonts_list.addItem(font)                   
+            self.e_fonts_list.addItem(font)                   
         
     def carica_lista_fonts(self):
         '''
@@ -63,18 +62,18 @@ class ascii_graphics_class(QtWidgets.QMainWindow):
         ''' 
            Esegue la conversione del testo semplice in testo graphics ascii
         '''
-        if self.ui.e_converte.displayText() == '':
+        if self.e_converte.displayText() == '':
             message_error('Please insert a text')
             return None
         # il risultato viene impostato con il font richiesto (da non confondersi con il font con cui viene visualizzato)
-        if self.ui.e_fonts_list.currentText() != '':
-            risultato = pyfiglet.figlet_format( self.ui.e_converte.displayText(), font=self.ui.e_fonts_list.currentText() )         
+        if self.e_fonts_list.currentText() != '':
+            risultato = pyfiglet.figlet_format( self.e_converte.displayText(), font=self.e_fonts_list.currentText() )         
         # se però non è stato indicato alcun fonts, lascio il default
         else:
-            risultato = pyfiglet.figlet_format( self.ui.e_converte.displayText() )         
+            risultato = pyfiglet.figlet_format( self.e_converte.displayText() )         
         # imposto il risultato nella textbox
-        self.ui.e_risultato.clear()
-        self.ui.e_risultato.append(risultato)
+        self.e_risultato.clear()
+        self.e_risultato.append(risultato)
 
 # ----------------------------------------
 # TEST APPLICAZIONE

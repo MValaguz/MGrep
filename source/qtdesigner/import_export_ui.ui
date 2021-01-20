@@ -376,34 +376,6 @@
       </property>
      </widget>
     </item>
-    <item row="8" column="3">
-     <widget class="QPushButton" name="b_table_name">
-      <property name="toolTip">
-       <string>Load table list</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/refresh.gif</normaloff>:/icons/icons/refresh.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="18" column="3">
-     <widget class="QPushButton" name="b_oracle_table">
-      <property name="toolTip">
-       <string>Load table list</string>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/refresh.gif</normaloff>:/icons/icons/refresh.gif</iconset>
-      </property>
-     </widget>
-    </item>
     <item row="15" column="5" colspan="3">
      <widget class="QPushButton" name="b_copy_to_oracle">
       <property name="text">
@@ -434,14 +406,6 @@
       </property>
      </widget>
     </item>
-    <item row="15" column="3">
-     <widget class="QPushButton" name="b_table_to_oracle">
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/refresh.gif</normaloff>:/icons/icons/refresh.gif</iconset>
-      </property>
-     </widget>
-    </item>
     <item row="16" column="5" colspan="3">
      <widget class="QPushButton" name="b_start_import_excel">
       <property name="text">
@@ -450,17 +414,6 @@
       <property name="icon">
        <iconset resource="resource.qrc">
         <normaloff>:/icons/icons/excel.gif</normaloff>:/icons/icons/excel.gif</iconset>
-      </property>
-     </widget>
-    </item>
-    <item row="12" column="3">
-     <widget class="QPushButton" name="b_table_excel">
-      <property name="text">
-       <string/>
-      </property>
-      <property name="icon">
-       <iconset resource="resource.qrc">
-        <normaloff>:/icons/icons/refresh.gif</normaloff>:/icons/icons/refresh.gif</iconset>
       </property>
      </widget>
     </item>
@@ -486,23 +439,19 @@
   <tabstop>b_sqlite_db</tabstop>
   <tabstop>e_oracle_user</tabstop>
   <tabstop>e_table_name</tabstop>
-  <tabstop>b_table_name</tabstop>
   <tabstop>e_where_cond</tabstop>
   <tabstop>b_copy_to_sqlite</tabstop>
   <tabstop>e_table_excel</tabstop>
-  <tabstop>b_table_excel</tabstop>
   <tabstop>b_view_table</tabstop>
   <tabstop>e_excel_file</tabstop>
   <tabstop>b_excel_file</tabstop>
   <tabstop>b_start_excel</tabstop>
   <tabstop>e_table_to_oracle</tabstop>
-  <tabstop>b_table_to_oracle</tabstop>
   <tabstop>b_copy_to_oracle</tabstop>
   <tabstop>e_import_excel</tabstop>
   <tabstop>b_import_excel</tabstop>
   <tabstop>b_start_import_excel</tabstop>
   <tabstop>e_oracle_table</tabstop>
-  <tabstop>b_oracle_table</tabstop>
   <tabstop>e_csv_file</tabstop>
   <tabstop>b_csv_file</tabstop>
   <tabstop>b_start_csv_to_excel</tabstop>
@@ -538,7 +487,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>688</x>
-     <y>183</y>
+     <y>179</y>
     </hint>
     <hint type="destinationlabel">
      <x>432</x>
@@ -687,70 +636,6 @@
     <hint type="destinationlabel">
      <x>393</x>
      <y>562</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>b_table_name</sender>
-   <signal>clicked()</signal>
-   <receiver>import_export_window</receiver>
-   <slot>slot_b_table_name()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>415</x>
-     <y>142</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>349</x>
-     <y>286</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>b_table_excel</sender>
-   <signal>clicked()</signal>
-   <receiver>import_export_window</receiver>
-   <slot>slot_b_table_excel()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>415</x>
-     <y>252</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>349</x>
-     <y>286</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>b_table_to_oracle</sender>
-   <signal>clicked()</signal>
-   <receiver>import_export_window</receiver>
-   <slot>slot_b_table_to_oracle()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>415</x>
-     <y>352</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>349</x>
-     <y>286</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>b_oracle_table</sender>
-   <signal>clicked()</signal>
-   <receiver>import_export_window</receiver>
-   <slot>slot_b_oracle_table()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>415</x>
-     <y>424</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>349</x>
-     <y>286</y>
     </hint>
    </hints>
   </connection>

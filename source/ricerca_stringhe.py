@@ -23,35 +23,34 @@ from ricerca_stringhe_ui import Ui_Ricerca_stringhe_window
 from preferenze import preferenze
 from utilita import message_error, message_info
        
-class ricerca_stringhe_class(QtWidgets.QMainWindow):
+class ricerca_stringhe_class(QtWidgets.QMainWindow, Ui_Ricerca_stringhe_window):
     """
         Programma per la ricerca delle stringhe all'interno dei sorgenti di Oracle forms
     """                
     def __init__(self):
-        super(ricerca_stringhe_class, self).__init__()
-        self.ui = Ui_Ricerca_stringhe_window()
-        self.ui.setupUi(self)
+        super(ricerca_stringhe_class, self).__init__()        
+        self.setupUi(self)
         
         # creo un oggetto modello che va ad agganciarsi all'oggetto grafico lista
         self.lista_risultati = QtGui.QStandardItemModel()        
-        self.ui.o_lst1.setModel(self.lista_risultati)
+        self.o_lst1.setModel(self.lista_risultati)
         
         # carico le preferenze
         self.o_preferenze = preferenze()
         self.o_preferenze.carica()        
 
         # imposto i valori ricevuti come preferiti        
-        self.ui.e_stringa1.setText( self.o_preferenze.stringa1 )
-        self.ui.e_stringa2.setText( self.o_preferenze.stringa2 )
-        self.ui.e_pathname.setText( self.o_preferenze.pathname )
-        self.ui.e_excludepath.setText( self.o_preferenze.excludepath )
-        self.ui.e_outputfile.setText( self.o_preferenze.outputfile )
-        self.ui.e_filter.setText( self.o_preferenze.filter )
-        self.ui.c_flsearch.setChecked( self.o_preferenze.flsearch  )
-        self.ui.e_dboracle1.setText( self.o_preferenze.dboracle1 )
-        self.ui.e_dboracle2.setText( self.o_preferenze.dboracle2 )
-        self.ui.c_dbsearch.setChecked( self.o_preferenze.dbsearch )        
-        self.ui.c_icomsearch.setChecked( self.o_preferenze.icomsearch )
+        self.e_stringa1.setText( self.o_preferenze.stringa1 )
+        self.e_stringa2.setText( self.o_preferenze.stringa2 )
+        self.e_pathname.setText( self.o_preferenze.pathname )
+        self.e_excludepath.setText( self.o_preferenze.excludepath )
+        self.e_outputfile.setText( self.o_preferenze.outputfile )
+        self.e_filter.setText( self.o_preferenze.filter )
+        self.c_flsearch.setChecked( self.o_preferenze.flsearch  )
+        self.e_dboracle1.setText( self.o_preferenze.dboracle1 )
+        self.e_dboracle2.setText( self.o_preferenze.dboracle2 )
+        self.c_dbsearch.setChecked( self.o_preferenze.dbsearch )        
+        self.c_icomsearch.setChecked( self.o_preferenze.icomsearch )
     
     def b_pathname_slot(self):
         """
@@ -59,7 +58,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
         """        
         dirName = QtWidgets.QFileDialog.getExistingDirectory(self, "Choose a directory")                  
         if dirName != "":
-            self.ui.e_pathname.setText( dirName )        
+            self.e_pathname.setText( dirName )        
         
     def b_excludepath_slot(self):
         """
@@ -70,32 +69,32 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             # Prenderò solo la parte della directory, di solito la seconda posizione
             directory_scelta = os.path.split( dirName )[1]
             if directory_scelta != '':
-                if self.ui.e_excludepath.displayText() != '':
-                    self.ui.e_excludepath.setText(self.ui.e_excludepath.displayText() + ',' + directory_scelta)
+                if self.e_excludepath.displayText() != '':
+                    self.e_excludepath.setText(self.e_excludepath.displayText() + ',' + directory_scelta)
                 else:
-                    self.ui.e_excludepath.setText(directory_scelta)        
+                    self.e_excludepath.setText(directory_scelta)        
         
     def b_save_slot(self):
         """
            Salva i parametri di ricerca
 	"""
-        self.o_preferenze.stringa1 = self.ui.e_stringa1.displayText()
-        self.o_preferenze.stringa2 = self.ui.e_stringa2.displayText()
-        self.o_preferenze.pathname = self.ui.e_pathname.displayText()
-        self.o_preferenze.excludepath = self.ui.e_excludepath.displayText()
-        self.o_preferenze.outputfile = self.ui.e_outputfile.displayText()
-        self.o_preferenze.filter = self.ui.e_filter.displayText()
-        if self.ui.c_flsearch.isChecked():
+        self.o_preferenze.stringa1 = self.e_stringa1.displayText()
+        self.o_preferenze.stringa2 = self.e_stringa2.displayText()
+        self.o_preferenze.pathname = self.e_pathname.displayText()
+        self.o_preferenze.excludepath = self.e_excludepath.displayText()
+        self.o_preferenze.outputfile = self.e_outputfile.displayText()
+        self.o_preferenze.filter = self.e_filter.displayText()
+        if self.c_flsearch.isChecked():
             self.o_preferenze.flsearch = True
         else:
             self.o_preferenze.flsearch = False
-        self.o_preferenze.dboracle1 = self.ui.e_dboracle1.displayText()
-        self.o_preferenze.dboracle2 = self.ui.e_dboracle2.displayText()
-        if self.ui.c_dbsearch.isChecked():
+        self.o_preferenze.dboracle1 = self.e_dboracle1.displayText()
+        self.o_preferenze.dboracle2 = self.e_dboracle2.displayText()
+        if self.c_dbsearch.isChecked():
             self.o_preferenze.dbsearch = True
         else:
             self.o_preferenze.dbsearch = False
-        if self.ui.c_icomsearch.isChecked():
+        if self.c_icomsearch.isChecked():
             self.o_preferenze.icomsearch = True
         else:
             self.o_preferenze.icomsearch = False
@@ -108,7 +107,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
         """
             aggiunge la riga nei preferiti (selezione corrente sulla lista)
         """        
-        v_selindex = self.lista_risultati.itemFromIndex( self.ui.o_lst1.currentIndex() )
+        v_selindex = self.lista_risultati.itemFromIndex( self.o_lst1.currentIndex() )
         if v_selindex != None:
             v_seltext = v_selindex.text()
             if v_seltext != '':
@@ -186,11 +185,11 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                 return v_count_line
 
         # creo il file sorgente presupponendo sia stato trovato sul db indicato dalla connessione1
-        if self.ui.e_dboracle1.displayText() != '':
-            v_count_line = creazione_del_file_da_db(self.ui.e_dboracle1.displayText())
+        if self.e_dboracle1.displayText() != '':
+            v_count_line = creazione_del_file_da_db(self.e_dboracle1.displayText())
             # se il file creato è vuoto allora richiamo la stessa procedura ma con la connessione2
-            if v_count_line == 0 and self.ui.e_dboracle2.displayText() != '':
-                v_count_line = creazione_del_file_da_db(self.ui.e_dboracle2.displayText())
+            if v_count_line == 0 and self.e_dboracle2.displayText() != '':
+                v_count_line = creazione_del_file_da_db(self.e_dboracle2.displayText())
 
         # apre il file appena creato
         os.startfile(os.path.join(self.o_preferenze.work_dir, 'temp_source_db.sql'))
@@ -704,19 +703,19 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
                 
         v_ok = True
         # controllo che ci siano i dati obbligatori
-        if self.ui.e_stringa1.displayText() == '' and self.ui.e_stringa2.displayText() == '':
+        if self.e_stringa1.displayText() == '' and self.e_stringa2.displayText() == '':
             message_error('Please enter string1 or string2 value')
             v_ok = False
-        if not self.ui.c_flsearch.isChecked() and not self.ui.c_dbsearch.isChecked():
+        if not self.c_flsearch.isChecked() and not self.c_dbsearch.isChecked():
             message_error('Select execute search in Folder or DB')
             v_ok = False
-        if self.ui.c_flsearch.isChecked() and self.ui.e_pathname.displayText() == '':
+        if self.c_flsearch.isChecked() and self.e_pathname.displayText() == '':
             message_error('Please enter a pathname')
             v_ok = False
-        if self.ui.c_dbsearch.isChecked() and self.ui.e_dboracle1.displayText() == '' and self.ui.e_dboracle2.displayText() == '':
+        if self.c_dbsearch.isChecked() and self.e_dboracle1.displayText() == '' and self.e_dboracle2.displayText() == '':
             message_error('Please enter a DB name')
             v_ok = False
-        if self.ui.e_outputfile.displayText() == '':
+        if self.e_outputfile.displayText() == '':
             message_error('Please enter an output file')
             v_ok = False
         # i controlli sono stati superati --> avvio la ricerca
@@ -725,7 +724,7 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             self.lista_risultati.clear()            
 
             # se presente, pulisco il file di output, oppure lo creo. Perché tutte le fasi di ricerca vanno in accodamento
-            f_output = open(self.ui.e_outputfile.displayText(), 'w')
+            f_output = open(self.e_outputfile.displayText(), 'w')
             f_output.close()
             
             '''
@@ -738,33 +737,33 @@ class ricerca_stringhe_class(QtWidgets.QMainWindow):
             
             # richiama la ricerca nel file system se presente file system            
             v_ko = False
-            if self.ui.c_flsearch.isChecked():
-                v_ko = self.ricerca_stringa_in_file(self.ui.e_pathname.displayText(),
-                                                    self.ui.e_stringa1.displayText(),
-                                                    self.ui.e_stringa2.displayText(),
-                                                    self.ui.e_outputfile.displayText(),
-                                                    self.ui.e_filter.displayText(),
-                                                    self.ui.e_excludepath.displayText())
+            if self.c_flsearch.isChecked():
+                v_ko = self.ricerca_stringa_in_file(self.e_pathname.displayText(),
+                                                    self.e_stringa1.displayText(),
+                                                    self.e_stringa2.displayText(),
+                                                    self.e_outputfile.displayText(),
+                                                    self.e_filter.displayText(),
+                                                    self.e_excludepath.displayText())
 
             # se presente ricerco nei sorgenti DB della connessione1
-            if self.ui.c_dbsearch.isChecked() and self.ui.e_dboracle1.displayText() != '' and not v_ko:
-                v_ko = self.ricerca_stringa_in_db(self.ui.e_dboracle1.displayText(),
-                                                  self.ui.e_stringa1.displayText(),
-                                                  self.ui.e_stringa2.displayText(),
-                                                  self.ui.e_outputfile.displayText())
+            if self.c_dbsearch.isChecked() and self.e_dboracle1.displayText() != '' and not v_ko:
+                v_ko = self.ricerca_stringa_in_db(self.e_dboracle1.displayText(),
+                                                  self.e_stringa1.displayText(),
+                                                  self.e_stringa2.displayText(),
+                                                  self.e_outputfile.displayText())
 
             # se presente ricerco nei sorgenti DB della connessione2
-            if self.ui.c_dbsearch.isChecked() and self.ui.e_dboracle2.displayText() != '' and not v_ko:
-                v_ko = self.ricerca_stringa_in_db(self.ui.e_dboracle2.displayText(),
-                                                  self.ui.e_stringa1.displayText(),
-                                                  self.ui.e_stringa2.displayText(),
-                                                  self.ui.e_outputfile.displayText())
+            if self.c_dbsearch.isChecked() and self.e_dboracle2.displayText() != '' and not v_ko:
+                v_ko = self.ricerca_stringa_in_db(self.e_dboracle2.displayText(),
+                                                  self.e_stringa1.displayText(),
+                                                  self.e_stringa2.displayText(),
+                                                  self.e_outputfile.displayText())
 
             # eseguo la ricerca nei sorgenti di UNIFACE-ICOM (utente e password di collegamento sono fisse in procedura!)
-            if self.ui.c_icomsearch.isChecked() and not v_ko:
-                v_ko = self.ricerca_stringa_in_icom(self.ui.e_stringa1.displayText(),
-                                                    self.ui.e_stringa2.displayText(),
-                                                    self.ui.e_outputfile.displayText())
+            if self.c_icomsearch.isChecked() and not v_ko:
+                v_ko = self.ricerca_stringa_in_icom(self.e_stringa1.displayText(),
+                                                    self.e_stringa2.displayText(),
+                                                    self.e_outputfile.displayText())
             
             # chiudo la wait window
             self.progress.close()                    

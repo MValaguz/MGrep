@@ -39,7 +39,7 @@ from utilita_database import t_report_class
 from preferenze import preferenze
 from utilita import message_error, message_info
 
-class oracle_top_sessions_class(QtWidgets.QMainWindow):
+class oracle_top_sessions_class(QtWidgets.QMainWindow, Ui_oracle_top_sessions_window):
     """
         Oracle session 
     """       
@@ -55,15 +55,14 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
         self.page2 = self.t_report.new_page(self.fname)
         
         # incapsulo la classe grafica da qtdesigner        
-        super(oracle_top_sessions_class, self).__init__()
-        self.ui = Ui_oracle_top_sessions_window()
-        self.ui.setupUi(self)       
+        super(oracle_top_sessions_class, self).__init__()        
+        self.setupUi(self)       
         
         """
         # aggiungo un'area grafica accanto alla lista che servirà alla visualizzazione del grafico
         self.o_chart_view = QtChart.QChartView()
         self.o_chart_view.setRenderHint(QtGui.QPainter.Antialiasing)
-        self.ui.gridLayout.addWidget(self.o_chart_view, 7, 0, 1, 4)        
+        self.gridLayout.addWidget(self.o_chart_view, 7, 0, 1, 4)        
         
         self.o_chart = QtChart.QChart()
         self.o_chart_view.setChart(self.o_chart)        
@@ -76,21 +75,21 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
         
         # carico la lista dei parametri di metrica disponibili 
         # (attenzione! le metriche vengono cercate per descrizione quindi attenzione a come si modificano)
-        self.ui.e_parameter.addItem('CPU used by this session')
-        self.ui.e_parameter.addItem('physical reads')
-        self.ui.e_parameter.addItem('db block gets')
-        self.ui.e_parameter.addItem('recursive calls')        
-        self.ui.e_parameter.addItem('consistent gets')        
-        self.ui.e_parameter.addItem('redo size')
-        self.ui.e_parameter.addItem('bytes sent via SQL*Net to client')
-        self.ui.e_parameter.addItem('bytes received via SQL*Net from client')
-        self.ui.e_parameter.addItem('SQL*Net roundtrips to/from client')
-        self.ui.e_parameter.addItem('sorts (memory)')
-        self.ui.e_parameter.addItem('sorts (disk)')
+        self.e_parameter.addItem('CPU used by this session')
+        self.e_parameter.addItem('physical reads')
+        self.e_parameter.addItem('db block gets')
+        self.e_parameter.addItem('recursive calls')        
+        self.e_parameter.addItem('consistent gets')        
+        self.e_parameter.addItem('redo size')
+        self.e_parameter.addItem('bytes sent via SQL*Net to client')
+        self.e_parameter.addItem('bytes received via SQL*Net from client')
+        self.e_parameter.addItem('SQL*Net roundtrips to/from client')
+        self.e_parameter.addItem('sorts (memory)')
+        self.e_parameter.addItem('sorts (disk)')
                 
         # carico elenco dei server prendendolo dalle preferenze         
         for nome in self.o_preferenze.elenco_server:
-            self.ui.e_server_name.addItem(nome)
+            self.e_server_name.addItem(nome)
             
         # eseguo il carico della prima pagina
         self.starter()        
@@ -110,14 +109,14 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
         try:
             self.oracle_con = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                                 password=self.o_preferenze.v_oracle_password_sys,
-                                                dsn=self.ui.e_server_name.currentText(),
+                                                dsn=self.e_server_name.currentText(),
                                                 mode=cx_Oracle.SYSDBA)            
         except:
             message_error('Connection to oracle rejected. Please control login information.')
             return None
         
         # cambio la label del pulsante di calcoloo in modo sia riportata l'ora di riferimento
-        self.ui.b_calculate.setText("Compute difference from " + str(datetime.datetime.now().strftime('%H:%M:%S') ) )
+        self.b_calculate.setText("Compute difference from " + str(datetime.datetime.now().strftime('%H:%M:%S') ) )
         
         # cancello il contenuto delle pagine di ut_report (tranne record posizione 0)
         self.t_report.delete_page(self.fname, self.page1)
@@ -154,7 +153,7 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
                       where  username is not null
                         and  se.sid=ss.sid
                         and  sn.statistic#=ss.statistic#
-                        and  sn.name in ('""" + self.ui.e_parameter.currentText() + """')
+                        and  sn.name in ('""" + self.e_parameter.currentText() + """')
                    """        
                 
         v_cursor.execute(v_select)        
@@ -235,11 +234,11 @@ class oracle_top_sessions_class(QtWidgets.QMainWindow):
                 x += 1
             y += 1
         # carico il modello nel widget        
-        self.ui.o_lst1.setModel(self.lista_risultati)                                   
+        self.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
-        self.ui.o_lst1.resizeColumnsToContents()   
+        self.o_lst1.resizeColumnsToContents()   
         # imposto la label con il numero totale di sessioni
-        self.ui.l_total_sessions.setText('Number of sessions : ' + str(y))
+        self.l_total_sessions.setText('Number of sessions : ' + str(y))
     
     def calc_differenze(self):
         """

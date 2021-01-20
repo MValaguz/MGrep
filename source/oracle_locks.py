@@ -24,15 +24,14 @@ from utilita import message_error, message_info
 from utilita_database import estrae_elenco_tabelle_oracle
 from utilita_database import killa_sessione
        
-class oracle_locks_class(QtWidgets.QMainWindow):
+class oracle_locks_class(QtWidgets.QMainWindow, Ui_oracle_locks_window):
     """
         Oracle locks
     """       
     def __init__(self):
         # incapsulo la classe grafica da qtdesigner
-        super(oracle_locks_class, self).__init__()
-        self.ui = Ui_oracle_locks_window()
-        self.ui.setupUi(self)
+        super(oracle_locks_class, self).__init__()        
+        self.setupUi(self)
         
         # carico le preferenze
         self.o_preferenze = preferenze()    
@@ -40,7 +39,7 @@ class oracle_locks_class(QtWidgets.QMainWindow):
         
         # carico elenco dei server prendendolo dalle preferenze
         for nome in self.o_preferenze.elenco_server:
-            self.ui.e_server_name.addItem(nome)
+            self.e_server_name.addItem(nome)
                                                             
     def get_elenco_sessioni_bloccate(self):
         """
@@ -50,7 +49,7 @@ class oracle_locks_class(QtWidgets.QMainWindow):
             # connessione al DB come amministratore
             v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                              password=self.o_preferenze.v_oracle_password_sys,
-                                             dsn=self.ui.e_server_name.currentText(),
+                                             dsn=self.e_server_name.currentText(),
                                              mode=cx_Oracle.SYSDBA)            
         except:
             message_error('Connection to oracle rejected. Please control login information.')
@@ -147,16 +146,16 @@ class oracle_locks_class(QtWidgets.QMainWindow):
                 x += 1
             y += 1
         # carico il modello nel widget        
-        self.ui.o_lst1.setModel(self.lista_risultati)                                   
+        self.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
-        self.ui.o_lst1.resizeColumnsToContents()
+        self.o_lst1.resizeColumnsToContents()
     
     def slot_kill_session_lock(self):
         """
             killa la sessione selezionata nell'elenco dei blocchi di sessione
         """
         # ottengo un oggetto index-qt della riga selezionata
-        index = self.ui.o_lst1.currentIndex()                
+        index = self.o_lst1.currentIndex()                
         # non devo prendere la cella selezionata ma la cella 0 e 1 della riga selezionata (esse contengono sid e serial nr della sessione)
         v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
         v_item_1 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 1) )                        
@@ -167,23 +166,23 @@ class oracle_locks_class(QtWidgets.QMainWindow):
                            v_serial_n, # colonna 1 della riga
                            self.o_preferenze.v_oracle_user_sys,
                            self.o_preferenze.v_oracle_password_sys,
-                           self.ui.e_server_name.currentText() )    
+                           self.e_server_name.currentText() )    
     
     def slot_load_table_list(self):
         """
             Carica la combobox delle tabelle di oracle SMILE
         """        
-        self.ui.e_table_name.clear()
-        elenco_tabelle = estrae_elenco_tabelle_oracle( '1','SMILE','SMILE',self.ui.e_server_name.currentText() ) 
+        self.e_table_name.clear()
+        elenco_tabelle = estrae_elenco_tabelle_oracle( '1','SMILE','SMILE',self.e_server_name.currentText() ) 
         # carico elenco dei server prendendolo dalle preferenze
         for tabella in elenco_tabelle:            
-            self.ui.e_table_name.addItem(tabella)                
+            self.e_table_name.addItem(tabella)                
             
     def get_elenco_tabelle_bloccate(self):
         """
             Restituisce in una tupla elenco delle sessioni bloccate
         """                
-        if self.ui.e_table_name.currentText() == '':
+        if self.e_table_name.currentText() == '':
             message_error('Please insert a Oracle table name')           
             return []
         
@@ -191,7 +190,7 @@ class oracle_locks_class(QtWidgets.QMainWindow):
             # connessione al DB come amministratore
             v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                              password=self.o_preferenze.v_oracle_password_sys,
-                                             dsn=self.ui.e_server_name.currentText(),
+                                             dsn=self.e_server_name.currentText(),
                                              mode=cx_Oracle.SYSDBA)            
         except:
             message_error('Connection to oracle rejected. Please control login information.')
@@ -213,7 +212,7 @@ class oracle_locks_class(QtWidgets.QMainWindow):
                     WHERE id1 = (SELECT object_id
                                  FROM   all_objects
                                  WHERE  owner ='SMILE' AND
-                                        object_name = RTRIM(LTRIM(UPPER('""" + self.ui.e_table_name.currentText() + """')))) AND 
+                                        object_name = RTRIM(LTRIM(UPPER('""" + self.e_table_name.currentText() + """')))) AND 
                           v$lock.sid=v$session.sid"""
         v_cursor.execute(v_select)
         
@@ -251,16 +250,16 @@ class oracle_locks_class(QtWidgets.QMainWindow):
                 x += 1
             y += 1
         # carico il modello nel widget        
-        self.ui.o_lst2.setModel(self.lista_risultati)                                   
+        self.o_lst2.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
-        self.ui.o_lst2.resizeColumnsToContents()                
+        self.o_lst2.resizeColumnsToContents()                
     
     def slot_kill_table_lock(self):
         """
             killa la sessione selezionata nell'elenco dei blocchi di tabella
         """
         # ottengo un oggetto index-qt della riga selezionata
-        index = self.ui.o_lst2.currentIndex()                
+        index = self.o_lst2.currentIndex()                
         # non devo prendere la cella selezionata ma la cella 0 e 1 della riga selezionata (esse contengono sid e serial nr della sessione)
         v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
         v_item_1 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 1) )                                
@@ -271,7 +270,7 @@ class oracle_locks_class(QtWidgets.QMainWindow):
                            v_serial_n, # colonna 1 della riga
                            self.o_preferenze.v_oracle_user_sys,
                            self.o_preferenze.v_oracle_password_sys,
-                           self.ui.e_server_name.currentText() )    
+                           self.e_server_name.currentText() )    
         
 # ----------------------------------------
 # TEST APPLICAZIONE

@@ -33,7 +33,7 @@ class Ui_Program_info(object):
     def retranslateUi(self, Program_info):
         _translate = QtCore.QCoreApplication.translate
         Program_info.setWindowTitle(_translate("Program_info", "About MGrep"))
-        self.label_2.setText(_translate("Program_info", "<html><head/><body><p><span style=\" font-weight:600;\">MGrep </span></p><p>© 2016-2020</p><p>MGrep is a set of utilities created to facilitate </p><p>the programming work in Oracle Forms enviroment.</p><p>Developed by <span style=\" font-weight:600;\">Marco Valaguzza</span> (Italy) </p><p>with Python 3.6 and QT library 5</p><p><br/></p></body></html>"))
+        self.label_2.setText(_translate("Program_info", "<html><head/><body><p><span style=\" font-weight:600;\">MGrep </span></p><p>© 2016-2021</p><p>MGrep is a set of utilities created to facilitate </p><p>the programming work in Oracle Forms enviroment.</p><p>Developed by <span style=\" font-weight:600;\">Marco Valaguzza</span> (Italy) </p><p>with Python 3.6 and QT library 5</p><p><br/></p></body></html>"))
         self.label.setText(_translate("Program_info", "<html><head/><body><p><img src=\":/icons/icons/qt.gif\"/></p></body></html>"))
 import resource_rc
 

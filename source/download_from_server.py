@@ -22,15 +22,14 @@ from download_from_server_ui import Ui_download_from_window
 from preferenze import preferenze
 from utilita import message_error, message_info
        
-class download_from_server_class(QtWidgets.QMainWindow):
+class download_from_server_class(QtWidgets.QMainWindow, Ui_download_from_window):
     """
         Esegue download oggetto da iAS12g
     """       
     def __init__(self):
         # incapsulo la classe grafica da qtdesigner
-        super(download_from_server_class, self).__init__()
-        self.ui = Ui_download_from_window()
-        self.ui.setupUi(self)
+        super(download_from_server_class, self).__init__()        
+        self.setupUi(self)
         
         # carico le preferenze
         self.o_preferenze = preferenze()    
@@ -42,24 +41,24 @@ class download_from_server_class(QtWidgets.QMainWindow):
         """        
         dirName = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory")
         if dirName != "":
-            self.ui.e_destination_dir.setText( dirName )    
+            self.e_destination_dir.setText( dirName )    
             
     def slot_b_start_download(self):
         """
            esegue il download dell'oggetto indicato
         """
-        if self.ui.e_source.displayText() == '':
+        if self.e_source.displayText() == '':
             message_error('You must enter a source file name with suffix!')
             return None
         
-        if self.ui.e_destination_dir.displayText() == '':
+        if self.e_destination_dir.displayText() == '':
             message_error('You must enter a destination dir!')
             return None 
         
         # controllo che il file di destinazione non esista; questo perché al termine del download solo controllando la presenza del file
         # potrò dire che il download è stato correttamente eseguito        
-        v_sorgente = self.ui.e_source.displayText()            
-        v_destinazione = os.path.join(self.ui.e_destination_dir.displayText() + '/' + v_sorgente)        
+        v_sorgente = self.e_source.displayText()            
+        v_destinazione = os.path.join(self.e_destination_dir.displayText() + '/' + v_sorgente)        
         if os.path.isfile(v_destinazione):
             message_error("Destination file already exists!")                
             return None        
@@ -81,9 +80,9 @@ class download_from_server_class(QtWidgets.QMainWindow):
             if os.path.isfile(v_destinazione):                
                 message_info('Download finished!')
             else:
-                message_error('Error to download ' + self.ui.e_source.displayText() + '!')
+                message_error('Error to download ' + self.e_source.displayText() + '!')
         except:
-            message_error('Error to download ' + self.ui.e_source.displayText() + '!')
+            message_error('Error to download ' + self.e_source.displayText() + '!')
             return None
                                                                                 
 # ----------------------------------------

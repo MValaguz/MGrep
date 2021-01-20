@@ -25,15 +25,14 @@ import locale
 from preferenze import preferenze
 from utilita import message_error, message_info
        
-class oracle_volume_class(QtWidgets.QMainWindow):
+class oracle_volume_class(QtWidgets.QMainWindow, Ui_oracle_volume_window):
     """
         Visualizza volume occupato dal DB oracle
     """       
     def __init__(self):
         # incapsulo la classe grafica da qtdesigner
-        super(oracle_volume_class, self).__init__()
-        self.ui = Ui_oracle_volume_window()
-        self.ui.setupUi(self)
+        super(oracle_volume_class, self).__init__()        
+        self.setupUi(self)
         
         # carico le preferenze
         self.o_preferenze = preferenze()    
@@ -41,12 +40,12 @@ class oracle_volume_class(QtWidgets.QMainWindow):
         
         # carico elenco dei server prendendolo dalle preferenze
         for nome in self.o_preferenze.elenco_server:
-            self.ui.e_server_name.addItem(nome)
+            self.e_server_name.addItem(nome)
             
         # aggiungo un'area grafica accanto alla lista che servirà alla visualizzazione del grafico
         self.o_chart_view = QtChart.QChartView()
         self.o_chart_view.setRenderHint(QtGui.QPainter.Antialiasing)
-        self.ui.gridLayout.addWidget(self.o_chart_view, 10, 4, 2, 3)        
+        self.gridLayout.addWidget(self.o_chart_view, 10, 4, 2, 3)        
         
         self.o_chart = QtChart.QChart()
         self.o_chart_view.setChart(self.o_chart)        
@@ -73,7 +72,7 @@ class oracle_volume_class(QtWidgets.QMainWindow):
             # connessione al DB come amministratore
             v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                              password=self.o_preferenze.v_oracle_password_sys,
-                                             dsn=self.ui.e_server_name.currentText(),
+                                             dsn=self.e_server_name.currentText(),
                                              mode=cx_Oracle.SYSDBA)            
         except:
             message_error('Connection to oracle rejected. Please control login information.')
@@ -84,8 +83,8 @@ class oracle_volume_class(QtWidgets.QMainWindow):
 
         v_table = ""
         # ricerca parziale su nome utente
-        if self.ui.e_table_name.displayText() != '':
-            v_table += " AND Upper(table_name) LIKE '%" + self.ui.e_table_name.displayText().upper() + "%' "            
+        if self.e_table_name.displayText() != '':
+            v_table += " AND Upper(table_name) LIKE '%" + self.e_table_name.displayText().upper() + "%' "            
                         
         # select per la ricerca degli oggetti invalidi
         v_select = '''SELECT table_name, 
@@ -172,17 +171,17 @@ class oracle_volume_class(QtWidgets.QMainWindow):
                 x += 1
             y += 1
         # carico il modello nel widget        
-        self.ui.o_lst1.setModel(self.lista_risultati)                                   
+        self.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
-        #self.ui.o_lst1.resizeColumnsToContents()
+        #self.o_lst1.resizeColumnsToContents()
         
         # calcolo totali e li visualizzo nelle varie unità di misura
         v_total_size = 0
         for row in matrice_dati:
             v_total_size += row[1]
-        self.ui.l_tot_megabyte.setText( locale.format_string('%.2f', v_total_size, grouping=True) )
-        self.ui.l_tot_gigabyte.setText( locale.format_string('%.2f', v_total_size/1024, grouping=True) )
-        self.ui.l_tot_terabyte.setText( locale.format_string('%.2f', v_total_size/1024/1024, grouping=True) )                                       
+        self.l_tot_megabyte.setText( locale.format_string('%.2f', v_total_size, grouping=True) )
+        self.l_tot_gigabyte.setText( locale.format_string('%.2f', v_total_size/1000, grouping=True) )
+        self.l_tot_terabyte.setText( locale.format_string('%.2f', v_total_size/1000/1000, grouping=True) )                                       
         
         # creo lista di 3 elementi dove i primi due sono le due tabelle più grandi e la terza è lo spazio di tutto il resto        
         if len(matrice_dati) > 2:                        

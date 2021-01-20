@@ -202,6 +202,11 @@ class Ui_MGrepWindow(object):
         icon26.addPixmap(QtGui.QPixmap(":/icons/icons/dbase.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.actionOracleMySQL.setIcon(icon26)
         self.actionOracleMySQL.setObjectName("actionOracleMySQL")
+        self.actionTable_wasted = QtWidgets.QAction(MGrepWindow)
+        icon27 = QtGui.QIcon()
+        icon27.addPixmap(QtGui.QPixmap(":/icons/icons/trash.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionTable_wasted.setIcon(icon27)
+        self.actionTable_wasted.setObjectName("actionTable_wasted")
         self.menuFile.addAction(self.actionSave_the_windows_position)
         self.menuFile.addAction(self.actionReset_main_window_position)
         self.menuFile.addAction(self.actionFactory_reset)
@@ -219,6 +224,7 @@ class Ui_MGrepWindow(object):
         self.menuOracle.addAction(self.actionTop_sessions)
         self.menuOracle.addAction(self.actionJobs_status)
         self.menuOracle.addAction(self.actionTable_space)
+        self.menuOracle.addAction(self.actionTable_wasted)
         self.menuOracle.addAction(self.actionServers_Status)
         self.menuOracle.addAction(self.actionVolume)
         self.menuFavorites.addAction(self.actionFiles)
@@ -265,6 +271,7 @@ class Ui_MGrepWindow(object):
         self.actionTable_space.triggered.connect(MGrepWindow.slot_actionTable_space)
         self.actionServers_Status.triggered.connect(MGrepWindow.slot_actionServers_status)
         self.actionOracleMySQL.triggered.connect(MGrepWindow.slot_actionOracleMySQL)
+        self.actionTable_wasted.triggered.connect(MGrepWindow.slot_actionTableWasted)
         QtCore.QMetaObject.connectSlotsByName(MGrepWindow)
 
     def retranslateUi(self, MGrepWindow):
@@ -308,6 +315,7 @@ class Ui_MGrepWindow(object):
         self.actionTable_space.setText(_translate("MGrepWindow", "Table space"))
         self.actionServers_Status.setText(_translate("MGrepWindow", "Servers Status"))
         self.actionOracleMySQL.setText(_translate("MGrepWindow", "Oracle My SQL Editor"))
+        self.actionTable_wasted.setText(_translate("MGrepWindow", "Table wasted"))
 import resource_rc
 
 

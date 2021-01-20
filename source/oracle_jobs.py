@@ -25,7 +25,7 @@ from preferenze import preferenze
 from utilita import message_error, message_info, message_question_yes_no
 
 # classe della storia dei job
-class oracle_jobs_history_class(QtWidgets.QMainWindow):
+class oracle_jobs_history_class(QtWidgets.QMainWindow, Ui_oracle_jobs_history_window):
     """
         Oracle job's history. Visualizza lo storico di un job
     """       
@@ -36,9 +36,8 @@ class oracle_jobs_history_class(QtWidgets.QMainWindow):
                  p_server_name):
         
         # incapsulo la classe grafica da qtdesigner
-        super(oracle_jobs_history_class, self).__init__()
-        self.ui = Ui_oracle_jobs_history_window()
-        self.ui.setupUi(self)
+        super(oracle_jobs_history_class, self).__init__()        
+        self.setupUi(self)
         
         # carico i dati
         matrice_dati = self.get_jobs_history(p_job_name, p_oracle_user_sys, p_oracle_password_sys, p_server_name)                        
@@ -67,9 +66,9 @@ class oracle_jobs_history_class(QtWidgets.QMainWindow):
                 x += 1
             y += 1
         # carico il modello nel widget        
-        self.ui.o_lst1.setModel(self.lista_risultati)                                   
+        self.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
-        self.ui.o_lst1.resizeColumnsToContents()
+        self.o_lst1.resizeColumnsToContents()
                 
     def get_jobs_history(self, p_job_name, p_oracle_user_sys, p_oracle_password_sys, p_server_name):
         """
@@ -114,15 +113,14 @@ class oracle_jobs_history_class(QtWidgets.QMainWindow):
         return v_row
 
 # classe principale       
-class oracle_jobs_class(QtWidgets.QMainWindow):
+class oracle_jobs_class(QtWidgets.QMainWindow, Ui_oracle_jobs_window):
     """
         Oracle jobs
     """       
     def __init__(self):
         # incapsulo la classe grafica da qtdesigner
-        super(oracle_jobs_class, self).__init__()
-        self.ui = Ui_oracle_jobs_window()
-        self.ui.setupUi(self)
+        super(oracle_jobs_class, self).__init__()        
+        self.setupUi(self)
         
         # carico le preferenze
         self.o_preferenze = preferenze()    
@@ -130,7 +128,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         
         # carico elenco dei server prendendolo dalle preferenze
         for nome in self.o_preferenze.elenco_server:
-            self.ui.e_server_name.addItem(nome)
+            self.e_server_name.addItem(nome)
                                                                 
     def get_elenco_jobs(self):
         """
@@ -140,7 +138,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
             # connessione al DB come amministratore
             v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                              password=self.o_preferenze.v_oracle_password_sys,
-                                             dsn=self.ui.e_server_name.currentText(),
+                                             dsn=self.e_server_name.currentText(),
                                              mode=cx_Oracle.SYSDBA)            
         except:
             message_error('Connection to oracle rejected. Please control login information.')
@@ -151,14 +149,14 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         
         # job abilitati-disabilitati
         v_where = ''
-        if self.ui.e_job_disabled.isChecked():
+        if self.e_job_disabled.isChecked():
             v_where = "ENABLED='FALSE'"
         else:
             v_where = "ENABLED='TRUE'"        
         
         # eventuale stringa di ricerca per nome o commento del job        
-        if self.ui.e_search1.displayText() != '':
-            v_where += " AND (JOB_NAME LIKE '%" + self.ui.e_search1.displayText() + "%' OR COMMENTS LIKE '%" + self.ui.e_search1.displayText() + "')" 
+        if self.e_search1.displayText() != '':
+            v_where += " AND (JOB_NAME LIKE '%" + self.e_search1.displayText() + "%' OR COMMENTS LIKE '%" + self.e_search1.displayText() + "')" 
                                
         # select per la ricerca degli oggetti invalidi
         v_select = """SELECT JOB_NAME, 
@@ -236,9 +234,9 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
                 x += 1
             y += 1
         # carico il modello nel widget        
-        self.ui.o_lst1.setModel(self.lista_risultati)                                   
+        self.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
-        self.ui.o_lst1.resizeColumnsToContents()
+        self.o_lst1.resizeColumnsToContents()
     
     def slot_stopjob(self):
         """
@@ -246,7 +244,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         """        
         if hasattr(self, 'lista_risultati'):
             # ottengo un oggetto index-qt della riga selezionata
-            index = self.ui.o_lst1.currentIndex()                
+            index = self.o_lst1.currentIndex()                
             # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
             v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
             if v_item_0 != None:            
@@ -256,7 +254,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
                         # connessione al DB come amministratore
                         v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                                          password=self.o_preferenze.v_oracle_password_sys,
-                                                         dsn=self.ui.e_server_name.currentText(),
+                                                         dsn=self.e_server_name.currentText(),
                                                          mode=cx_Oracle.SYSDBA)            
                     except:
                         message_error('Connection to oracle rejected. Please control login information.')
@@ -284,7 +282,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         """
         if hasattr(self, 'lista_risultati'):
             # ottengo un oggetto index-qt della riga selezionata
-            index = self.ui.o_lst1.currentIndex()                
+            index = self.o_lst1.currentIndex()                
             # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
             v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
             if v_item_0 != None:            
@@ -294,7 +292,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
                         # connessione al DB come amministratore
                         v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                                          password=self.o_preferenze.v_oracle_password_sys,
-                                                         dsn=self.ui.e_server_name.currentText(),
+                                                         dsn=self.e_server_name.currentText(),
                                                          mode=cx_Oracle.SYSDBA)            
                     except:
                         message_error('Connection to oracle rejected. Please control login information.')
@@ -326,7 +324,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         """
         if hasattr(self, 'lista_risultati'):
             # ottengo un oggetto index-qt della riga selezionata
-            index = self.ui.o_lst1.currentIndex()                
+            index = self.o_lst1.currentIndex()                
             # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
             v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
             if v_item_0 != None:            
@@ -336,7 +334,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
                         # connessione al DB come amministratore
                         v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                                          password=self.o_preferenze.v_oracle_password_sys,
-                                                         dsn=self.ui.e_server_name.currentText(),
+                                                         dsn=self.e_server_name.currentText(),
                                                          mode=cx_Oracle.SYSDBA)            
                     except:
                         message_error('Connection to oracle rejected. Please control login information.')
@@ -365,7 +363,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         """    
         if hasattr(self, 'lista_risultati'):
             # ottengo un oggetto index-qt della riga selezionata
-            index = self.ui.o_lst1.currentIndex()                
+            index = self.o_lst1.currentIndex()                
             # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
             v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
             if v_item_0 != None:            
@@ -375,7 +373,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
                         # connessione al DB come amministratore
                         v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                                          password=self.o_preferenze.v_oracle_password_sys,
-                                                         dsn=self.ui.e_server_name.currentText(),
+                                                         dsn=self.e_server_name.currentText(),
                                                          mode=cx_Oracle.SYSDBA)            
                     except:
                         message_error('Connection to oracle rejected. Please control login information.')
@@ -404,7 +402,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
         """
         if hasattr(self, 'lista_risultati'):
             # ottengo un oggetto index-qt della riga selezionata
-            index = self.ui.o_lst1.currentIndex()                
+            index = self.o_lst1.currentIndex()                
             # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del job)
             v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
             if v_item_0 != None:            
@@ -413,7 +411,7 @@ class oracle_jobs_class(QtWidgets.QMainWindow):
                 self.jobs_history = oracle_jobs_history_class( v_job_name, 
                                                                self.o_preferenze.v_oracle_user_sys, 
                                                                self.o_preferenze.v_oracle_password_sys, 
-                                                               self.ui.e_server_name.currentText() ) 
+                                                               self.e_server_name.currentText() ) 
                 self.jobs_history.show()
                 
 # ----------------------------------------

@@ -1,0 +1,120 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'oracle_table_wasted_ui.ui'
+#
+# Created by: PyQt5 UI code generator 5.13.2
+#
+# WARNING! All changes made in this file will be lost!
+
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+class Ui_oracle_table_wasted_window(object):
+    def setupUi(self, oracle_table_wasted_window):
+        oracle_table_wasted_window.setObjectName("oracle_table_wasted_window")
+        oracle_table_wasted_window.resize(700, 500)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/icons/MGrep.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        oracle_table_wasted_window.setWindowIcon(icon)
+        self.centralwidget = QtWidgets.QWidget(oracle_table_wasted_window)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
+        self.centralwidget.setSizePolicy(sizePolicy)
+        self.centralwidget.setObjectName("centralwidget")
+        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setContentsMargins(10, -1, -1, -1)
+        self.gridLayout.setObjectName("gridLayout")
+        self.l_search = QtWidgets.QLabel(self.centralwidget)
+        self.l_search.setObjectName("l_search")
+        self.gridLayout.addWidget(self.l_search, 3, 2, 1, 1)
+        self.e_search = QtWidgets.QLineEdit(self.centralwidget)
+        self.e_search.setObjectName("e_search")
+        self.gridLayout.addWidget(self.e_search, 3, 3, 1, 1)
+        self.e_server_name = QtWidgets.QComboBox(self.centralwidget)
+        self.e_server_name.setObjectName("e_server_name")
+        self.gridLayout.addWidget(self.e_server_name, 3, 1, 1, 1)
+        self.b_search = QtWidgets.QPushButton(self.centralwidget)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/icons/icons/go.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_search.setIcon(icon1)
+        self.b_search.setObjectName("b_search")
+        self.gridLayout.addWidget(self.b_search, 3, 4, 1, 1)
+        self.l_server_name = QtWidgets.QLabel(self.centralwidget)
+        self.l_server_name.setObjectName("l_server_name")
+        self.gridLayout.addWidget(self.l_server_name, 3, 0, 1, 1)
+        self.l_list_label = QtWidgets.QLabel(self.centralwidget)
+        self.l_list_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.l_list_label.setObjectName("l_list_label")
+        self.gridLayout.addWidget(self.l_list_label, 12, 0, 1, 5)
+        self.e_sql_script = QtWidgets.QTextEdit(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(20)
+        sizePolicy.setHeightForWidth(self.e_sql_script.sizePolicy().hasHeightForWidth())
+        self.e_sql_script.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Courier New")
+        font.setPointSize(10)
+        self.e_sql_script.setFont(font)
+        self.e_sql_script.setObjectName("e_sql_script")
+        self.gridLayout.addWidget(self.e_sql_script, 20, 0, 1, 5)
+        self.o_lst1 = QtWidgets.QTableView(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(50)
+        sizePolicy.setHeightForWidth(self.o_lst1.sizePolicy().hasHeightForWidth())
+        self.o_lst1.setSizePolicy(sizePolicy)
+        self.o_lst1.setDragEnabled(True)
+        self.o_lst1.setAlternatingRowColors(True)
+        self.o_lst1.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.o_lst1.setSortingEnabled(True)
+        self.o_lst1.setObjectName("o_lst1")
+        self.gridLayout.addWidget(self.o_lst1, 17, 0, 1, 5)
+        self.b_create_script = QtWidgets.QPushButton(self.centralwidget)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/icons/icons/sql.gif"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_create_script.setIcon(icon2)
+        self.b_create_script.setObjectName("b_create_script")
+        self.gridLayout.addWidget(self.b_create_script, 19, 0, 1, 5)
+        self.l_total_space_wasted = QtWidgets.QLabel(self.centralwidget)
+        self.l_total_space_wasted.setObjectName("l_total_space_wasted")
+        self.gridLayout.addWidget(self.l_total_space_wasted, 18, 0, 1, 1)
+        self.l_total_space_wasted2 = QtWidgets.QLabel(self.centralwidget)
+        self.l_total_space_wasted2.setObjectName("l_total_space_wasted2")
+        self.gridLayout.addWidget(self.l_total_space_wasted2, 18, 1, 1, 1)
+        oracle_table_wasted_window.setCentralWidget(self.centralwidget)
+        self.l_search.setBuddy(self.e_search)
+        self.l_server_name.setBuddy(self.e_server_name)
+
+        self.retranslateUi(oracle_table_wasted_window)
+        self.b_create_script.clicked.connect(oracle_table_wasted_window.slot_create_script)
+        self.b_search.clicked.connect(oracle_table_wasted_window.slot_start_search)
+        QtCore.QMetaObject.connectSlotsByName(oracle_table_wasted_window)
+        oracle_table_wasted_window.setTabOrder(self.o_lst1, self.b_create_script)
+        oracle_table_wasted_window.setTabOrder(self.b_create_script, self.e_sql_script)                
+
+    def retranslateUi(self, oracle_table_wasted_window):
+        _translate = QtCore.QCoreApplication.translate
+        oracle_table_wasted_window.setWindowTitle(_translate("oracle_table_wasted_window", "Oracle table wasted"))
+        self.l_search.setText(_translate("oracle_table_wasted_window", "Table to search:"))
+        self.b_search.setText(_translate("oracle_table_wasted_window", "Search"))
+        self.l_server_name.setText(_translate("oracle_table_wasted_window", "Oracle name server:"))
+        self.l_list_label.setText(_translate("oracle_table_wasted_window", "List of tables space wasted:"))
+        self.b_create_script.setToolTip(_translate("oracle_table_wasted_window", "<html><head/><body><p>1) Select a table space</p><p>2) Click this button</p><p>3) The script is composed in the text box below, with a new numeric part</p></body></html>"))
+        self.b_create_script.setText(_translate("oracle_table_wasted_window", "Create script for optimizing the selected table"))
+        self.l_total_space_wasted.setText(_translate("oracle_table_wasted_window", "Total space wasted GByte:"))
+        self.l_total_space_wasted2.setText(_translate("oracle_table_wasted_window", "..."))
+import resource_rc
+
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    oracle_table_wasted_window = QtWidgets.QMainWindow()
+    ui = Ui_oracle_table_wasted_window()
+    ui.setupUi(oracle_table_wasted_window)
+    oracle_table_wasted_window.show()
+    sys.exit(app.exec_())

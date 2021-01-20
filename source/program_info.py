@@ -17,14 +17,13 @@ sys.path.append('qtdesigner')
 from PyQt5 import QtCore, QtGui, QtWidgets
 from program_info_ui import Ui_Program_info
        
-class program_info_class(QtWidgets.QDialog):
+class program_info_class(QtWidgets.QDialog, Ui_Program_info):
     """
         visualizza le info del programma
     """                
     def __init__(self, p_mdi_area):
-        super(program_info_class, self).__init__()
-        self.ui = Ui_Program_info()
-        self.ui.setupUi(self)
+        super(program_info_class, self).__init__()        
+        self.setupUi(self)
         self.mdi_area = p_mdi_area
                         
 # ----------------------------------------

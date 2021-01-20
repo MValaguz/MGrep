@@ -25,15 +25,14 @@ from preferenze import preferenze
 from utilita import message_error, message_info
 
 # classe principale       
-class oracle_table_space_class(QtWidgets.QMainWindow):
+class oracle_table_space_class(QtWidgets.QMainWindow, Ui_oracle_table_space_window):
     """
         Oracle table space
     """       
     def __init__(self):
         # incapsulo la classe grafica da qtdesigner
-        super(oracle_table_space_class, self).__init__()
-        self.ui = Ui_oracle_table_space_window()
-        self.ui.setupUi(self)
+        super(oracle_table_space_class, self).__init__()        
+        self.setupUi(self)
         
         # carico le preferenze
         self.o_preferenze = preferenze()    
@@ -43,7 +42,7 @@ class oracle_table_space_class(QtWidgets.QMainWindow):
         # automaticamente scatterà l'evento sulla lista dei server che richiamerà
         # la funzione slot_changed_server
         for nome in self.o_preferenze.elenco_server:
-            self.ui.e_server_name.addItem(nome)
+            self.e_server_name.addItem(nome)
             
         self.v_current_table_space = ''
         self.v_nome_primo_dbfile = ''
@@ -57,7 +56,7 @@ class oracle_table_space_class(QtWidgets.QMainWindow):
             # connessione al DB come amministratore
             v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                              password=self.o_preferenze.v_oracle_password_sys,
-                                             dsn=self.ui.e_server_name.currentText(),
+                                             dsn=self.e_server_name.currentText(),
                                              mode=cx_Oracle.SYSDBA)            
         except:
             message_error('Connection to oracle rejected. Please control login information.')
@@ -133,9 +132,9 @@ class oracle_table_space_class(QtWidgets.QMainWindow):
                 x += 1
             y += 1
         # carico il modello nel widget        
-        self.ui.o_lst1.setModel(self.lista_risultati)                                   
+        self.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
-        self.ui.o_lst1.resizeColumnsToContents()
+        self.o_lst1.resizeColumnsToContents()
         
     def get_elenco_dbfile(self, p_tablespace_name):
         """
@@ -145,7 +144,7 @@ class oracle_table_space_class(QtWidgets.QMainWindow):
             # connessione al DB come amministratore
             v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                              password=self.o_preferenze.v_oracle_password_sys,
-                                             dsn=self.ui.e_server_name.currentText(),
+                                             dsn=self.e_server_name.currentText(),
                                              mode=cx_Oracle.SYSDBA)            
         except:
             message_error('Connection to oracle rejected. Please control login information.')
@@ -180,7 +179,7 @@ class oracle_table_space_class(QtWidgets.QMainWindow):
            Carica elenco dei dbfile collegati al table space selezionato
         """
         # ottengo un oggetto index-qt della riga selezionata
-        index = self.ui.o_lst1.currentIndex()                
+        index = self.o_lst1.currentIndex()                
         # non devo prendere la cella selezionata ma la cella 0 della riga selezionata (quella che contiene il nome del table space)
         v_item_0 = self.lista_risultati.itemFromIndex( index.sibling(index.row(), 0) )                
         if v_item_0 != None:            
@@ -228,9 +227,9 @@ class oracle_table_space_class(QtWidgets.QMainWindow):
                     x += 1
                 y += 1
             # carico il modello nel widget        
-            self.ui.o_lst2.setModel(self.lista_risultati2)                                   
+            self.o_lst2.setModel(self.lista_risultati2)                                   
             # indico di calcolare automaticamente la larghezza delle colonne
-            self.ui.o_lst2.resizeColumnsToContents()  
+            self.o_lst2.resizeColumnsToContents()  
             
     def slot_create_script(self):
         """
@@ -249,7 +248,7 @@ class oracle_table_space_class(QtWidgets.QMainWindow):
         # compongo lo script
         v_script = "ALTER TABLESPACE " + self.v_current_table_space + " ADD DATAFILE '" + v_new_nome_db + "' SIZE " + str(self.v_dbfile_dimension) + "M"
         # visualizzo il risultato
-        self.ui.e_sql_script.setText(v_script)
+        self.e_sql_script.setText(v_script)
             
 # ----------------------------------------
 # TEST APPLICAZIONE

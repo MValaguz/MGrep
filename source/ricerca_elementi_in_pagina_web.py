@@ -21,24 +21,23 @@ from ricerca_elementi_in_pagina_web_ui import Ui_Ricerca_elementi_in_pagina_web_
 #Librerie interne MGrep
 from utilita import message_error, message_info
        
-class ricerca_elementi_in_pagina_web_class(QtWidgets.QMainWindow):
+class ricerca_elementi_in_pagina_web_class(QtWidgets.QMainWindow, Ui_Ricerca_elementi_in_pagina_web_window):
     """
         Apre una finestra dove richieste l'indirizzo web e ne analizza il contenuto
     """                
     def __init__(self):
-        super(ricerca_elementi_in_pagina_web_class, self).__init__()
-        self.ui = Ui_Ricerca_elementi_in_pagina_web_window()
-        self.ui.setupUi(self)
+        super(ricerca_elementi_in_pagina_web_class, self).__init__()        
+        self.setupUi(self)
         
         # creo un oggetto modello che va ad agganciarsi all'oggetto grafico lista
         self.lista_risultati = QtGui.QStandardItemModel()        
-        self.ui.o_lst1.setModel(self.lista_risultati)
+        self.o_lst1.setModel(self.lista_risultati)
                         
     def b_search_slot(self):
         """
             esegue la ricerca 
         """        
-        if self.ui.e_url.displayText() == '':
+        if self.e_url.displayText() == '':
             message_error('Please insert a valid URL')
             return None
 
@@ -47,7 +46,7 @@ class ricerca_elementi_in_pagina_web_class(QtWidgets.QMainWindow):
 
         # legge la pagina web        
         try:
-            v_pagina_web=request.urlopen(self.ui.e_url.displayText())
+            v_pagina_web=request.urlopen(self.e_url.displayText())
         except:
             message_error('Page not found or unknow error')
             return None

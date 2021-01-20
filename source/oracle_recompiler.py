@@ -22,15 +22,14 @@ from oracle_recompiler_ui import Ui_oracle_recompiler_window
 from preferenze import preferenze
 from utilita import message_error, message_info
        
-class oracle_recompiler_class(QtWidgets.QMainWindow):
+class oracle_recompiler_class(QtWidgets.QMainWindow, Ui_oracle_recompiler_window):
     """
         Oracle recompiler 
     """       
     def __init__(self):
         # incapsulo la classe grafica da qtdesigner
-        super(oracle_recompiler_class, self).__init__()
-        self.ui = Ui_oracle_recompiler_window()
-        self.ui.setupUi(self)
+        super(oracle_recompiler_class, self).__init__()        
+        self.setupUi(self)
         
         # carico le preferenze
         self.o_preferenze = preferenze()    
@@ -38,7 +37,7 @@ class oracle_recompiler_class(QtWidgets.QMainWindow):
         
         # carico elenco dei server prendendolo dalle preferenze
         for nome in self.o_preferenze.elenco_server:
-            self.ui.e_server_name.addItem(nome)
+            self.e_server_name.addItem(nome)
             
     def carica_oggetti_invalidi_db(self):
         """
@@ -48,7 +47,7 @@ class oracle_recompiler_class(QtWidgets.QMainWindow):
         try:
             v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                              password=self.o_preferenze.v_oracle_password_sys,
-                                             dsn=self.ui.e_server_name.currentText(),
+                                             dsn=self.e_server_name.currentText(),
                                              mode=cx_Oracle.SYSDBA)                        
         except:
             message_error('Connection to oracle rejected. Please control login information.')            
@@ -94,9 +93,9 @@ class oracle_recompiler_class(QtWidgets.QMainWindow):
                 x += 1
             y += 1
         # carico il modello nel widget        
-        self.ui.o_lst1.setModel(self.lista_risultati)                                   
+        self.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
-        self.ui.o_lst1.resizeColumnsToContents()
+        self.o_lst1.resizeColumnsToContents()
                                                
     def slot_b_compile_all(self):
         """
@@ -106,7 +105,7 @@ class oracle_recompiler_class(QtWidgets.QMainWindow):
             # connessione al DB come amministratore
             v_connection = cx_Oracle.connect(user=self.o_preferenze.v_oracle_user_sys,
                                              password=self.o_preferenze.v_oracle_password_sys,
-                                             dsn=self.ui.e_server_name.currentText(),
+                                             dsn=self.e_server_name.currentText(),
                                              mode=cx_Oracle.SYSDBA)
             v_error = False
         except:

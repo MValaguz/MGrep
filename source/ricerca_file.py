@@ -23,18 +23,17 @@ from ricerca_file_ui import Ui_Ricerca_file_window
 from preferenze import preferenze
 from utilita import message_error, message_info
        
-class ricerca_file_class(QtWidgets.QMainWindow):
+class ricerca_file_class(QtWidgets.QMainWindow, Ui_Ricerca_file_window):
     """
         Programma per la ricerca dei file all'interno del file system
     """                
     def __init__(self):
-        super(ricerca_file_class, self).__init__()
-        self.ui = Ui_Ricerca_file_window()
-        self.ui.setupUi(self)
+        super(ricerca_file_class, self).__init__()        
+        self.setupUi(self)
         
         # creo un oggetto modello che va ad agganciarsi all'oggetto grafico lista
         self.lista_risultati = QtGui.QStandardItemModel()        
-        self.ui.o_lst1.setModel(self.lista_risultati)
+        self.o_lst1.setModel(self.lista_risultati)
         
         # variabili per controllo caricamento della cache
         self.v_t2_pathname = ''
@@ -46,10 +45,10 @@ class ricerca_file_class(QtWidgets.QMainWindow):
         self.o_preferenze.carica()        
 
         # imposto i valori ricevuti come preferiti                
-        self.ui.e_filesearch.setText( self.o_preferenze.filesearch )
-        self.ui.e_pathname.setText( self.o_preferenze.pathname2 )
-        self.ui.e_excludepath.setText( self.o_preferenze.excludepath2 )
-        self.ui.e_filter.setText( self.o_preferenze.filter2 )
+        self.e_filesearch.setText( self.o_preferenze.filesearch )
+        self.e_pathname.setText( self.o_preferenze.pathname2 )
+        self.e_excludepath.setText( self.o_preferenze.excludepath2 )
+        self.e_filter.setText( self.o_preferenze.filter2 )
         
     def b_excludepath_slot(self):
         """
@@ -60,10 +59,10 @@ class ricerca_file_class(QtWidgets.QMainWindow):
             # Prenderò solo la parte della directory, di solito la seconda posizione
             directory_scelta = os.path.split( dirName )[1]
             if directory_scelta != '':
-                if self.ui.e_excludepath.displayText() != '':
-                    self.ui.e_excludepath.setText(self.ui.e_excludepath.displayText() + ',' + directory_scelta)
+                if self.e_excludepath.displayText() != '':
+                    self.e_excludepath.setText(self.e_excludepath.displayText() + ',' + directory_scelta)
                 else:
-                    self.ui.e_excludepath.setText(directory_scelta)     
+                    self.e_excludepath.setText(directory_scelta)     
     
     def b_pathname_slot(self):
         """
@@ -71,16 +70,16 @@ class ricerca_file_class(QtWidgets.QMainWindow):
         """        
         dirName = QtWidgets.QFileDialog.getExistingDirectory(self, "Choose a directory")                  
         if dirName != "":
-            self.ui.e_pathname.setText( dirName )        
+            self.e_pathname.setText( dirName )        
                 
     def b_save_slot(self):
         """
            Salva i parametri di ricerca
 	"""               
-        self.o_preferenze.filesearch = self.ui.e_filesearch.displayText()
-        self.o_preferenze.pathname2 = self.ui.e_pathname.displayText()
-        self.o_preferenze.excludepath2 = self.ui.e_excludepath.displayText()
-        self.o_preferenze.filter2 = self.ui.e_filter.displayText()
+        self.o_preferenze.filesearch = self.e_filesearch.displayText()
+        self.o_preferenze.pathname2 = self.e_pathname.displayText()
+        self.o_preferenze.excludepath2 = self.e_excludepath.displayText()
+        self.o_preferenze.filter2 = self.e_filter.displayText()
         self.o_preferenze.salva()        
         
         message_info('Search options saved!')
@@ -89,7 +88,7 @@ class ricerca_file_class(QtWidgets.QMainWindow):
         """
             aggiunge la riga nei preferiti (selezione corrente sulla lista)
         """        
-        v_selindex = self.lista_risultati.itemFromIndex( self.ui.o_lst1.currentIndex() )
+        v_selindex = self.lista_risultati.itemFromIndex( self.o_lst1.currentIndex() )
         if v_selindex != None:
             v_seltext = v_selindex.text()
             if v_seltext != '':
@@ -192,14 +191,14 @@ class ricerca_file_class(QtWidgets.QMainWindow):
             ricerca file
         """        
         # Se richiesto dal flag della cache...
-        if self.ui.c_cache_file_system.isChecked():
+        if self.c_cache_file_system.isChecked():
             # copio il file system dentro la cache di un db sqlite (questo per velorizzare le ricerche successive)
             self.copy_file_system_in_db(self.o_preferenze.name_file_for_db_cache,
                                         v_root_node,
                                         v_filter,
                                         v_exclude)
             # la cache è caricata e non è necessario ricaricarla successivamente
-            self.ui.c_cache_file_system.setChecked(False)
+            self.c_cache_file_system.setChecked(False)
 
         # Apre il DB sqlite
         v_sqlite_conn = sqlite3.connect(database=self.o_preferenze.name_file_for_db_cache)
@@ -237,34 +236,34 @@ class ricerca_file_class(QtWidgets.QMainWindow):
         
         v_ok = True
         # controllo che ci siano i dati obbligatori
-        if self.ui.e_filesearch.displayText() == '':
+        if self.e_filesearch.displayText() == '':
             message_error('Please enter a file name')
             v_ok = False
-        if self.ui.e_pathname.displayText() == '':
+        if self.e_pathname.displayText() == '':
             message_error('Please enter a pathname')
             v_ok = False
 
         # i controlli sono stati superati --> avvio la ricerca
         if v_ok:
             # Se la cache non è attiva, controllo se sono cambiati i valori di ricerca (es. path) perché allora vuol dire che la cache va ripristinata
-            if not self.ui.c_cache_file_system.isChecked():
-                if self.v_t2_pathname != self.ui.e_pathname.displayText() or self.v_t2_filter != self.ui.e_filter.displayText() or self.v_t2_excludepath != self.ui.e_excludepath.displayText():
+            if not self.c_cache_file_system.isChecked():
+                if self.v_t2_pathname != self.e_pathname.displayText() or self.v_t2_filter != self.e_filter.displayText() or self.v_t2_excludepath != self.e_excludepath.displayText():
                     # I valori sono cambiati e la cache va ricaricata
-                    self.ui.c_cache_file_system.setChecked()
+                    self.c_cache_file_system.setChecked()
 
             # Carico le var globali che permetteranno il confronto ai giri successivi. In pratica la cache va ricaricata automaticamente se sono cambiati dei parametri di ricerca
-            self.v_t2_pathname = self.ui.e_pathname.displayText()
-            self.v_t2_filter = self.ui.e_filter.displayText()
-            self.v_t2_excludepath = self.ui.e_excludepath.displayText()
+            self.v_t2_pathname = self.e_pathname.displayText()
+            self.v_t2_filter = self.e_filter.displayText()
+            self.v_t2_excludepath = self.e_excludepath.displayText()
 
             # pulizia dell'item dei risultati            
             self.lista_risultati.clear()            
 
             # richiama la ricerca nel file system se presente file system
-            self.ricerca_file(self.ui.e_pathname.displayText(),
-                              self.ui.e_filesearch.displayText(),
-                              self.ui.e_filter.displayText(),
-                              self.ui.e_excludepath.displayText())
+            self.ricerca_file(self.e_pathname.displayText(),
+                              self.e_filesearch.displayText(),
+                              self.e_filter.displayText(),
+                              self.e_excludepath.displayText())
 
             # chiudo la wait window
             self.progress.close()                                           

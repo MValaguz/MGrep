@@ -19,7 +19,7 @@ import sqlite3
 from utilita_database import estrae_struttura_tabella_sqlite
 from utilita import message_error
 
-class view_table_class(QtWidgets.QMainWindow):
+class view_table_class(QtWidgets.QMainWindow, Ui_table_view_window):
     """
         Visualizza il contenuto di una tabella SQLite
         Va indicato attraverso l'instanziazione della classe:
@@ -31,9 +31,8 @@ class view_table_class(QtWidgets.QMainWindow):
                  p_sqlite_db_name):
         
         # incapsulo la classe grafica da qtdesigner
-        super(view_table_class, self).__init__()
-        self.ui = Ui_table_view_window()
-        self.ui.setupUi(self)  
+        super(view_table_class, self).__init__()        
+        self.setupUi(self)  
         
         # controllo presenza dei dati in ingresso
         if p_table_name == '' or p_sqlite_db_name == '':
@@ -85,9 +84,9 @@ class view_table_class(QtWidgets.QMainWindow):
             y += 1
         
         # carico il modello nel widget        
-        self.ui.o_lst1.setModel(self.lista_risultati)                                   
+        self.o_lst1.setModel(self.lista_risultati)                                   
         # indico di calcolare automaticamente la larghezza delle colonne
-        self.ui.o_lst1.resizeColumnsToContents()
+        self.o_lst1.resizeColumnsToContents()
         
         # riporto a "normale" l'icona del mouse
         QtWidgets.QApplication.restoreOverrideCursor()        

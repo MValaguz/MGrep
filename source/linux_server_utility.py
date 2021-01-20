@@ -24,7 +24,7 @@ from linux_server_utility_ui import Ui_linux_server_window
 from utilita import message_error, message_info, message_question_yes_no
 from preferenze import preferenze
 
-class linux_server_class(QtWidgets.QMainWindow):
+class linux_server_class(QtWidgets.QMainWindow, Ui_linux_server_window):
     """
        Situazione spazio disco di un server linux 
             p_ip_server      = Indirizzo IP del server
@@ -32,9 +32,8 @@ class linux_server_class(QtWidgets.QMainWindow):
     """
     def __init__(self):                
         # incapsulo la classe grafica da qtdesigner
-        super(linux_server_class, self).__init__()
-        self.ui = Ui_linux_server_window()
-        self.ui.setupUi(self)
+        super(linux_server_class, self).__init__()        
+        self.setupUi(self)
         
         # carico le preferenze
         self.o_preferenze = preferenze()    
@@ -48,22 +47,22 @@ class linux_server_class(QtWidgets.QMainWindow):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))                
         
         # spazio disco icom_815
-        self.ui.e_icom_815.setText( self.spazio_disco("10.0.4.10", self.o_preferenze.v_server_password_DB) )        
+        self.e_icom_815.setText( self.spazio_disco("10.0.4.10", self.o_preferenze.v_server_password_DB) )        
         
         # spazio disco backup_815
-        self.ui.e_backup_815.setText( self.spazio_disco("10.0.4.11", self.o_preferenze.v_server_password_DB) )
+        self.e_backup_815.setText( self.spazio_disco("10.0.4.11", self.o_preferenze.v_server_password_DB) )
         
         # spazio disco backup_2_815
-        self.ui.e_backup_2_815.setText( self.spazio_disco("10.0.4.12", self.o_preferenze.v_server_password_DB) )        
+        self.e_backup_2_815.setText( self.spazio_disco("10.0.4.12", self.o_preferenze.v_server_password_DB) )        
         
         # spazio disco ias_smile_reale
-        self.ui.e_ias_smile_reale.setText( self.spazio_disco("10.0.4.14", self.o_preferenze.v_server_password_iAS) )                
+        self.e_ias_smile_reale.setText( self.spazio_disco("10.0.4.14", self.o_preferenze.v_server_password_iAS) )                
         
         # spazio disco ias_smile_backup
-        self.ui.e_ias_smile_backup.setText( self.spazio_disco("10.0.47.47", self.o_preferenze.v_server_password_iAS) )                        
+        self.e_ias_smile_backup.setText( self.spazio_disco("10.0.47.47", self.o_preferenze.v_server_password_iAS) )                        
         
         # spazio disco ias_smile_backup2
-        self.ui.e_ias_smile_backup2.setText( self.spazio_disco("10.0.47.45", self.o_preferenze.v_server_password_iAS) )                                
+        self.e_ias_smile_backup2.setText( self.spazio_disco("10.0.47.45", self.o_preferenze.v_server_password_iAS) )                                
         
         QtWidgets.QApplication.restoreOverrideCursor()        
         
@@ -97,22 +96,22 @@ class linux_server_class(QtWidgets.QMainWindow):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))                
         
         # spazio disco icom_815
-        self.ui.e_icom_815.setText( self.top("10.0.4.10",self.o_preferenze.v_server_password_DB) )        
+        self.e_icom_815.setText( self.top("10.0.4.10",self.o_preferenze.v_server_password_DB) )        
         
         # spazio disco backup_815
-        self.ui.e_backup_815.setText( self.top("10.0.4.11",self.o_preferenze.v_server_password_DB) )
+        self.e_backup_815.setText( self.top("10.0.4.11",self.o_preferenze.v_server_password_DB) )
         
         # spazio disco backup_2_815
-        self.ui.e_backup_2_815.setText( self.top("10.0.4.12",self.o_preferenze.v_server_password_DB) )        
+        self.e_backup_2_815.setText( self.top("10.0.4.12",self.o_preferenze.v_server_password_DB) )        
         
         # spazio disco ias_smile_reale
-        self.ui.e_ias_smile_reale.setText( self.top("10.0.4.14",self.o_preferenze.v_server_password_iAS) )                
+        self.e_ias_smile_reale.setText( self.top("10.0.4.14",self.o_preferenze.v_server_password_iAS) )                
         
         # spazio disco ias_smile_backup
-        self.ui.e_ias_smile_backup.setText( self.top("10.0.47.47",self.o_preferenze.v_server_password_iAS) )                        
+        self.e_ias_smile_backup.setText( self.top("10.0.47.47",self.o_preferenze.v_server_password_iAS) )                        
         
         # spazio disco ias_smile_backup2
-        self.ui.e_ias_smile_backup2.setText( self.top("10.0.47.45",self.o_preferenze.v_server_password_iAS) )                                
+        self.e_ias_smile_backup2.setText( self.top("10.0.47.45",self.o_preferenze.v_server_password_iAS) )                                
         
         QtWidgets.QApplication.restoreOverrideCursor()        
         
@@ -149,22 +148,22 @@ class linux_server_class(QtWidgets.QMainWindow):
         QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.WaitCursor))                
         
         # spazio disco icom_815
-        self.ui.e_icom_815.setText( self.folder_ora02("10.0.4.10",self.o_preferenze.v_server_password_DB) )        
+        self.e_icom_815.setText( self.folder_ora02("10.0.4.10",self.o_preferenze.v_server_password_DB) )        
         
         # spazio disco backup_815
-        self.ui.e_backup_815.setText( self.folder_ora02("10.0.4.11",self.o_preferenze.v_server_password_DB) )
+        self.e_backup_815.setText( self.folder_ora02("10.0.4.11",self.o_preferenze.v_server_password_DB) )
         
         # spazio disco backup_2_815
-        self.ui.e_backup_2_815.setText( self.folder_ora02("10.0.4.12",self.o_preferenze.v_server_password_DB) )        
+        self.e_backup_2_815.setText( self.folder_ora02("10.0.4.12",self.o_preferenze.v_server_password_DB) )        
         
         # spazio disco ias_smile_reale
-        self.ui.e_ias_smile_reale.setText( "" )                
+        self.e_ias_smile_reale.setText( "" )                
         
         # spazio disco ias_smile_backup
-        self.ui.e_ias_smile_backup.setText( "" )                        
+        self.e_ias_smile_backup.setText( "" )                        
         
         # spazio disco ias_smile_backup2
-        self.ui.e_ias_smile_backup2.setText( "" )                                        
+        self.e_ias_smile_backup2.setText( "" )                                        
         
         QtWidgets.QApplication.restoreOverrideCursor()                
         

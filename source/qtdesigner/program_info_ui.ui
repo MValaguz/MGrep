@@ -21,7 +21,7 @@
    <item row="0" column="1">
     <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;MGrep &lt;/span&gt;&lt;/p&gt;&lt;p&gt;© 2016-2020&lt;/p&gt;&lt;p&gt;MGrep is a set of utilities created to facilitate &lt;/p&gt;&lt;p&gt;the programming work in Oracle Forms enviroment.&lt;/p&gt;&lt;p&gt;Developed by &lt;span style=&quot; font-weight:600;&quot;&gt;Marco Valaguzza&lt;/span&gt; (Italy) &lt;/p&gt;&lt;p&gt;with Python 3.6 and QT library 5&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;MGrep &lt;/span&gt;&lt;/p&gt;&lt;p&gt;© 2016-2021&lt;/p&gt;&lt;p&gt;MGrep is a set of utilities created to facilitate &lt;/p&gt;&lt;p&gt;the programming work in Oracle Forms enviroment.&lt;/p&gt;&lt;p&gt;Developed by &lt;span style=&quot; font-weight:600;&quot;&gt;Marco Valaguzza&lt;/span&gt; (Italy) &lt;/p&gt;&lt;p&gt;with Python 3.6 and QT library 5&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
